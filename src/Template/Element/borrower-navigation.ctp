@@ -10,6 +10,7 @@
             <button class="nav-button">Home</button>
             <button class="nav-button">View Books</button>
             <button class="nav-button">Reserved Books</button>
+            <button class="nav-button">Checked-out Books</button>
             <button class="nav-button">View Book Borrowing History</button>
         </div>
     </div>
@@ -29,6 +30,8 @@
             z-index: 1000;
             position: fixed;
             background-color: #FFFFFF;
+            transition:top 0.3s;
+
         }
 
         #borrower-navigation #header-top #header-top-bg{
@@ -61,7 +64,7 @@
         .nav-button{
             background-color: transparent;
             font-size: 20px;
-            height: 70px;
+            height: 80px;
             width: 300px;
         }
 
@@ -94,8 +97,23 @@
         .dropdown:hover button{
             background-color: #000000;
             color: #FFFFFF;
-            font-weight: bold;
         }
         
     </style>
 <?php $this->end('css') ?>
+
+<?php $this->append('script') ?>
+    <!-- Hide/show navbar when scrolling -->
+    <script>
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("borrower-navigation").style.top = "0";
+        } else {
+            document.getElementById("borrower-navigation").style.top = "-130px";
+        }
+        prevScrollpos = currentScrollPos;
+        }
+    </script>
+<?php $this->end('script') ?>

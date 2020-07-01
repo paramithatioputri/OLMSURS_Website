@@ -1,4 +1,5 @@
 <?= $this->Html->css('library-background');?>
+<?= $this->Html->css('button-custom.css');?>
 
 <div id="search-container">
     <?= $this->Html->Image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'home-logo']); ?>
@@ -60,6 +61,10 @@
         background-color: #FFA500;
     }
 
+    #search-category-dropdown:hover{
+        background-color: #FF7900;
+    }
+
     #search-input-container{
         display: flex;
         flex-wrap: wrap;
@@ -71,7 +76,6 @@
 
     #search-btn{
         width: 20em;
-        background-color: #FFA500;
         left: 250px;
     }
 

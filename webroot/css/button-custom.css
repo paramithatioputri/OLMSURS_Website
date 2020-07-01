@@ -1,0 +1,14 @@
+button{
+    width: 20em;
+    background-color: #FFA500;
+    font-size: 20px;
+}
+
+button:hover{
+    background-color: #FF7900;
+    -ms-transform:scale(1.1,1.1);
+    transform:scale(1.1,1.1);
+    transition: 0.25s;
+    font-weight: bold;
+    transform-origin: center;
+}

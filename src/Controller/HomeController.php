@@ -11,6 +11,15 @@ use App\Controller\AppController;
  */
 class HomeController extends AppController
 {
+    public function beforeFilter(){
+
+        $this->Auth->allow([
+            'index', 
+            'login', 
+            'selfRegister'
+        ]);
+    }
+    
     /**
      * Index method
      *
@@ -25,6 +34,7 @@ class HomeController extends AppController
     //     $this->loadComponent('Flash');
     // } 
 
+
     public function index()
     {
         // $home = $this->paginate($this->Home);
@@ -32,12 +42,27 @@ class HomeController extends AppController
         // $this->set(compact('home'));
     }
 
+
+    public function selfRegister(){
+
+        $this->loadModel('Borrowers');
+        $borrower = $this->Borrowers->NewEntity();
+        if($this->request->is('post')){
+            $borrower = $this->Borrowers->patchEntity($borrower, $this->request->getData());
+            if($this->Borrowers->save($borrower)){
+                $this->Auth->login($borrower);
+                $this->Flash->success(__('Your account has been registered successfully'));
+                return $this->redirect(['controller' => 'home', 'action' => 'index']);
+            }
+        }
+    }
+
     public function login(){
 
     }
 
-    public function selfRegister(){
-
+    public function logout(){
+        $this->redirect($this->Auth->logout());
     }
 
     public function view($id = null)

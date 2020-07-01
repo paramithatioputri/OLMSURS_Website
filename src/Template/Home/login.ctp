@@ -1,4 +1,5 @@
 <?= $this->Html->css('library-background');?>
+<?= $this->Html->css('button-custom.css');?>
 <div id="login-container">
     <div class="login-form">
         <form>
@@ -51,11 +52,7 @@
     }
 
     #login-btn{
-        width: 20em;
-        background-color: #FFA500;
-        left: 125px;
-        margin-bottom: 0.5em;
-        font-size: 20px;
+        margin-left: 20%;
     }
 
     .register-small-note{
@@ -84,10 +81,12 @@
     }
 
     #showhide{
-        padding: 1.05em;
-        bottom: 2.5px;
-        right: 3.35em;
+        padding-bottom: 0.25em;
+        right: 4.45em;
+        top: 0.3em;
         background-color: #FFA500;
+        width: fit-content;
+        
     }
     
     .login-input-label{

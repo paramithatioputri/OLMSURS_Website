@@ -40,9 +40,12 @@
             top: 0;
             right:0;
             left: 0;
+            width:100%;
             z-index: 1000;
+            display:block;
             position: fixed;
             background-color: #FFFFFF;
+            transition:top 0.3s;
         }
 
         #librarian-navigation #header-top #header-top-bg{
@@ -65,7 +68,7 @@
             justify-content: center;
         }
 
-        .logo{
+        #header-top .logo{
             padding: 0.5em;
             width:7.5em;
             z-index: 1;
@@ -108,8 +111,24 @@
         .dropdown:hover button{
             background-color: #000000;
             color: #FFFFFF;
-            font-weight: bold;
         }
+
         
     </style>
 <?php $this->end('css') ?>
+
+<?php $this->append('script') ?>
+    <!-- Hide/show navbar when scrolling -->
+    <script>
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("librarian-navigation").style.top = "0";
+        } else {
+            document.getElementById("librarian-navigation").style.top = "-130px";
+        }
+        prevScrollpos = currentScrollPos;
+        }
+    </script>
+<?php $this->end('script') ?>

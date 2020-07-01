@@ -44,7 +44,7 @@ class LibrariansController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function addBooks()
+    public function add()
     {
         $librarian = $this->Librarians->newEntity();
         if ($this->request->is('post')) {
@@ -104,6 +104,6 @@ class LibrariansController extends AppController
     }
 
     public function register(){
-        
+
     }
 }

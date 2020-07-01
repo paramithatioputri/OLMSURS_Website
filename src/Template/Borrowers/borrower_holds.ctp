@@ -1,3 +1,4 @@
+<?= $this->Html->css('page-config.css'); ?>
 <?php echo $this->element('header'); ?>
 <div>
     <table class="table">
@@ -36,3 +37,4 @@
     }
 </style>
 <?php $this->end('css') ?>
+

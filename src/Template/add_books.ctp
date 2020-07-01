@@ -1,3 +1,6 @@
+<?= $this->Html->css('page-config.css');?>
+
+<?php $this->end('css')?>
 <?php echo $this->element('header'); ?>
 <form>
     <div class="form-group">
