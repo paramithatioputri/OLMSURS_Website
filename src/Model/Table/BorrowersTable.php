@@ -5,7 +5,9 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Event\Event;
+use ArrayObject;
+use Cake\I18n\Time;
 /**
  * Borrowers Model
  *
@@ -29,24 +31,20 @@ class BorrowersTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
+        $this->addBehavior('Timestamp');
 
         $this->setTable('borrowers');
         $this->setDisplayField('borrower_id');
         $this->setPrimaryKey('borrower_id');
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
     public function validationDefault(Validator $validator)
     {
         $validator
             ->scalar('borrower_id')
             ->maxLength('borrower_id', 14)
-            ->allowEmptyString('borrower_id', null, 'create');
+            ->requirePresence('borrower_id', 'create')
+            ->notEmptyString('borrower_id');
 
         $validator
             ->scalar('first_name')
@@ -71,12 +69,18 @@ class BorrowersTable extends Table
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
-
+        
         $validator
-            ->scalar('account_status')
-            ->maxLength('account_status', 25)
-            ->requirePresence('account_status', 'create')
-            ->notEmptyString('account_status');
+            ->scalar('confirm_password')
+            ->maxLength('password', 255)
+            ->requirePresence('confirm_password', 'create')
+            ->notEmptyString('confirm_password');
+
+        // $validator
+        //     ->scalar('account_status')
+        //     ->maxLength('account_status', 25)
+        //     ->requirePresence('account_status', 'create')
+        //     ->notEmptyString('account_status');
 
         $validator
             ->scalar('mobile_no')
@@ -107,15 +111,15 @@ class BorrowersTable extends Table
             ->integer('num_of_books_taken')
             ->allowEmptyString('num_of_books_taken');
 
-        $validator
-            ->date('date_created')
-            ->requirePresence('date_created', 'create')
-            ->notEmptyDate('date_created');
+        // $validator
+        //     ->date('date_created')
+        //     ->requirePresence('date_created', 'create')
+        //     ->notEmptyDate('date_created');
 
-        $validator
-            ->date('last_modified')
-            ->requirePresence('last_modified', 'create')
-            ->notEmptyDate('last_modified');
+        // $validator
+        //     ->date('last_modified')
+        //     ->requirePresence('last_modified', 'create')
+        //     ->allowEmptyDate('last_modified');
 
         return $validator;
     }

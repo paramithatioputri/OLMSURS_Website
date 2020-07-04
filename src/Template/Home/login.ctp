@@ -2,8 +2,17 @@
 <?= $this->Html->css('button-custom.css');?>
 <div id="login-container">
     <div class="login-form">
+        <?php
+            // echo $this->Form->create($user);
+            // echo $this->Form->control('', ['autofocus', 'type' => 'text', 'id' => 'userId-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user ID']);
+            // echo $this->Form->control('password', ['type' => 'password', 'min' => 8, 'id' => 'password-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user password']);
+            // echo $this->Form->button(__('Login'), ['id' => 'login-btn']);
+            // echo $this->Form->end();
+
+        ?>
         <form>
             <p id="login-title">Login</p>
+
             <div class="form-group input-container">
                 <label for="userId-textbox" class="login-input-label">User ID:</label>
                 <input autofocus type="text" id="userId-textbox" class="form-control" placeholder="Enter user ID" />
@@ -23,7 +32,7 @@
         </form>
         <div class="register-small-note">
             <small>Haven't had any account yet?</small>
-            <small><?= $this->Html->link('Click here to register', '#', ['class' => 'register-link', 'target' => '_blank']); ?></small>
+            <small><?= $this->Html->link('Click here to register', '/home/self-register', ['class' => 'register-link', 'target' => '_self']); ?></small>
         </div>
     </div>
 </div>

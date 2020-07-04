@@ -2,16 +2,18 @@
 
     <div id="header-top">
         <?= $this->Html->link($this->Html->image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'logo']),"#",  array('class' => 'logo-img-link', 'escape' => false)) ?>
-        <div id="header-top-bg"></div>
+        <div id="header-top-bg" class="header-top-bg"></div>
     </div>
     
     <div id="header-bottom">
         <div class="header-bottom-child">
-            <button class="nav-button">Home</button>
-            <button class="nav-button">View Books</button>
-            <button class="nav-button">Reserved Books</button>
-            <button class="nav-button">Checked-out Books</button>
-            <button class="nav-button">View Book Borrowing History</button>
+        <?php
+            echo $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);
+            echo $this->Html->link('View Books', ['controller' => '/books', 'action' => 'booklist'], ['class' => 'button nav-button']);
+            echo $this->Html->link('Reserved Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
+            echo $this->Html->link('Checked-out Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
+            echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => '/view-book-borrowing-history'], ['class' => 'button nav-button']);
+        ?>
         </div>
     </div>
 </div>
@@ -31,7 +33,6 @@
             position: fixed;
             background-color: #FFFFFF;
             transition:top 0.3s;
-
         }
 
         #borrower-navigation #header-top #header-top-bg{
@@ -66,32 +67,19 @@
             font-size: 20px;
             height: 80px;
             width: 300px;
+            margin: 0;
         }
 
         .nav-button:hover{
             background-color: #000000;
             font-weight: bold;
+            text-decoration: none;
+            margin: 0;
         }
 
-        .dropdown:hover .dropdown-menu{
+        .dropdown:hover{
             margin-top: 0;
             display: block;
-        }
-
-        .dropdown-menu{
-            background-color: #FFA500;
-            width: 300px;
-        }
-
-        .dropdown-menu>li>a{
-            word-wrap: break-word;
-            white-space:normal;
-        }
-
-        .dropdown-menu .dropdown-item:hover{
-            background-color: #000000;
-            color: #FFFFFF !important;
-            font-weight: bold;
         }
         
         .dropdown:hover button{

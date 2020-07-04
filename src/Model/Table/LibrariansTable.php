@@ -72,11 +72,11 @@ class LibrariansTable extends Table
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
 
-        $validator
-            ->scalar('account_status')
-            ->maxLength('account_status', 30)
-            ->requirePresence('account_status', 'create')
-            ->notEmptyString('account_status');
+        // $validator
+        //     ->scalar('account_status')
+        //     ->maxLength('account_status', 30)
+        //     ->requirePresence('account_status', 'create')
+        //     ->notEmptyString('account_status');
 
         $validator
             ->scalar('mobile_no')
@@ -95,15 +95,15 @@ class LibrariansTable extends Table
             ->requirePresence('gender', 'create')
             ->notEmptyString('gender');
 
-        $validator
-            ->date('date_created')
-            ->requirePresence('date_created', 'create')
-            ->notEmptyDate('date_created');
+        // $validator
+        //     ->date('date_created')
+        //     ->requirePresence('date_created', 'create')
+        //     ->notEmptyDate('date_created');
 
-        $validator
-            ->date('last_modified')
-            ->requirePresence('last_modified', 'create')
-            ->notEmptyDate('last_modified');
+        // $validator
+        //     ->date('last_modified')
+        //     ->requirePresence('last_modified', 'create')
+        //     ->allowEmptyDate('last_modified');
 
         return $validator;
     }

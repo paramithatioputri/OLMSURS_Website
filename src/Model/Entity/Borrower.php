@@ -33,10 +33,12 @@ class Borrower extends Entity
      * @var array
      */
     protected $_accessible = [
+        'borrower_id' => true,
         'first_name' => true,
         'last_name' => true,
         'email_address' => true,
         'password' => true,
+        'confirm_password' => true,
         'account_status' => true,
         'mobile_no' => true,
         'date_of_birth' => true,
@@ -56,4 +58,5 @@ class Borrower extends Entity
     protected $_hidden = [
         'password',
     ];
+
 }

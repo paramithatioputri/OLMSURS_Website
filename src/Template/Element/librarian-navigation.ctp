@@ -7,24 +7,26 @@
     
     <div id="header-bottom">
         <div class="header-bottom-child">
-            <button class="nav-button">Home</button>
-            <div class="dropdown" id="manage-account-dropdown">
-                <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Accounts</button>
-                <ul class="dropdown-menu">
-                        <li><a class="dropdown-item">View Borrowers' Account Details</a></li>
-                        <li><a class="dropdown-item">Register New Accounts for Borrowers and Librarians</a></li>
-                        <li><a class="dropdown-item">Approve Borrowers' Accounts</a></li>
-                </ul>
-            </div>
-            <div class="dropdown" id="manage-book-dropdown">
+        <?= $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);?>
+        <div class="dropdown" id="manage-account-dropdown">
+            <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Accounts</button>
+            <ul class="dropdown-menu">
+                    <li><?= $this->Html->link("View Borrowers' Account Details", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Register New Accounts for Borrowers and Librarians", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Approve Borrowers' Accounts", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+            </ul>
+        </div>
+        <div class="dropdown" id="manage-book-dropdown">
                 <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Books</button>
                 <ul class="dropdown-menu" id="manage-book-item">
-                    <li><a class="dropdown-item">Add Books</a></li>
-                    <li><a class="dropdown-item">View Books</a></li>
-                    <li><a class="dropdown-item">Issue Books</a></li>
-                    <li><a class="dropdown-item">Return Books</a></li>
+                    <li><?= $this->Html->link("Add Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("View Books", ['controller' => '/books', 'action' => '/booklist'], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Issue Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Return Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
                 </ul>
-            </div> 
+            </div>
+            
+            
         </div>
     </div>
 </div>
@@ -80,11 +82,14 @@
             font-size: 20px;
             height: 70px;
             width: 300px;
+            margin:0;
         }
 
         .nav-button:hover{
             background-color: #000000;
             font-weight: bold;
+            margin: 0;
+            text-decoration: none;
         }
 
         .dropdown:hover .dropdown-menu{
@@ -95,6 +100,7 @@
         .dropdown-menu{
             background-color: #FFA500;
             width: 300px;
+            padding: 0;
         }
 
         .dropdown-menu>li>a{

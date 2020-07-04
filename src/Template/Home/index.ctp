@@ -1,5 +1,6 @@
 <?= $this->Html->css('library-background');?>
 <?= $this->Html->css('button-custom.css');?>
+<?php //echo $this->element('header'); ?>
 
 <div id="search-container">
     <?= $this->Html->Image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'home-logo']); ?>
