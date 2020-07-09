@@ -47,6 +47,7 @@ class Book extends Entity
         'num_of_pages' => true,
         'average_rating' => true,
         'synopsis' => true,
+        'book_cover_image' => true,
         'date_created' => true,
         'last_modified' => true,
         'librarian' => true,

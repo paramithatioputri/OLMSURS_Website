@@ -46,6 +46,7 @@ class Borrower extends Entity
         'total_fines' => true,
         'total_overdue_books' => true,
         'num_of_books_taken' => true,
+        'profile_image' => true,
         'date_created' => true,
         'last_modified' => true,
     ];

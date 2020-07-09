@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Routing\Router;
 
 /**
  * Home Controller
@@ -39,9 +40,94 @@ class HomeController extends AppController
 
     public function index()
     {
-        // $home = $this->paginate($this->Home);
+        $query = $this->request->query();
 
-        // $this->set(compact('home'));
+        $this->loadModel("Books");
+
+        if((!empty($query['query1'])) && ($query['query2'] == 0)){
+            $this->set('query1', $query['query1']);
+            
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Books.book_number LIKE' => '%' . $q . '%',
+                    'Books.title LIKE' => '%' . $q . '%',
+                    'Books.author LIKE' => '%' . $q . '%',
+                    'Subjects.subject_name LIKE' => '%' . $q . '%',
+                    'Books.isbn LIKE' => '%' . $q . '%',
+                ]
+            ]);
+            
+        }
+        else if((!empty($query['query1'])) && ($query['query2'] == 1)){
+            $this->set('query1', $query['query1']);
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Books.title LIKE' => '%' . $q . '%',
+                ]
+            ]);
+        }
+        else if((!empty($query['query1'])) && ($query['query2'] == 2)){
+            $this->set('query1', $query['query1']);
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Books.author LIKE' => '%' . $q . '%',
+                ]
+            ]);
+        }
+        else if((!empty($query['query1'])) && ($query['query2'] == 3)){
+            $this->set('query1', $query['query1']);
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Subjects.subject_name LIKE' => '%' . $q . '%',
+                ]
+            ]);
+        }
+        else if((!empty($query['query1'])) && ($query['query2'] == 4)){
+            $this->set('query1', $query['query1']);
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Books.isbn LIKE' => '%' . $q . '%',
+                ]
+            ]);
+        }
+        else if((!empty($query['query1'])) && ($query['query2'] == 5)){
+            $this->set('query1', $query['query1']);
+            $q = str_replace(' ', '%', $query['query1']);
+
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages'])
+            ->where([
+                'OR' => [
+                    'Books.book_number LIKE' => '%' . $q . '%',
+                ]
+            ]);
+        }
+        else{
+            $books = $this->Books->find()
+            ->contain(['Subjects', 'Languages']);
+        }
+
+        $this->set('books', $this->paginate($books));
     }
 
 
@@ -62,8 +148,7 @@ class HomeController extends AppController
             ])
             ->first();
 
-            // dd($borrower);
-            if($borrower->password != $borrower->confirm_password || $borrower->password == "" || $borrower->confirm_password == ""){
+            if($borrower->password != $borrower->confirm_password || $borrower->password == "" || $borrower->confirm_password == "" || strlen($borrower->password) < 6){
                 $this->Flash->error(__("Please enter the correct password!"));
                 return $this->redirect($this->referer());
             }
@@ -72,18 +157,68 @@ class HomeController extends AppController
                 return $this->redirect($this->referer());
             }
             else{
-                $hasher = new DefaultPasswordHasher();
-                $borrower->password = $hasher->hash($borrower_password);
-
-                if($this->Borrowers->save($borrower)){
-                    // $this->Auth->login($borrower);
-                    $this->Flash->success(__('Your account has been registered successfully'));
-                    return $this->redirect(['controller' => 'home', 'action' => 'index']);
+                if(!empty($this->request->data["profile_image"]["name"])){
+                    $temp = explode(".", $_FILES["profile_image"]["name"]);
+                    $filename = 'profile_' . $borrower->borrower_id . '.' . $temp[1];
+                    $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                    $uploadPath = 'img/profile-img/';
+    
+                    $uploadfile = $uploadPath . $filename;
+                    if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
+                        $borrower->profile_image = $url;
+                        if($borrower->gender == 1){
+                            $borrower->gender = "Male";
+                        }
+                        else if($borrower->gender == 2){
+                            $borrower->gender = "Female";
+                        }
+                        else{
+                            $this->Flash->error(__("Please select your gender!"));
+                            return $this->redirect($this->referer());
+                        }
+        
+                        $hasher = new DefaultPasswordHasher();
+                        $borrower->password = $hasher->hash($borrower_password);
+        
+                        if($this->Borrowers->save($borrower)){
+                            // $this->Auth->login($borrower);
+                            $this->Flash->success(__('Your account has been registered successfully'));
+                            return $this->redirect(['controller' => 'home', 'action' => 'index']);
+                        }
+                        else{
+                            $this->Flash->error(__("Fail to register"));
+                            return $this->redirect($this->referer());
+                        }
+                    }
+    
                 }
                 else{
-                    $this->Flash->error(__("Fail to register"));
-                    return $this->redirect($this->referer);
+                    if($borrower->gender == 1){
+                        $borrower->gender = "Male";
+                    }
+                    else if($borrower->gender == 2){
+                        $borrower->gender = "Female";
+                    }
+                    else{
+                        $this->Flash->error(__("Please select your gender!"));
+                        return $this->redirect($this->referer());
+                    }
+    
+                    $hasher = new DefaultPasswordHasher();
+                    $borrower->password = $hasher->hash($borrower_password);
+    
+                    if($this->Borrowers->save($borrower)){
+                        // $this->Auth->login($borrower);
+                        $this->Flash->success(__('Your account has been registered successfully'));
+                        return $this->redirect(['controller' => 'home', 'action' => 'index']);
+                    }
+                    else{
+                        $this->Flash->error(__("Fail to register"));
+                        return $this->redirect($this->referer());
+                    }
                 }
+
+                
             }
             
         }

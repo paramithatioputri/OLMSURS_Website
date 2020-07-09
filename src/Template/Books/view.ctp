@@ -2,8 +2,16 @@
 <?= $this->Html->css('button-custom.css');?>
 
 <?= $this->element('header'); ?>
-<div class="books view large-9 medium-8 columns content">
+<div class="books view content">
     <h3><?= h($book->title) ?></h3>
+    <div class="image">
+        <?php if(empty($book->book_cover_image)){ ?>
+            <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '300', 'alt' => 'no-book-cover-image']); ?>
+        <?php }else{ ?>
+            <?= $this->Html->image(h($book->book_cover_image), ['width' => '300', 'alt' => 'book-cover-image']); ?>
+        <?php } ?>
+        
+    </div>
     <table class="vertical-table">
         <!-- <tr>
             <th scope="row"><?= __('Status') ?></th>
@@ -47,7 +55,12 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Average Rating') ?></th>
-            <td><?= $this->Number->format($book->average_rating) ?></td>
+            <td>
+            <div name="average_rating">
+                <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
+                <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
+            </div>
+            </td>
         </tr>
     </table>
     <div class="row">
@@ -55,3 +68,11 @@
         <?= $this->Text->autoParagraph(h($book->synopsis)); ?>
     </div>
 </div>
+
+<?php $this->append('css') ?>
+<style>
+    .image{
+        text-align: center;
+    }
+</style>
+<?php $this->end('css') ?>

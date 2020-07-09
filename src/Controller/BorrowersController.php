@@ -27,8 +27,14 @@ class BorrowersController extends AppController
 
     }
 
-    public function personalAccount(){
+    public function personalAccount($id = null){
+        $borrower = $this->Borrowers->find()
+        ->where([
+            'borrower_id' => $id
+        ])
+        ->first();
 
+        $this->set(compact('borrower'));
     }
 
     public function borrowerHolds(){

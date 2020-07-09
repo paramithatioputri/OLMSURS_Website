@@ -103,6 +103,7 @@ class BooksTable extends Table
             ->scalar('synopsis')
             ->allowEmptyString('synopsis');
 
+
         // $validator
         //     ->dateTime('date_created')
         //     ->notEmptyDateTime('date_created');
