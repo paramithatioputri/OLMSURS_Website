@@ -1,7 +1,12 @@
 <?= $this->Html->css('button-custom.css');?>
 <?php //echo $this->element('header'); ?>
 
-<?php $categories = ['All Categories', 'Title', 'Author', 'Subject', 'ISBN', 'Book Number']; ?>
+<?php 
+    $categories = ['All Categories', 'Title', 'Author', 'Subject', 'ISBN', 'Book Number']; 
+
+    $totalIndic = ceil($booksCount/3);
+
+?>
 
 <div class="split" id="search-container">
     <div class="logo-container">
@@ -32,9 +37,88 @@
 </div>
 
 <div class="split" id="cards-container">
-    <h1 style="text-align: left; font-weight: bold;">Recommended</h1>
+    <h1 style="text-align: left; font-weight: bold;">Recommended by Other Borrowers:</h1>
+    <hr class="my-4"/>
+    <!-- Carousel Wrapper -->
+    <div id="recommended-books" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+        <!--Indicators-->
+        <ol class="carousel-indicators">
+            <?php
+                for($i = 0; $i < $totalIndic; $i++){ ?>
+                    <li data-target="#recommended-books" data-slide-to="<?= h($i) ?>" class="active"></li>
+            <?php
+                }
+            ?>
+        </ol>
+        <!--/.Indicators-->
+        
+        <!-- Slides -->
+        <div class="carousel-inner" role="listbox">
+            <?php
+                $maxImage = 0;
+            ?>
+            <?php
+                for($i = 0; $i < $totalIndic; $i++){ 
+                    ?>
+                    <div  class="carousel-item <?= ($i == 0) ? 'active' : '' ?>" id="<?= h($i) ?>">
+                        <div class="row">
+                <?php
+                    foreach($booksRecom as $key=>$bookRecom){
+                        if(($maxImage <= (2 + $i + 2 * $i)) && ($maxImage >= (2 * $i + $i))){
+                            if($key == $maxImage){ 
+                                ?>
+                                <div class="col-md-4 clearfix d-none d-md-block">
+                                    <a href="<?= h('books/view/' . $bookRecom->book_number)?>">
+                                        <div class="card" style="width:300px">
+                                        <img class="card-img-top" src="<?= $bookRecom->book_cover_image ?>" style="height:298px" alt="Book image">
+                                            <div class="card-body">
+                                                <div name="average_rating" style="text-align:center">
+                                                    <input value="<?= h($bookRecom->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($bookRecom->book_number) ?>">
+                                                    <div class="rateit" data-rateit-backingfld="#<?= h($bookRecom->book_number) ?>"></div>
+                                                </div>
+                                                <h4 class="card-title"><?= $bookRecom->title ?></h4>
+                                                <p class="card-text"><b>Author: </b><?= $bookRecom->author ?></p>
+                                                <p class="card-text"><b>Subject: </b><?= $bookRecom->subject->subject_name ?></p>
+                                                <p class="card-text"><b>ISBN: </b><?= $bookRecom->isbn ?></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                
+                <?php      
+                               $maxImage++;
+
+                               if($i < ($totalIndic - 1)){
+                                   if($maxImage == (3 + $i + 2 * $i)){
+                                   }
+                                   continue ;
+                               }       
+                            }
+                        }
+                    }
+                ?>
+                        </div>
+                    </div>
+                <?php
+                    
+                }
+                ?>
+        </div>
+        <!-- / .Slides -->
+
+        <!--Controls-->
+        <div class="controls-top">
+            <a class="btn-floating" href="#recommended-books" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+            <a class="btn-floating" href="#recommended-books" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+        </div>
+        <!--/.Controls-->
+    </div>
+    <!--/.Carousel Wrapper-->
+    <hr style="border: 2px solid;"/>
+    <div>
     <?php
-    foreach($books as $book){ ?>
+     foreach($books as $book){ ?>
             <a href="<?= h('books/view/' . $book->book_number)?>">
                 <div class="card" style="width:300px">
                 <img class="card-img-top" src="<?= $book->book_cover_image ?>" style="height:298px" alt="Book image">
@@ -53,6 +137,7 @@
         <?php
         }
     ?>
+    </div>
 </div>
 
 
@@ -160,6 +245,7 @@
         background: rgba(255, 255, 255, 0.5);
         padding: 15px;
         border-radius: 25px;
+        margin-bottom: 20px;
     }
     
 
