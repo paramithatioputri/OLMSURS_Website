@@ -2,12 +2,12 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\Auth\DefaultPasswordHasher;
+
 
 /**
  * Librarian Entity
  *
- * @property string $librarian_id
+ * @property string $user_id
  * @property string $first_name
  * @property string $last_name
  * @property string $email_address
@@ -31,14 +31,17 @@ class Librarian extends Entity
      * @var array
      */
     protected $_accessible = [
+        'user_id' => true,
         'first_name' => true,
         'last_name' => true,
         'email_address' => true,
         'password' => true,
+        'confirm_password' => true,
         'account_status' => true,
         'mobile_no' => true,
         'date_of_birth' => true,
         'gender' => true,
+        'profile_image' => true,
         'date_created' => true,
         'last_modified' => true,
     ];
@@ -51,11 +54,4 @@ class Librarian extends Entity
     protected $_hidden = [
         'password',
     ];
-
-    protected function _setPassword($password)
-    {
-        if (strlen($password) > 0) {
-            return (newDefaultPasswordHasher)->hash($password);
-        }
-    }
 }

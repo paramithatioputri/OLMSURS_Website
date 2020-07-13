@@ -33,7 +33,7 @@ class Borrower extends Entity
      * @var array
      */
     protected $_accessible = [
-        'borrower_id' => true,
+        'user_id' => true,
         'first_name' => true,
         'last_name' => true,
         'email_address' => true,

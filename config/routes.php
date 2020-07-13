@@ -65,8 +65,6 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/', ['controller' => 'Home', 'action' => 'index']);
 
-    $routes->connect('/hapusnanti', ['controller' => 'Home', 'action' => 'hapusnanti']);
-
     $routes->connect('/login', ['controller' => 'Home', 'action' => 'login']);
 
     $routes->connect('/books', ['controller' => 'Books', 'action' => 'booklist']);
@@ -104,7 +102,11 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::prefix('admin', function ($routes) {
     // All routes here will be prefixed with `/admin`
     // And have the prefix => admin route element added.
+    
+    $routes->connect('/librarians/view1',['controller' => 'Librarians', 'action' => 'view1']);
+
     $routes->fallbacks(DashedRoute::class);
+
 });
 
 /**

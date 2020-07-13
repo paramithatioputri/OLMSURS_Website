@@ -30,7 +30,7 @@ class BorrowersController extends AppController
     public function personalAccount($id = null){
         $borrower = $this->Borrowers->find()
         ->where([
-            'borrower_id' => $id
+            'user_id' => $id
         ])
         ->first();
 

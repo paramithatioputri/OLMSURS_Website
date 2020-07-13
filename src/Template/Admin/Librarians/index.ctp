@@ -15,7 +15,7 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('librarian_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('first_name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('last_name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('email_address') ?></th>
@@ -32,7 +32,7 @@
         <tbody>
             <?php foreach ($librarians as $librarian): ?>
             <tr>
-                <td><?= h($librarian->librarian_id) ?></td>
+                <td><?= h($librarian->user_id) ?></td>
                 <td><?= h($librarian->first_name) ?></td>
                 <td><?= h($librarian->last_name) ?></td>
                 <td><?= h($librarian->email_address) ?></td>
@@ -44,9 +44,9 @@
                 <td><?= h($librarian->date_created) ?></td>
                 <td><?= h($librarian->last_modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $librarian->librarian_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $librarian->librarian_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $librarian->librarian_id], ['confirm' => __('Are you sure you want to delete # {0}?', $librarian->librarian_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $librarian->user_id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $librarian->user_id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $librarian->user_id], ['confirm' => __('Are you sure you want to delete # {0}?', $librarian->user_id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

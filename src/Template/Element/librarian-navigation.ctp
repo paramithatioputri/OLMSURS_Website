@@ -1,7 +1,7 @@
 <div id="librarian-navigation">
 
     <div id="header-top">
-        <?= $this->Html->link($this->Html->image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'logo']),"#",  array('class' => 'logo-img-link', 'escape' => false)) ?>
+        <?= $this->Html->link($this->Html->image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'logo']),"/",  array('class' => 'logo-img-link', 'escape' => false)) ?>
         <div id="header-top-bg"></div>
     </div>
     
@@ -11,18 +11,20 @@
         <div class="dropdown" id="manage-account-dropdown">
             <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Accounts</button>
             <ul class="dropdown-menu">
-                    <li><?= $this->Html->link("View Borrowers' Account Details", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("Register New Accounts for Borrowers and Librarians", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("Approve Borrowers' Accounts", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("View Borrowers' Account Details", ['controller' => 'librarians', 'action' => '/all_borrowers_accounts'], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("View Librarians' Account Details", ['controller' => 'librarians', 'action' => '/all_librarians_accounts'], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Register New Accounts for Borrowers", ['controller' => 'librarians', 'action' => 'register_borrowers'], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Register New Accounts for Librarians", ['controller' => 'librarians', 'action' => 'register_librarians'], ['class' => 'dropdown-item']); ?></li>
             </ul>
         </div>
         <div class="dropdown" id="manage-book-dropdown">
                 <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Books</button>
                 <ul class="dropdown-menu" id="manage-book-item">
-                    <li><?= $this->Html->link("Add Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("View Books", ['controller' => '/books', 'action' => '/booklist'], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("Issue Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("Return Books", ['controller' => '', 'action' => ''], ['class' => 'dropdown-item']); ?></li>
+                
+                    <li><?= $this->Html->link("Add Books", ['controller' => '/books', 'action' => '/add_books', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("View Books", ['controller' => '/books', 'action' => '/booklist', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Issue Books", ['controller' => '', 'action' => '', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Return Books", ['controller' => '', 'action' => '', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
                 </ul>
             </div>
             

@@ -4,26 +4,25 @@
 <?= $this->element('header'); ?>
 
 <?php
-
     $gender = ["Select Gender", "Male", "Female"];
 ?>
-<?= $this->Form->create($borrower, ["enctype" => 'multipart/form-data']);?>
+<?= $this->Form->create($librarian, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
-    <legend><?= __('MEMBERSHIP REGISTRATION FORM') ?></legend>
+    <legend><?= __('Register New Account of Librarian') ?></legend>
     <?php
-        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
-        echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter your first name"]);
-        echo $this->Form->control("last_name", ["type" => "text", "placeholder" => "Enter your last name"]);
-        echo $this->Form->control("email_address", ["type" => "email", "placeholder" => "Enter your email address"]);
-        echo $this->Form->control("password", ["type" => "password", "placeholder" => "Enter your password", "id" => "password", "oninput" => "checkPasswordMismatch(),checkPasswordLen()"]);?>
+        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter the user ID", "label" => "User ID"]);
+        echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter the first name"]);
+        echo $this->Form->control("last_name", ["type" => "text", "placeholder" => "Enter the last name"]);
+        echo $this->Form->control("email_address", ["type" => "email", "placeholder" => "Enter the email address"]);
+        echo $this->Form->control("password", ["type" => "password", "placeholder" => "Enter the password", "id" => "password", "oninput" => "checkPasswordMismatch(),checkPasswordLen()"]);?>
         <p class="checkPassword" id="checkPasswordLen"></p>
         <?php
-        echo $this->Form->control("confirm_password", ["type" => "password", "placeholder" => "Re-enter your password", "id" => "confirmpassword", "oninput" => "checkPasswordMismatch()"]);
+        echo $this->Form->control("confirm_password", ["type" => "password", "placeholder" => "Re-enter the password", "id" => "confirmpassword", "oninput" => "checkPasswordMismatch()"]);
         ?>
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         <?php
-        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]);
-        echo $this->Form->control("date_of_birth", ["type" => "date", "placeholder" => "Enter your date of birth"]);
+        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
+        echo $this->Form->control("date_of_birth", ["type" => "date", "placeholder" => "Enter the date of birth"]);
         echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);
         echo $this->Form->control("profile_image", ["type" => "file", "accept" => "image/png, image/jpg, image/jpeg"]);
         echo $this->Form->button(__('Register'), ['id' => "register-btn"]);
@@ -71,7 +70,7 @@
         var password = document.getElementById("password").value;
         var passwordLen = password.length;
         if(passwordLen < 6){
-            document.getElementById("checkPasswordLen").innerHTML = "<i class='fa fa-times' aria-hidden='true'></i>Your password must be at least 6 characters long";
+            document.getElementById("checkPasswordLen").innerHTML = "<i class='fa fa-times' aria-hidden='true'></i>The password must be at least 6 characters long";
             document.getElementById("checkPasswordLen").style.color = "red";
         }
         else{

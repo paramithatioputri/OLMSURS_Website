@@ -5,6 +5,9 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
+use Cake\I18n\Time;
 
 /**
  * Librarians Model
@@ -31,8 +34,9 @@ class LibrariansTable extends Table
         parent::initialize($config);
 
         $this->setTable('librarians');
-        $this->setDisplayField('librarian_id');
-        $this->setPrimaryKey('librarian_id');
+        $this->setDisplayField('user_id');
+        $this->setPrimaryKey('user_id');
+        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -44,9 +48,10 @@ class LibrariansTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->scalar('librarian_id')
-            ->maxLength('librarian_id', 14)
-            ->allowEmptyString('librarian_id', null, 'create');
+            ->scalar('user_id')
+            ->maxLength('user_id', 14)
+            ->requirePresence('user_id', 'create')
+            ->notEmptyString('user_id');
 
         $validator
             ->scalar('first_name')
@@ -71,6 +76,12 @@ class LibrariansTable extends Table
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
+
+        $validator
+            ->scalar('confirm_password')
+            ->maxLength('password', 255)
+            ->requirePresence('confirm_password', 'create')
+            ->notEmptyString('confirm_password');
 
         // $validator
         //     ->scalar('account_status')

@@ -10,7 +10,7 @@
             echo $this->Form->control('book_number', ['type' => 'text']);
             echo $this->Form->control('title', ['type' => 'text']);
             echo $this->Form->control('name', ['type' => 'text']);
-            echo $this->Form->control('borrower_id', ['type' => 'text']);
+            echo $this->Form->control('user_id', ['type' => 'text']);
             echo $this->Form->control('book_taken', ['type' => 'number']);
             echo $this->Form->control('maximum_allowed', ['type' => 'number']);
             echo $this->Form->control('issue_date', ['type' => 'date']);

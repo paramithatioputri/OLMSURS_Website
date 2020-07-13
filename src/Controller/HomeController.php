@@ -47,26 +47,20 @@ class HomeController extends AppController
 
         $this->loadModel("Books");
 
-        if((!empty($query['query1'])) && ($query['query2'] == 0)){
-            $this->set('query1', $query['query1']);
-            
-            $q = str_replace(' ', '%', $query['query1']);
-
-            $booksRecom = $this->Books->find()
+        $booksRecom = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
                 'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Books.book_number LIKE' => '%' . $q . '%',
-                    'Books.title LIKE' => '%' . $q . '%',
-                    'Books.author LIKE' => '%' . $q . '%',
-                    'Subjects.subject_name LIKE' => '%' . $q . '%',
-                    'Books.isbn LIKE' => '%' . $q . '%',
-                ]
             ])
             ->order([
                 'Books.average_rating' => "DESC",
             ]);
+
+
+        if((!empty($query['query1'])) && ($query['query2'] == 0)){
+            $this->set('query1', $query['query1']);
+            
+            $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
@@ -97,17 +91,6 @@ class HomeController extends AppController
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
 
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Books.title LIKE' => '%' . $q . '%',
-                ]
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
 
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
@@ -132,18 +115,6 @@ class HomeController extends AppController
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
 
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Books.author LIKE' => '%' . $q . '%',
-                ]
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
-
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
@@ -166,18 +137,6 @@ class HomeController extends AppController
         else if((!empty($query['query1'])) && ($query['query2'] == 3)){
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
-
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Subjects.subject_name LIKE' => '%' . $q . '%',
-                ]
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
 
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
@@ -202,19 +161,6 @@ class HomeController extends AppController
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
 
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Books.isbn LIKE' => '%' . $q . '%',
-                ]
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
-
-
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
@@ -238,18 +184,6 @@ class HomeController extends AppController
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
 
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-                'OR' => [
-                    'Books.book_number LIKE' => '%' . $q . '%',
-                ]
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
-
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
@@ -270,15 +204,6 @@ class HomeController extends AppController
             ->count();
         }
         else{
-            $booksRecom = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating >=' => 4,
-            ])
-            ->order([
-                'Books.average_rating' => "DESC",
-            ]);
-
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
@@ -313,7 +238,7 @@ class HomeController extends AppController
 
             $borrowerId = $this->Borrowers->find()
             ->where([
-                'borrower_id' => $borrower->borrower_id
+                'user_id' => $borrower->user_id
             ])
             ->first();
 
@@ -328,7 +253,7 @@ class HomeController extends AppController
             else{
                 if(!empty($this->request->data["profile_image"]["name"])){
                     $temp = explode(".", $_FILES["profile_image"]["name"]);
-                    $filename = 'profile_' . $borrower->borrower_id . '.' . $temp[1];
+                    $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
                     $url = Router::url('/', true) . '/img/profile-img/' . $filename;
                     $uploadPath = 'img/profile-img/';
     

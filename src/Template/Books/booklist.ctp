@@ -38,6 +38,7 @@
                             <?php } else{?>
                                 <?= $this->Html->image(h($book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
                             <?php }?>
+                            
                             </div>
                         </div>
                         <div class="book-content">

@@ -3,7 +3,7 @@
 
 <?= $this->element('header'); ?>
 <div class="borrowers view content">
-    <h3>Borrower ID:<?= h($borrower->user_id) ?></h3>
+    <h3>Borrower ID: <?= h($borrower->user_id) ?></h3>
     <div class="image">
         <?php if(empty($borrower->profile_image)){ 
             if($borrower->gender == "Male"){?>

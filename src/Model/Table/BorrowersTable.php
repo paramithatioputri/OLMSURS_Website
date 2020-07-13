@@ -34,17 +34,17 @@ class BorrowersTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->setTable('borrowers');
-        $this->setDisplayField('borrower_id');
-        $this->setPrimaryKey('borrower_id');
+        $this->setDisplayField('user_id');
+        $this->setPrimaryKey('user_id');
     }
 
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->scalar('borrower_id')
-            ->maxLength('borrower_id', 14)
-            ->requirePresence('borrower_id', 'create')
-            ->notEmptyString('borrower_id');
+            ->scalar('user_id')
+            ->maxLength('user_id', 14)
+            ->requirePresence('user_id', 'create')
+            ->notEmptyString('user_id');
 
         $validator
             ->scalar('first_name')

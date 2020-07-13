@@ -37,7 +37,7 @@ class Book extends Entity
      */
     protected $_accessible = [
         'book_number' => true,
-        'librarian_id' => true,
+        'user_id' => true,
         'title' => true,
         'isbn' => true,
         'author' => true,

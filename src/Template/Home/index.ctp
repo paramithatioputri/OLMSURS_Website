@@ -65,13 +65,13 @@
                         <div class="row">
                 <?php
                     foreach($booksRecom as $key=>$bookRecom){
-                        if(($maxImage <= (2 + $i + 2 * $i)) && ($maxImage >= (2 * $i + $i))){
+                        if(($maxImage <= (3 + $i + 3 * $i)) && ($maxImage >= (3 * $i + $i))){
                             if($key == $maxImage){ 
                                 ?>
-                                <div class="col-md-4 clearfix d-none d-md-block">
+                                <div class="col-md-3 clearfix d-none d-md-block">
                                     <a href="<?= h('books/view/' . $bookRecom->book_number)?>">
-                                        <div class="card" style="width:300px">
-                                        <img class="card-img-top" src="<?= $bookRecom->book_cover_image ?>" style="height:298px" alt="Book image">
+                                        <div class="card" style="width:200px">
+                                        <img class="card-img-top" src="<?= $bookRecom->book_cover_image ?>" style="height:150px" alt="Book image">
                                             <div class="card-body">
                                                 <div name="average_rating" style="text-align:center">
                                                     <input value="<?= h($bookRecom->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($bookRecom->book_number) ?>">
@@ -90,7 +90,7 @@
                                $maxImage++;
 
                                if($i < ($totalIndic - 1)){
-                                   if($maxImage == (3 + $i + 2 * $i)){
+                                   if($maxImage == (4 + $i + 3 * $i)){
                                    }
                                    continue ;
                                }       
@@ -120,8 +120,8 @@
     <?php
      foreach($books as $book){ ?>
             <a href="<?= h('books/view/' . $book->book_number)?>">
-                <div class="card" style="width:300px">
-                <img class="card-img-top" src="<?= $book->book_cover_image ?>" style="height:298px" alt="Book image">
+                <div class="card" style="width:200px">
+                <img class="card-img-top" src="<?= $book->book_cover_image ?>" style="height:150px" alt="Book image">
                     <div class="card-body">
                         <div name="average_rating" style="text-align:center">
                             <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
@@ -210,6 +210,12 @@
         top: 17em;
     }
 
+    .home-logo{
+        width: 9.5em !important;
+    }
+
+    
+
     .logo-container{
         text-align: center;
         margin: 20px 0;
@@ -240,12 +246,17 @@
         transition: 0.25s;
         color: #000000;
     }
+
     #cards-container{
         background-color: #FFFFFF;
         background: rgba(255, 255, 255, 0.5);
         padding: 15px;
         border-radius: 25px;
         margin-bottom: 20px;
+    }
+
+    p{
+        margin: 0;
     }
     
 
