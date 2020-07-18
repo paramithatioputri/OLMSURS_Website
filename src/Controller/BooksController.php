@@ -116,7 +116,9 @@ class BooksController extends AppController
      */
     public function view($id = null)
     {
-        $book = $this->Books->get($id);
+        $book = $this->Books->get($id, [
+            'contain' => ['Subjects', 'Languages'],
+        ]);
 
         $this->set('book', $book);
     }

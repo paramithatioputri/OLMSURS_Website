@@ -13,14 +13,14 @@
         
     </div>
     <table class="vertical-table">
-        <!-- <tr>
+        <tr>
             <th scope="row"><?= __('Status') ?></th>
             <td><?php //echo h() ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Number of Copies:') ?></th>
             <td><?php //echo h() ?></td>
-        </tr> -->
+        </tr>
         <tr>
             <th scope="row"><?= __('Book Number') ?></th>
             <td><?= h($book->book_number) ?></td>
@@ -43,11 +43,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Subject') ?></th>
-            <td><?= $book->has('subject') ? $this->Html->link($book->subject->subject_id, ['controller' => 'Subjects', 'action' => 'view', $book->subject->subject_id]) : '' ?></td>
+            <td><?= $book->has('subject') ? $book->subject->subject_name : '-' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Language') ?></th>
-            <td><?= $book->has('language') ? $this->Html->link($book->language->language_id, ['controller' => 'Languages', 'action' => 'view', $book->language->language_id]) : '' ?></td>
+            <td><?= $book->has('language') ? $book->language->language_name : '-' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Num Of Pages') ?></th>

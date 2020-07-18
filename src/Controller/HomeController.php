@@ -36,10 +36,6 @@ class HomeController extends AppController
     //     $this->loadComponent('Paginator');
     //     $this->loadComponent('Flash');
     // } 
-
-    public function hapusnanti(){
-
-    }
     
     public function index()
     {

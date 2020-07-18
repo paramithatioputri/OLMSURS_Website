@@ -31,29 +31,31 @@
                 <?php foreach ($books as $book): ?>
                 <tr>
                     <td class="wrapper">
-                        <div>
+                        <a href="view/<?= $book->book_number ?>">
                             <div>
-                            <?php if(empty($book->book_cover_image)){ ?>
-                                <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
-                            <?php } else{?>
-                                <?= $this->Html->image(h($book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
-                            <?php }?>
-                            
+                                <div>
+                                <?php if(empty($book->book_cover_image)){ ?>
+                                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
+                                <?php } else{?>
+                                    <?= $this->Html->image(h($book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
+                                <?php }?>
+                                
+                                </div>
                             </div>
-                        </div>
-                        <div class="book-content">
-                            <div><b>Book Title: </b><?= h($book->title) ?></div>
-                            <div><b>Author: </b><?= h($book->author) ?></div>
-                            <div><b>Publisher: </b><?= h($book->publisher) ?></div>
-                            <div><b>Availability: </b></div>
-                            <div name="average_rating">
-                                <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
-                                <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
+                            <div class="book-content">
+                                <div><b>Book Title: </b><?= h($book->title) ?></div>
+                                <div><b>Author: </b><?= h($book->author) ?></div>
+                                <div><b>Publisher: </b><?= h($book->publisher) ?></div>
+                                <div><b>Availability: </b></div>
+                                <div name="average_rating">
+                                    <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
+                                    <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $book->book_number],['class' => 'button btn btn-primary']) ?>
+                        <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-primary']) ?>
                         <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-warning']) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-danger']) ?>
                     </td>
@@ -92,6 +94,11 @@
 
     #title{
         text-align: center;
+    }
+
+    a, a:hover{
+        color: #000000;
+        text-decoration: none;
     }
 
 </style>
