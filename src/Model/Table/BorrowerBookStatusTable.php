@@ -60,6 +60,12 @@ class BorrowerBookStatusTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
+            ->scalar('user_id')
+            ->maxLength('user_id', 14)
+            ->requirePresence('user_id', 'create')
+            ->notEmptyString('user_id');
+
+        $validator
             ->scalar('book_call_number')
             ->maxLength('book_call_number', 50)
             ->requirePresence('book_call_number', 'create')
@@ -123,7 +129,7 @@ class BorrowerBookStatusTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['user_id'], 'Borrowers'));
 
         return $rules;
     }

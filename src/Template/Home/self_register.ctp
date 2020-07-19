@@ -23,7 +23,16 @@
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         <?php
         echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]);
-        echo $this->Form->control("date_of_birth", ["type" => "date", "placeholder" => "Enter your date of birth"]);
+        ?>
+        <div class="form-group">
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+                <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
+            </div>
+        </div>
+        <?php
         echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);
         echo $this->Form->control("profile_image", ["type" => "file", "accept" => "image/png, image/jpg, image/jpeg"]);
         echo $this->Form->button(__('Register'), ['id' => "register-btn"]);
@@ -43,6 +52,10 @@
         font-weight: bold;
         font-style: italic;
         font-size: 12px;
+    }
+
+    .datepicker {
+        width: 500px;
     }
 </style>
 
@@ -80,5 +93,13 @@
         }
 
     }
+
+    $(function(){
+        $("#datepickerDob").datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+        });
+    });
 </script>
 <?php $this->end('script') ?>

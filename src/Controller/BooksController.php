@@ -120,7 +120,15 @@ class BooksController extends AppController
             'contain' => ['Subjects', 'Languages'],
         ]);
 
-        $this->set('book', $book);
+        $this->loadModel('BookCopies');
+
+        $totalBookCopies = $this->BookCopies->find()
+        ->where([
+            'BookCopies.book_number' => $id,
+        ])
+        ->count();
+
+        $this->set(compact('book', 'totalBookCopies'));
     }
 
     public function viewBookBorrowingHistory(){
@@ -237,7 +245,118 @@ class BooksController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function issueBooks(){
+    public function issueBookList(){
+        $bookAvailabilityStatus = ['Available', 'On Loan'];
+        $query = $this->request->query();
+
+        if(!empty($query['searchq'])){
+            $this->set('searchq', $query['searchq']);
+
+            $q = str_replace(' ', '%', $query['searchq']);
+    
+            $this->loadModel('BookCopies');
+
+            $bookCopies = $this->BookCopies->find()
+            ->contain(['Books'])
+            ->where([
+                'BookCopies.availability_status' => $bookAvailabilityStatus[0],
+                'OR' =>[
+                    'BookCopies.book_number LIKE' => '%' . $q . '%',
+                ]
+            ])
+            ->toArray();
+        }
+
+        $this->set('bookCopies', $bookCopies);
+        
+    }
+
+    public function issueBooks($id=null){
+        $bookAvailabilityStatus = ['Available', 'On Loan'];
+        $status = ['Place Hold', 'Checked Out', 'Returned', 'Overdue'];
+
+        $query = $this->request->query();
+        $this->loadModel('Borrowers');
+
+        if(!empty($query['searchborrower'])){
+            $this->set('searchborrower', $query['searchborrower']);
+
+            $q = str_replace(' ', '%', $query['searchborrower']);
+
+            $borrowers = $this->Borrowers->find()
+            ->where([
+                'OR' => [
+                    'Borrowers.user_id LIKE' => '%' . $q . '%',
+                ]
+            ])
+            ->toArray();
+        }
+
+        $this->set('borrowers', $borrowers);
+
+        $this->loadModel('BookCopies');
+
+        $bookCopy = $this->BookCopies->find()
+        ->contain(['Books'])
+        ->where([
+            'BookCopies.book_call_number' => $id,
+            'BookCopies.availability_status' => $bookAvailabilityStatus[0],
+        ])
+        ->first();
+
+        $this->set('bookCopy', $bookCopy);
+
+
+        $this->loadModel('BorrowerBookStatus');
+
+        $borrower_issue_book = $this->BorrowerBookStatus->newEntity();
+         
+        if($this->request->is('post')){
+
+            $this->loadModel('Borrowers');
+            $this->loadModel('BookCopies');
+
+            $borrower_issue_book = $this->BorrowerBookStatus->patchEntity($borrower_issue_book, $this->request->getData());
+            $borrower_issue_book->status = $status[1];
+
+
+            $bookCopy = $this->BookCopies->find()
+            ->where([
+                'BookCopies.book_call_number' => $borrower_issue_book->book_call_number,
+            ])
+            ->first();
+
+            if($bookCopy->availability_status == $bookAvailabilityStatus[1]){
+                $this->Flash->error(__("This book is loaned by another borrower"));
+                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+            }
+
+            $bookCopy->availability_status = $bookAvailabilityStatus[1];
+
+            $borrower = $this->Borrowers->find()
+            ->where([
+                'Borrowers.user_id' => $borrower_issue_book->user_id,
+            ])
+            ->first();
+
+            if($borrower->num_of_books_taken >= 5){
+                $this->Flash->error(__("You have borrowed 5 books or more"));
+                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+            }
+
+            $borrower->num_of_books_taken = $borrower->num_of_books_taken + 1;
+            
+            if($this->BorrowerBookStatus->save($borrower_issue_book) && $this->Borrowers->save($borrower) && $this->BookCopies->save($bookCopy)){
+                $this->Flash->success(__("The book has been issued"));
+                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+            }
+            else{
+                $this->Flash->error(__("Fail to issue the book"));
+                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+            }
+        }
+
+        
 
     }
 }

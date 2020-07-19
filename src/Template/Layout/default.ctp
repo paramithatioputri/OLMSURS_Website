@@ -29,6 +29,7 @@ $cakeDescription = 'Online Library Management System with User Rating System';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
     <?= $this->Html->css('rateit.css') ?>
+    <?= $this->Html->css('bootstrap-datepicker.css') ?>
 
     <!-- Bootstrap and JS -->
     <?= $this->Html->css('bootstrap.min.css'); ?>
@@ -42,6 +43,7 @@ $cakeDescription = 'Online Library Management System with User Rating System';
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
     <?= $this->Html->script('jquery.rateit.js', ['inline' => false]) ?>
+    <?= $this->Html->script('bootstrap-datepicker.js', ['inline' => false]) ?>
     <!-- <link href="rateit.css" rel="stylesheet" type="text/css"> -->
     <!-- <script src="jquery.rateit.js"></script> -->
 

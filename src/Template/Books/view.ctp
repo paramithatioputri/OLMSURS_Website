@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Number of Copies:') ?></th>
-            <td><?php //echo h() ?></td>
+            <td><?= !empty($totalBookCopies) ? $totalBookCopies : '0' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Book Number') ?></th>

@@ -33,6 +33,12 @@ class BookCopiesTable extends Table
         $this->setTable('book_copies');
         $this->setDisplayField('book_call_number');
         $this->setPrimaryKey('book_call_number');
+
+
+        $this->belongsTo('Books', [
+            'foreignKey' => 'book_number',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

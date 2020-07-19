@@ -49,7 +49,5 @@ class BorrowerBookStatus extends Entity
         'times_renewed' => true,
         'book_borrower_rating' => true,
         'charge_amount' => true,
-        'borrower' => true,
-        'book_copy' => true,
     ];
 }
