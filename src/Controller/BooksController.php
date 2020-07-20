@@ -354,9 +354,59 @@ class BooksController extends AppController
                 $this->Flash->error(__("Fail to issue the book"));
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
+        } 
+
+    }
+
+    public function checkout($id){
+        $currDate = date("Y-m-d");
+
+        $this->loadModel('Borrowers');
+
+        $borrower = $this->Borrowers->find()
+        ->where([
+            'Borrowers.user_id' => $id,
+            // 'Borrowers.user_id' => $this->Auth->borrower('id')
+        ])
+        ->first();
+
+        $this->loadModel('BorrowerBookStatus');
+
+        $borrower_book_statuses = $this->BorrowerBookStatus->find()
+        ->contain(['BookCopies.Books'])
+        ->where([
+            'BorrowerBookStatus.user_id' => $id,
+            'BorrowerBookStatus.status' => 'Checked Out',
+        ])
+        ->toArray();
+
+        $this->set(compact('borrower', 'borrower_book_statuses'));
+
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+            $bookIds = $data['id'];
+            $bookIdArr = explode(",", $bookIds);
+
+            for($i = 0; $i < count($bookIdArr); $i++){
+                $bookRenew = $this->BorrowerBookStatus->find()
+                ->where([
+                    'BorrowerBookStatus.id' => $bookIdArr[$i],
+                ])
+                ->first();
+
+                if($bookRenew->times_renewed >= 2){
+                    $this->Flash->error(__('Times renewed of these books have reached the limit'));
+                    return $this->redirect($this->referer());
+                }
+
+                $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;
+                $bookRenew->book_date_due = date('Y-m-d', strtotime($currDate . ' + 7 days'));
+
+                if($this->BorrowerBookStatus->save($bookRenew)){
+                }
+            }
+            $this->Flash->success(__("The books selected have been renewed"));
+            return $this->redirect($this->referer());
         }
-
-        
-
     }
 }

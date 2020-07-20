@@ -11,7 +11,7 @@
             echo $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Books', ['controller' => '/books', 'action' => 'booklist'], ['class' => 'button nav-button']);
             echo $this->Html->link('Reserved Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
-            echo $this->Html->link('Checked-out Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
+            echo $this->Html->link('Checked-out Books', ['controller' => '/books', 'action' => 'checkout','84937485955575'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => '/view-book-borrowing-history'], ['class' => 'button nav-button']);
         ?>
         </div>
