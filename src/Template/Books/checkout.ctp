@@ -1,12 +1,14 @@
 <?= $this->Html->css('page-config.css');?>
 <?= $this->Html->css('button-custom.css');?>
 
-<?php echo $this->element('header'); ?>
+<?php echo $this->element('header'); 
+    $currDate = date("Y-m-d");
+?>
 
 <div>
     <div class="split left">
         <p>Total Items Checked Out: <?= isset($borrower->num_of_books_taken) ? $borrower->num_of_books_taken : '0' ?></p>
-        <p><i class="fa fa-exclamation-circle"></i> Items Overdue: <?= isset($borrower->total_overdue_books) ? $total_overdue_books : '0' ?></p>
+        <p><i class="fa fa-exclamation-circle"></i> Items Overdue: <?= isset($overdueBooks) ? $overdueBooks : '0' ?></p>
         <?php if(!empty($borrower_book_statuses)){ ?>
         <input id="select-all" type="checkbox" name="select-all" style="margin:0;" onchange="selectAll(this)">
         <label style="margin:0;" for="select-all"> Select All</label> <button id="renew-btn" onclick="submitRenew()">Renew</button>
@@ -26,6 +28,7 @@
                 <th scope="col" id="book-col">Book</th>
                 <th scope="col">Times Renewed</th>
                 <th scope="col">Date Due</th>
+                <th scope="col">Status</th>
                 <th scope="col">You Owe</th>
             </tr>
         </thead>
@@ -50,6 +53,7 @@
                 </td>
                 <td><?= isset($borrower_book_status->times_renewed) ? $borrower_book_status->times_renewed : '0' ?> / 2</td>
                 <td><?= h($borrower_book_status->book_date_due) ?></td>
+                <td class="overdue-status"><?= (date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate) ? 'Overdue' : '' ?></td>
                 <td>RM<?= isset($borrower_book_status->charge_amount) ? $borrower_book_status->charge_amount : '0' ?></td>
             </tr>
         <?php } ?>
@@ -105,11 +109,11 @@
     }
 
     #book-col{
-        width: 50%;
+        width: 45%;
     }
 
     #no-checkout{
-        background-color:#FFA500;
+        background-color:#FFCD94;
         text-align: center;
         float: center;
     }
@@ -155,7 +159,10 @@
         form.appendChild(selectedBooks);
 
         form.submit();
-        
-    }	
+    }
+
+    $(document).ready(function(){
+        $(".overdue-status").css({"color": "red", "font-weight": "bold", "font-style": "italic"});
+    });
 </script>
 <?php $this->end('script') ?>

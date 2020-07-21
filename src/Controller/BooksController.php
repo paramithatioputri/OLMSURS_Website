@@ -290,6 +290,7 @@ class BooksController extends AppController
                 ]
             ])
             ->toArray();
+
         }
 
         $this->set('borrowers', $borrowers);
@@ -316,9 +317,15 @@ class BooksController extends AppController
             $this->loadModel('Borrowers');
             $this->loadModel('BookCopies');
 
-            $borrower_issue_book = $this->BorrowerBookStatus->patchEntity($borrower_issue_book, $this->request->getData());
+            $data = $this->request->getData();
+
+            $borrower_issue_book = $this->BorrowerBookStatus->patchEntity($borrower_issue_book, $data);
             $borrower_issue_book->status = $status[1];
 
+            if(empty($data['book_date_due'])){
+                $this->Flash->error(__('Please enter the due date for returning the book'));
+                return $this->redirect($this->referer());
+            }
 
             $bookCopy = $this->BookCopies->find()
             ->where([
@@ -330,6 +337,7 @@ class BooksController extends AppController
                 $this->Flash->error(__("This book is loaned by another borrower"));
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
+
 
             $bookCopy->availability_status = $bookAvailabilityStatus[1];
 
@@ -380,7 +388,16 @@ class BooksController extends AppController
         ])
         ->toArray();
 
-        $this->set(compact('borrower', 'borrower_book_statuses'));
+        $overdueBooks = $this->BorrowerBookStatus->find()
+        ->contain(['BookCopies.Books'])
+        ->where([
+            'BorrowerBookStatus.user_id' => $id,
+            'BorrowerBookStatus.status' => 'Checked Out',
+            'BorrowerBookStatus.book_date_due <' => $currDate,
+        ])
+        ->count();
+
+        $this->set(compact('borrower', 'borrower_book_statuses', 'overdueBooks'));
 
         if($this->request->is('post')){
             $data = $this->request->getData();
@@ -400,7 +417,16 @@ class BooksController extends AppController
                 }
 
                 $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;
-                $bookRenew->book_date_due = date('Y-m-d', strtotime($currDate . ' + 7 days'));
+
+                $bookDateDue = date('Y-m-d', strtotime($bookRenew->book_date_due));
+                if($currDate >= $bookDateDue){
+                    $bookRenew->book_date_due = date('Y-m-d', strtotime($currDate . ' + 7 days'));
+                    
+                }
+                else{
+                    $bookRenew->book_date_due = date('Y-m-d', strtotime($bookRenew->book_date_due . ' + 7 days'));
+                }
+                
 
                 if($this->BorrowerBookStatus->save($bookRenew)){
                 }
@@ -408,5 +434,84 @@ class BooksController extends AppController
             $this->Flash->success(__("The books selected have been renewed"));
             return $this->redirect($this->referer());
         }
+    }
+
+    public function returnBooks(){
+        $this->loadModel('BorrowerBookStatus');
+        $this->loadModel('Borrowers');
+        $this->loadModel('BookCopies');
+
+        $query = $this->request->query();
+
+        if(!empty($query['borrower_return_q'])){
+            $this->set('borrower_return_q', $query['borrower_return_q']);
+
+            $q = str_replace(' ', '%', $query['borrower_return_q']);
+
+            $borrower = $this->Borrowers->find()
+            ->where([
+                'Borrowers.user_id' => $q,
+            ])
+            ->first();
+
+            $borrowerTransacts = $this->BorrowerBookStatus->find()
+            ->contain(['BookCopies.Books'])
+            ->where([
+                'BorrowerBookStatus.user_id' => $q,
+                'BorrowerBookStatus.status' => 'Checked Out',
+            ])
+            ->toArray();
+        }
+
+        $this->set(compact('borrowerTransacts', 'borrower'));
+
+        if($this->request->is('post')){
+            $currDate = date("Y-m-d");
+            $data = $this->request->getData();
+            $bookTobeReturned = $data['borrower-transaction'];
+            $bookReturnedArr = explode(" ", $bookTobeReturned);
+
+            $returnThisBook = $this->BorrowerBookStatus->find()
+            ->contain(['BookCopies.Books', 'Borrowers'])
+            ->where([
+                'BorrowerBookStatus.user_id' => $bookReturnedArr[0],
+                'BorrowerBookStatus.book_call_number' => $bookReturnedArr[1],
+                'BorrowerBookStatus.status' => 'Checked Out',
+            ])
+            ->first();
+
+            $returnThisBook->status = 'Returned';
+            $returnThisBook->book_return_date = $currDate;
+            $returnThisBook->book_copy->availability_status = 'Available';
+            $returnThisBook->borrower->num_of_books_taken = $returnThisBook->borrower->num_of_books_taken - 1;
+
+            if($this->BorrowerBookStatus->save($returnThisBook) && $this->Borrowers->save($returnThisBook->borrower) && $this->BookCopies->save($returnThisBook->book_copy)){
+                $this->Flash->success(__("The book has been returned successfully"));
+                return $this->redirect($this->referer());
+            }
+            $this->Flash->error(__("Fail to return the book"));
+        }
+
+    }
+
+    public function fines($id=null){
+        $this->loadModel('BorrowerBookStatus');
+        $this->loadModel('Borrowers');
+        
+        $borrower = $this->Borrowers->find()
+        ->where([
+            'Borrowers.user_id' =>$id,
+        ])
+        ->first();
+
+        $borrower_book_statuses = $this->BorrowerBookStatus->find()
+        ->contain(['BookCopies.Books', 'Borrowers'])
+        ->where([
+            'BorrowerBookStatus.user_id' => $id,
+        ])
+        ->toArray();
+        
+        $this->set(compact('borrower', 'borrower_book_statuses'));
+
     }
 }

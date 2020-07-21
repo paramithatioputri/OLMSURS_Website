@@ -24,7 +24,7 @@
                     <li><?= $this->Html->link("Add Books", ['controller' => '/books', 'action' => '/add_books', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
                     <li><?= $this->Html->link("View Books", ['controller' => '/books', 'action' => '/booklist', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
                     <li><?= $this->Html->link("Issue Books", ['controller' => '/books', 'action' => '/issue_book_list', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
-                    <li><?= $this->Html->link("Return Books", ['controller' => '', 'action' => '', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
+                    <li><?= $this->Html->link("Return Books", ['controller' => '/books', 'action' => '/return_books', 'prefix' => false], ['class' => 'dropdown-item']); ?></li>
                 </ul>
             </div>
             
