@@ -513,5 +513,34 @@ class BooksController extends AppController
         
         $this->set(compact('borrower', 'borrower_book_statuses'));
 
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+
+            $finesToBePaid = $data['charge_amount'];
+
+            $finesToBePaidArr = explode(",", $finesToBePaid);
+
+            for($i = 0; $i < count($finesToBePaid); $i++){
+                $fineAndIdArr = explode(" ",$finesToBePaidArr[$i]);
+
+                $borrowerPay = $this->BorrowerBookStatus->find()
+                ->where([
+                    'BorrowerBookStatus.id' => $fineAndIdArr[1],
+                    'BorrowerBookStatus.user_id' => $id,
+                    'BorrowerBookStatus.charge_amount' => $fineAndIdArr[0],
+                ])
+                ->first();
+
+                $borrowerPay->charge_amount = $borrowerPay->charge_amount - $fineAndIdArr[0];
+
+                if($this->BorrowerBookStatus->save($borrowerPay)){
+                }
+            }
+            $this->Flash->success(__('The fines have been paid'));
+            return $this->redirect($this->referer());
+
+
+        }
+
     }
 }

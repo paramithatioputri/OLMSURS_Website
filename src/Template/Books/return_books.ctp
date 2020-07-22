@@ -95,12 +95,3 @@
     }
 </style>
 <?php $this->end('css') ?>
-
-<?php $this->append('script') ?>
-<script>
-    // function returnThisBook(val){
-    //     var returnBookForm = document.getElementById('submit-form');
-    //     console.log(returnBookForm);
-    // }
-</script>
-<?php $this->end('script') ?>

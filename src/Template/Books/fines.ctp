@@ -30,7 +30,7 @@ $currDate = date("Y-m-d");
         </thead>
         <tbody>
         <?php foreach($borrower_book_statuses as $borrower_book_status){ 
-            if(!empty($borrower_book_status->charge_amount)){ ?>
+            if(!empty($borrower_book_status->charge_amount) || date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate){ ?>
             <tr>
                 <td></td>
                 <td>
@@ -40,11 +40,11 @@ $currDate = date("Y-m-d");
                 </td>
                 <td class="overdue-status"><?= ($borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate) ? 'Overdue' : $borrower_book_status->status ?></td>
                 <td></td>
-                <td class="charge-amount">RM<?= $borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate ? isset($borrower_book_status->charge_amount) ? ($borrower_book_status->charge_amount + (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)
+                <td class="charge-amount" id="<?= $borrower_book_status->id ?>">RM<?= $borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate ? isset($borrower_book_status->charge_amount) ? ($borrower_book_status->charge_amount + (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)
                 : $borrower_book_status->charge_amount
                 ?></td>
             </tr>
-        <?php } } ?>
+        <?php }} ?>
         </tbody>
     </table>
 </div>
@@ -53,7 +53,9 @@ $currDate = date("Y-m-d");
     <div>
         <p><b>Total charges payable now:</b> <label id="total-payable"></label></p>
     </div>
-    <button id="pay-btn">Pay Now</button>
+    <?= $this->Form->create('paynowform', ['id' => 'paynowform']) ?>
+        <button name="charge_amount" id="pay-btn" type="submit">Pay Now</button>
+    <?= $this->Form->end() ?>
 </div>
 
 
@@ -104,19 +106,43 @@ $currDate = date("Y-m-d");
 
         //Function to get the total payable fines
         var totalChargeClass = document.getElementsByClassName('charge-amount');
+        var payNowBtn = document.getElementById('pay-btn');
         var totalCharges = 0;
+        var totChargesLimitDec = 0;
+        var chargeArr = [];
 
+        
         for(var i = 0; i < totalChargeClass.length; i++){
-            var chargeAmntCurr = totalChargeClass[i].innerHTML;
-            //Remove letters from string
-            var chargeAmnt = chargeAmntCurr.replace("RM", "");
-            totalCharges = parseFloat(totalCharges) + parseFloat(chargeAmnt);
-        }
+            if(overdueStat[i].innerHTML != 'Overdue'){
+                var chargeAmntCurr = totalChargeClass[i].innerHTML;
+                
+                //Input payable charge amount inside Pay Now Button
+                chargeArr.push((totalChargeClass[i].innerHTML).replace("RM", "") + " " + totalChargeClass[i].id);
 
+                //Remove letters from string
+                var chargeAmnt = chargeAmntCurr.replace("RM", "");
+                
+                //to get the total charge amount
+                totalCharges = parseFloat(totalCharges) + parseFloat(chargeAmnt);
+                totChargesLimitDec = totalCharges.toFixed(2);
+            }
+            
+        }
+        //Set the fines value to Pay Now Button
+        payNowBtn.value = chargeArr;
+
+        //Set the color of total charge payable
         var totalPayable = document.getElementById('total-payable');
-        totalPayable.innerHTML = "RM" + totalCharges;
+        totalPayable.innerHTML = "RM" + totChargesLimitDec;
         totalPayable.style.color = 'red';
         totalPayable.style.fontWeight = 'bold';
+
+        //Show or Hide Total payment and button visibility
+        if(payNowBtn.value == ""){
+            var payChargeDiv = document.getElementById('pay-charge');
+            payChargeDiv.style.visibility = 'hidden';
+        }
+        
 
     });
 </script>
