@@ -5,6 +5,8 @@
     'bookCopies' => $bookCopies,
 ])?>
 
+<h3 class="heading">Book Copies</h3>
+
 <div class="bookCopies view content">
     <h3>Book Title: <?= h($book->title) ?></h3>
     <div>        

@@ -378,7 +378,7 @@ class BooksController extends AppController
 
     }
 
-    public function checkout($id){
+    public function checkout($id = null){
         $currDate = date("Y-m-d");
 
         $this->loadModel('Borrowers');
@@ -632,12 +632,5 @@ class BooksController extends AppController
                 }
             }
         }
-
     }
-
-    public function reserveBooks(){
-
-    }
-
-
 }

@@ -314,7 +314,9 @@ class LibrariansController extends AppController
             $borrowers = $this->Borrowers->find();
         }
 
-        $this->set('borrowers', $borrowers);
+        $totBorrowers = $this->Borrowers->find()->count();
+
+        $this->set(compact('borrowers', 'totBorrowers'));
     }
 
     public function allLibrariansAccounts(){
@@ -337,7 +339,9 @@ class LibrariansController extends AppController
             $librarians = $this->Librarians->find();
         }
 
-        $this->set('librarians', $librarians);
+        $totLibrarians = $this->Librarians->find()->count();
+
+        $this->set(compact('librarians', 'totLibrarians'));
     }
 
     public function viewBorrowerAccount($id=null){

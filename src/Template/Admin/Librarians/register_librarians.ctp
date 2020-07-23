@@ -6,9 +6,11 @@
 <?php
     $gender = ["Select Gender", "Male", "Female"];
 ?>
+
+<h3 class="heading">Register New Account of Librarian</h3>
+
 <?= $this->Form->create($librarian, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
-    <legend><?= __('Register New Account of Librarian') ?></legend>
     <?php
         echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter the user ID", "label" => "User ID"]);
         echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter the first name"]);
@@ -55,6 +57,10 @@
 
     .datepicker {
         width: 500px;
+    }
+
+    .heading{
+        font-weight: bold;
     }
 </style>
 

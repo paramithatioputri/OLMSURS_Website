@@ -3,13 +3,13 @@
 
 <?= $this->element('header'); ?>
 
+<h3 class="heading">All Borrowers' Accounts: <?= h($totBorrowers) ?></h3>
+
 <form>
     <label>Search: </label>
-    <div id="search-input-container">
-        <input autofocus type="text" name="search_borrower" placeholder="Enter borrower ID" value="<?= isset($all_borrowers_accounts) ? $all_borrowers_accounts : '' ?>" />
-    </div>
-    <div class="search-btn-container">
-        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    <div class="search-container">
+        <input id="search-allborrower" autofocus type="text" name="search_borrower" placeholder="Enter borrower ID" value="<?= isset($all_borrowers_accounts) ? $all_borrowers_accounts : '' ?>" />
+        <button id="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
     </div>
 </form>
 
@@ -73,15 +73,6 @@
 
 <?php $this->append('css') ?>
 <style>
-    #search-input-container{
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .search-btn-container{
-        text-align:center;
-    }
-
     .image{
         float: left;
         margin-right: 10px;
@@ -98,6 +89,32 @@
 
     .table-bordered{
         margin-top: 30px;
+    }
+
+    .heading{
+        font-weight: bold;
+    }
+
+    #search-allborrower, #search-btn{
+        font-size: 20px;
+        margin-bottom: 1em;
+    }
+
+    #search-allborrower{
+        margin-top: 5px;
+        width: 80%;
+        height: 2.5em;
+        margin-right: 20px;
+    }
+
+    .search-container{
+        display: flex;
+        flex-wrap: wrap;
+    }
+        
+    #search-btn{
+        margin-bottom: 20px;
+        width: 10em;
     }
 </style>
 <?php $this->end('css') ?>

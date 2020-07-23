@@ -67,6 +67,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/login', ['controller' => 'Home', 'action' => 'login']);
 
+    $routes->connect('/self-register', ['controller' => 'Home', 'action' => 'self-register']);
+
     $routes->connect('/books', ['controller' => 'Books', 'action' => 'booklist']);
 
 

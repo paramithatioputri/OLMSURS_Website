@@ -6,8 +6,11 @@ echo $this->element('rate-book-modal', [
     'borrowerBookRatings' => $borrowerBookRatings,
 ]); ?>
 
+<h3 class="heading">List of Books to be Rated</h3>
+
 <div class="card-container">
-<?php foreach($borrowerBookRatings as $borrowerBookRating){ ?>
+<?php if(!empty($borrowerBookRatings)){
+foreach($borrowerBookRatings as $borrowerBookRating){ ?>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -38,7 +41,15 @@ echo $this->element('rate-book-modal', [
         </div>
     </div>
 <?php 
-} ?> 
+}} else{ ?>
+    <div class="card-container">
+        <div class="card" id="no-book-found">
+            <div class="card-body">
+                <h5 class="card-title">You have not borrowed any books from the library</h5>
+            </div>
+        </div>
+    </div>
+<?php }?> 
 </div>
 
 <?php $this->append('css') ?>
@@ -51,7 +62,9 @@ echo $this->element('rate-book-modal', [
     }
 
     .card{
-        margin: 20px 0;
+        margin: 15% 0;
+        background-color:#FFCD94;
+        text-align: center;
     }
 
     .book-container p {
@@ -63,6 +76,11 @@ echo $this->element('rate-book-modal', [
         transform: scale(1.0,1.0);
         font-weight: normal;
     }
+
+    .heading{
+        font-weight: bold !important;
+    }
+
 
 </style>
 <?php $this->end('css') ?>

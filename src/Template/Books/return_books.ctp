@@ -2,15 +2,13 @@
 <?= $this->Html->css('button-custom.css');?>
 <?= $this->element('header'); ?>
 
-<h3><?= __('Returning Books') ?></h3>
+<h3 class="heading"><?= __('Returning Books') ?></h3>
 <div>
     <form>
         <label>Search: </label>
-        <div id="search-input-container">
-            <input autofocus type="text" name="borrower_return_q" placeholder="Enter borrower ID" value="<?= isset($return_books) ? $return_books : '' ?>" />
-        </div>
-        <div class="search-btn-container">
-            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+        <div class="search-container">
+            <input autofocus id="search-return-book" type="text" name="borrower_return_q" placeholder="Enter borrower ID" value="<?= isset($return_books) ? $return_books : '' ?>" />
+            <button id="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
         </div>
     </form>
 </div>
@@ -93,5 +91,33 @@
     .card-container{
         margin-top: 15%;
     }
+
+    .heading{
+        font-weight: bold !important;
+    }
+
+    #search-return-book, #search-btn{
+    font-size: 20px;
+    margin-bottom: 1em;
+    }
+
+    #search-return-book{
+        margin-top: 5px;
+        width: 80%;
+        height: 2.5em;
+        margin-right: 20px;
+    }
+
+    .search-container{
+        display: flex;
+        flex-wrap: wrap;
+    }
+        
+    #search-btn{
+        margin-bottom: 20px;
+        width: 10em;
+    }
+
+
 </style>
 <?php $this->end('css') ?>

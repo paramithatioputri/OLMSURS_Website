@@ -2,6 +2,9 @@
 <?= $this->Html->css('button-custom.css');?>
 
 <?= $this->element('header'); ?>
+
+<h3 class="heading">Personal Account</h3>
+
 <div class="librarians view content">
     <h3>Librarian ID:<?= h($librarian->user_id) ?></h3>
     <div class="image">

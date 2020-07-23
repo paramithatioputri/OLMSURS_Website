@@ -3,8 +3,11 @@
 
 <?php echo $this->element('header'); ?>
 
+<h3 class="heading">Book Borrowing History</h3>
+
 <div class="card-container">
-<?php foreach($borrowerBookStatuses as $borrowerBookStatus){ ?>
+<?php if(!empty($borrowerBookStatuses)){
+foreach($borrowerBookStatuses as $borrowerBookStatus){ ?>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -26,7 +29,15 @@
         </div>
     </div>
 <?php
-} ?> 
+} } else{ ?>
+    <div class="card-container">
+        <div class="card" id="no-book-found">
+            <div class="card-body">
+                <h5 class="card-title">You have not borrowed any books from the library</h5>
+            </div>
+        </div>
+    </div>
+<?php } ?> 
 </div>
 
 <?php $this->append('css') ?>
@@ -39,11 +50,17 @@
     }
 
     .card{
-        margin: 20px 0;
+        margin: 15% 0;
+        background-color:#FFCD94;
+        text-align: center;
     }
 
     .book-container p {
         margin: 0;
+    }
+
+    .heading{
+        font-weight: bold !important;
     }
 
 </style>

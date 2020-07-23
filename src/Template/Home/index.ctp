@@ -214,8 +214,6 @@
         width: 9.5em !important;
     }
 
-    
-
     .logo-container{
         text-align: center;
         margin: 20px 0;

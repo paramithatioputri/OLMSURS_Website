@@ -10,10 +10,9 @@
         <?php
             echo $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Books', ['controller' => '/books', 'action' => 'booklist'], ['class' => 'button nav-button']);
-            echo $this->Html->link('Reserved Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
-            echo $this->Html->link('Checked-out Books', ['controller' => '/books', 'action' => 'checkout','84937485955575'], ['class' => 'button nav-button']);
-            echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => '/view-book-borrowing-history'], ['class' => 'button nav-button']);
-            echo $this->Html->link('Rate Books', ['controller' => '/books', 'action' => '/rate_books'], ['class' => 'button nav-button']);
+            echo $this->Html->link('Checked-out Books', ['controller' => '/books', 'action' => 'checkout'], ['class' => 'button nav-button']);
+            echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => 'view-book-borrowing-history'], ['class' => 'button nav-button']);
+            echo $this->Html->link('Rate Books', ['controller' => '/books', 'action' => 'rate_books'], ['class' => 'button nav-button']);
         ?>
         </div>
     </div>
@@ -38,7 +37,7 @@
 
         #borrower-navigation #header-top #header-top-bg{
             height: 130px;
-            background-image: url('../img/navigation/header-top.jpeg');
+            background-image: url('http://localhost:2/olmsurs_website/webroot/img/navigation/header-top.jpeg');
             opacity: 0.7;
             background-repeat: no-repeat;
             background-size: cover;

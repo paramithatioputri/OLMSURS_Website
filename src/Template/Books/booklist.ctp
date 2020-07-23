@@ -8,18 +8,21 @@
 
 <!-- <div id="books" class="m-t-1"> -->
     <!-- <div class="container-fluid container-lg"> -->
-        <h3><?= __('Booklist') ?></h3>
+        <h3 class="heading"><?= __('Booklist') ?></h3>
         <div>
             <form>
-                <input autofocus type="text" name="query1" placeholder="Insert any keyword" value="<?= isset($booklist) ? $booklist: '' ?>" />
-                <?php
-                    echo $this->Form->control('categories', ['options' => $categories, 'name' => 'query2']);
-                ?>
-                <button type="submit" ><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                <label>Search:</label>
+                <div class="search-container">
+                    <input id="search-booklist" autofocus type="text" name="query1" placeholder="Insert any keyword" value="<?= isset($booklist) ? $booklist: '' ?>" />
+                    <?php
+                        echo $this->Form->control('categories', ['options' => $categories, 'name' => 'query2', 'id' =>'book-category-dropdown', 'label' => '']);
+                    ?>
+                </div>
+                
+                <button id="search-btn" type="submit" ><i class="fa fa-search" aria-hidden="true"></i> Search</button>
             </form>
         </div>
         
-
         <table class="table-bordered table-hover">
             <thead>
                 <tr>
@@ -99,6 +102,35 @@
     a, a:hover{
         color: #000000;
         text-decoration: none;
+    }
+
+    .heading{
+        font-weight: bold !important;
+    }
+
+    #book-category-dropdown{
+        width:10em;
+        background-color: #FFA500;
+    }
+
+    #search-booklist, #book-category-dropdown{
+        height: 2.5em;
+        font-size: 20px;
+        margin-bottom: 1em;
+    }
+
+    #search-booklist{
+        width: 80%;
+    }
+
+    .search-container{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #search-btn{
+        margin-bottom: 20px;
+        width: 12em;
     }
 
 </style>

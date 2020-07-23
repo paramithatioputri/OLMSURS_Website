@@ -54,7 +54,7 @@
 
         #librarian-navigation #header-top #header-top-bg{
             height: 130px;
-            background-image: url('../../img/navigation/header-top.jpeg');
+            background-image: url('http://localhost:2/olmsurs_website/webroot/img/navigation/header-top.jpeg');
             opacity: 0.7;
             background-repeat: no-repeat;
             background-size: cover;

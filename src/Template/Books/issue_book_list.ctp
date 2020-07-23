@@ -2,12 +2,14 @@
 <?= $this->Html->css('button-custom.css');?>
 <?= $this->element('header'); ?>
 
-<h3><?= __('Issue Books') ?></h3>
+<h3 class="heading"><?= __('Issue Books') ?></h3>
 <div>
-    <form>
     <label>Search:</label>
-        <input autofocus type="text" name="searchq" placeholder="Insert book number" value="<?= isset($issue_book_list) ? $issue_book_list: '' ?>" />
-        <button type="submit" ><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    <form>
+        <div class="search-container">
+            <input id="search-issue-book" autofocus type="text" name="searchq" placeholder="Insert book number" value="<?= isset($issue_book_list) ? $issue_book_list: '' ?>" />
+            <button id="search-btn" type="submit" ><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+        </div>
     </form>
 </div>
 
@@ -43,3 +45,35 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php $this->append('css') ?>
+<style>
+.heading{
+    font-weight: bold !important;
+}
+
+#search-issue-book, #search-btn{
+    font-size: 20px;
+    margin-bottom: 1em;
+}
+
+#search-issue-book{
+    margin-top: 5px;
+    width: 80%;
+    height: 2.5em;
+    margin-right: 20px;
+}
+
+.search-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+    
+#search-btn{
+    margin-bottom: 20px;
+    width: 10em;
+}
+
+
+
+</style>
+<?php $this->end('css') ?>

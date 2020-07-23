@@ -5,8 +5,10 @@
     $currDate = date("Y-m-d");
 ?>
 
-<div>
-    <div class="split left">
+<h3 class="heading">Checked out Books</h3>
+
+<div class="row">
+    <div class="col-md-9">
         <p>Total Items Checked Out: <?= isset($borrower->num_of_books_taken) ? $borrower->num_of_books_taken : '0' ?></p>
         <p><i class="fa fa-exclamation-circle"></i> Items Overdue: <?= isset($overdueBooks) ? $overdueBooks : '0' ?></p>
         <?php if(!empty($borrower_book_statuses)){ ?>
@@ -14,7 +16,7 @@
         <label style="margin:0;" for="select-all"> Select All</label> <button id="renew-btn" onclick="submitRenew()">Renew</button>
         <?php } ?>
     </div>
-    <div class="split right">
+    <div class="col-md-3" style="text-align:right;">
         <p><b>Your Fines: RM<?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></p>
     </div>
 </div>
@@ -61,13 +63,13 @@
     </table>
 </div>
 <?php }else{ ?>
-    <div class="card-container">
-        <div class="card" id="no-checkout">
-            <div class="card-body">
-                <h5 class="card-title">You have nothing checked out</h5>
-            </div>
+<div class="card-container">
+    <div class="card" id="no-checkout">
+        <div class="card-body">
+            <h5 class="card-title">You have nothing checked out</h5>
         </div>
     </div>
+</div>
     
 <?php }?>
 
@@ -95,7 +97,7 @@
         transform:scale(1.0,1.0);
     }
 
-    .left{
+    .row{
         margin-bottom: 30px;
     }
 
@@ -119,7 +121,11 @@
     }
 
     .card-container{
-        margin-top: 25%;
+        margin-top: 10%;
+    }
+
+    .heading{
+        font-weight: bold !important;
     }
 
 </style>

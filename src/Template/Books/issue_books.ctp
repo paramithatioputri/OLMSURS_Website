@@ -4,6 +4,8 @@
 
 <?php $currDateTime = date("Y-m-d"); ?>
 
+<h3 class="heading">Issue Book</h3>
+
 <div class="books form content split left">
     <?= $this->Form->create($book) ?>
     <fieldset>
@@ -84,6 +86,10 @@
 
     .datepicker {
         width: 500px;
+    }
+
+    .heading{
+        font-weight: bold !important;
     }
 </style>
 <?php $this->end('css') ?>
