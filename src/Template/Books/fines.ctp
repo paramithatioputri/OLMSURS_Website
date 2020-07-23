@@ -143,7 +143,6 @@ $currDate = date("Y-m-d");
             payChargeDiv.style.visibility = 'hidden';
         }
         
-
     });
 </script>
 <?php $this->end('script') ?>

@@ -13,6 +13,7 @@
             echo $this->Html->link('Reserved Books', ['controller' => '', 'action' => ''], ['class' => 'button nav-button']);
             echo $this->Html->link('Checked-out Books', ['controller' => '/books', 'action' => 'checkout','84937485955575'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => '/view-book-borrowing-history'], ['class' => 'button nav-button']);
+            echo $this->Html->link('Rate Books', ['controller' => '/books', 'action' => '/rate_books'], ['class' => 'button nav-button']);
         ?>
         </div>
     </div>

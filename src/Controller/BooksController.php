@@ -131,10 +131,6 @@ class BooksController extends AppController
         $this->set(compact('book', 'totalBookCopies'));
     }
 
-    public function viewBookBorrowingHistory(){
-
-    }
-
     /**
      * Add method
      *
@@ -316,6 +312,7 @@ class BooksController extends AppController
 
             $this->loadModel('Borrowers');
             $this->loadModel('BookCopies');
+            $this->loadModel('BorrowerBookRating');
 
             $data = $this->request->getData();
 
@@ -353,8 +350,21 @@ class BooksController extends AppController
             }
 
             $borrower->num_of_books_taken = $borrower->num_of_books_taken + 1;
+
+            $borrowerBookRating = $this->BorrowerBookRating->find()
+            ->where([
+                'BorrowerBookRating.user_id' => $borrower_issue_book->user_id,
+                'BorrowerBookRating.book_number' => $bookCopy->book_number,
+            ])
+            ->first();
             
             if($this->BorrowerBookStatus->save($borrower_issue_book) && $this->Borrowers->save($borrower) && $this->BookCopies->save($bookCopy)){
+                if(empty($borrowerBookRating)){
+                    $borrowerBookRatingNew = $this->BorrowerBookRating->newEntity();
+                    $borrowerBookRatingNew->user_id = $borrower_issue_book->user_id;
+                    $borrowerBookRatingNew->book_number = $bookCopy->book_number;
+                    $this->BorrowerBookRating->save($borrowerBookRatingNew);
+                }
                 $this->Flash->success(__("The book has been issued"));
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
@@ -362,6 +372,8 @@ class BooksController extends AppController
                 $this->Flash->error(__("Fail to issue the book"));
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
+
+            
         } 
 
     }
@@ -539,8 +551,66 @@ class BooksController extends AppController
             $this->Flash->success(__('The fines have been paid'));
             return $this->redirect($this->referer());
 
-
         }
 
     }
+
+    public function viewBookBorrowingHistory($user_id = null){
+        $this->loadModel('BorrowerBookStatus');
+
+        $borrowerBookStatuses = $this->BorrowerBookStatus->find()
+        ->contain(['BookCopies.Books', 'Borrowers'])
+        ->where([
+            'BorrowerBookStatus.user_id' => $user_id,
+            //Auth
+        ])
+        ->toArray();
+
+        $this->set(compact('borrowerBookStatuses'));
+
+    }
+
+    public function rateBooks($user_id = null){
+        $this->loadModel('BorrowerBookRating'); 
+
+        $borrowerBookRatings = $this->BorrowerBookRating->find()
+        ->contain('Books')
+        ->where([
+            'BorrowerBookRating.user_id' => $user_id,
+        ])
+        ->toArray();
+
+        $this->set(compact('borrowerBookRatings'));
+
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+
+            if(empty($data['rating_given'])){
+                $this->Flash->error(__('The book is not rated yet'));
+                return $this->redirect($this->referer());
+            }
+
+            $ratedBook = $this->BorrowerBookRating->find()
+            ->contain('Books')
+            ->where([
+                'BorrowerBookRating.user_id' => $user_id,
+                'BorrowerBookRating.book_number' => $data['book_number'],
+            ])
+            ->first();
+
+            $ratedBook->rating_given = $data['rating_given'];
+
+            if($this->BorrowerBookRating->save($ratedBook)){
+                $this->Flash->success(__('The book has been rated successfully'));
+                return $this->redirect($this->referer());
+            }
+        }
+
+    }
+
+    public function reserveBooks(){
+
+    }
+
+
 }
