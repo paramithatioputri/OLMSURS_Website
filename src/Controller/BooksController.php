@@ -601,8 +601,35 @@ class BooksController extends AppController
             $ratedBook->rating_given = $data['rating_given'];
 
             if($this->BorrowerBookRating->save($ratedBook)){
-                $this->Flash->success(__('The book has been rated successfully'));
-                return $this->redirect($this->referer());
+                //Update the average rating of the book
+                $bookAverageRating = $this->Books->find()
+                ->where([
+                    'book_number' => $data['book_number'],
+                ])
+                ->first();
+
+                $calcBookAvgs= $this->BorrowerBookRating->find()
+                ->where([
+                    'book_number' => $data['book_number'],
+                ])
+                ->toArray();
+
+                //Calculate the average rating of the book
+                $count = 0;
+                foreach($calcBookAvgs as $calcBookAvg){
+                    if(!empty($calcBookAvg->rating_given)){
+                        $total += $calcBookAvg->rating_given;
+                        $count++;
+                    }
+                }
+                $avg = $total/$count;
+
+                $bookAverageRating->average_rating = $avg;
+                
+                if($this->Books->save($bookAverageRating)){
+                    $this->Flash->success(__('The book has been rated successfully'));
+                    return $this->redirect($this->referer());
+                }
             }
         }
 
