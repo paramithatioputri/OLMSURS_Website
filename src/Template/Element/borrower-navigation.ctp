@@ -2,11 +2,30 @@
 
     <div id="header-top">
         <?= $this->Html->link($this->Html->image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'logo']),"/",  array('class' => 'logo-img-link', 'escape' => false)) ?>
-        <div id="header-top-bg" class="header-top-bg"></div>
+        <?php 
+        if(!empty($auth_user)){
+        if(empty($auth_user['profile_image'])){ 
+                if($auth_user['gender'] == "Male"){?>
+                    <?= $this->Html->link($this->Html->image("http://localhost:2/olmsurs_website/webroot/img/no-profile-male.png", ['alt' => 'male-profile-img', 'class' => 'profile-img']), "/users/personal-account/", ['escape' => false]); ?>
+                <?php } else if($auth_user['gender'] == "Female"){ ?>
+                    <?= $this->Html->link($this->Html->image("http://localhost:2/olmsurs_website/webroot/img/no-profile-female.jpg", ['alt' => 'female-profile-img', 'class' => 'profile-img']), "/users/personal-account/", ['escape' => false]); ?>
+                <?php
+                }}else{ ?>
+                <?= $this->Html->link($this->Html->image(h($auth_user['profile_image']), ['alt' => 'profile-image', 'class' => 'profile-img']), ['controller' => '/users', 'action' => 'personal-account'], ['escape' => false]); ?>
+            <?php  }?>
+            <div id="greeting-text">
+                <p id="greetings">Welcome, <?= h($auth_user['first_name']) ?> <?= h($auth_user['last_name']) ?>!</p>
+                <p><?= $this->Html->link('Logout', ['controller' => 'home', 'action' => 'logout','prefix' => false]); ?></p>
+            </div>
+        <?php }else{ ?>
+            <label class="login-register"><?= $this->Html->link('LOGIN',['controller' => 'home', 'action' => 'login']); ?> | <?= $this->Html->link('REGISTER',['controller' => 'home', 'action' => 'self-register']); ?></label>
+        <?php } ?>
+        <div id="header-top-bg"></div>
     </div>
     
     <div id="header-bottom">
         <div class="header-bottom-child">
+        <?php if(!empty($auth_user)){ ?>
         <?php
             echo $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Books', ['controller' => '/books', 'action' => 'booklist'], ['class' => 'button nav-button']);
@@ -14,6 +33,12 @@
             echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => 'view-book-borrowing-history'], ['class' => 'button nav-button']);
             echo $this->Html->link('Rate Books', ['controller' => '/books', 'action' => 'rate_books'], ['class' => 'button nav-button']);
         ?>
+        <?php }else{ ?>
+        <?php 
+            echo $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);
+            echo $this->Html->link('View Books', ['controller' => '/books', 'action' => 'booklist'], ['class' => 'button nav-button']); 
+            ?>
+        <?php } ?>
         </div>
     </div>
 </div>
@@ -85,6 +110,42 @@
         .dropdown:hover button{
             background-color: #000000;
             color: #FFFFFF;
+        }
+
+        .profile-img{
+            padding: 0.5em;
+            margin-right: 10px;
+            width:7.5em;
+            height:7.5em;
+            z-index: 1;
+            border-radius: 50%;
+            position: fixed;
+            right: 0;
+        }
+
+        #greeting-text{
+            position:absolute;
+            z-index: 2;
+            left: 8em;
+        }
+
+        #greetings{
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .login-register{
+            position: fixed;
+            right: 0;
+            z-index:2;
+            margin: 50px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        a, a:hover{
+            color: #000000;
+            text-decoration: none;
         }
         
     </style>

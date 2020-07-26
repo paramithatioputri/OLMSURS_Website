@@ -14,14 +14,15 @@ use Cake\Routing\Router;
  */
 class HomeController extends AppController
 {
-    // public function beforeFilter(){
+    public function beforeFilter(){
 
-    //     $this->Auth->allow([
-    //         'selfRegister',
-    //         'index',
-    //         'login'
-    //     ]);
-    // }
+        $this->Auth->allow([
+            'selfRegister',
+            'index',
+            'login',
+            'logout'
+        ]);
+    }
     
     /**
      * Index method
@@ -29,18 +30,23 @@ class HomeController extends AppController
      * @return \Cake\Http\Response|null
      */
 
-    // public function initialize()
-    // {
-    //     parent::initialize();
+    public function initialize()
+    {
+        parent::initialize();
 
-    //     $this->loadComponent('Paginator');
-    //     $this->loadComponent('Flash');
-    // } 
+        $this->loadComponent('Paginator');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth');
+    } 
+
+    public function isAuthorized($user = null){
+
+        return parent::isAuthorized($user);
+    }
     
     public function index()
     {
         $query = $this->request->query();
-
         $this->loadModel("Books");
 
         $booksRecom = $this->Books->find()
@@ -224,43 +230,44 @@ class HomeController extends AppController
     public function selfRegister(){
         $currDateTime = date("Y-m-d");
 
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
-        $borrower = $this->Borrowers->NewEntity();
+        $user = $this->Users->NewEntity();
+
 
         if($this->request->is('post')){
-            $borrower->account_status = 'active';
-            $borrower = $this->Borrowers->patchEntity($borrower, $this->request->getData());
-
-            $borrowerId = $this->Borrowers->find()
+            $user->account_status = 'active';
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            
+            $userId = $this->Users->find()
             ->where([
-                'user_id' => $borrower->user_id
+                'user_id' => $user->user_id
             ])
             ->first();
 
-            if($borrower->password != $borrower->confirm_password || $borrower->password == "" || $borrower->confirm_password == "" || strlen($borrower->password) < 6){
+            if($user->password != $user->confirm_password || $user->password == "" || $user->confirm_password == "" || strlen($user->password) < 6){
                 $this->Flash->error(__("Please enter the correct password!"));
                 return $this->redirect($this->referer());
             }
-            else if($borrowerId){
+            else if($userId){
                 $this->Flash->error(__("The borrower with this ID already exists"));
                 return $this->redirect($this->referer());
             }
             else{
                 if(!empty($this->request->data["profile_image"]["name"])){
                     $temp = explode(".", $_FILES["profile_image"]["name"]);
-                    $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
+                    $filename = 'profile_' . $user->user_id . '.' . $temp[1];
                     $url = Router::url('/', true) . '/img/profile-img/' . $filename;
                     $uploadPath = 'img/profile-img/';
     
                     $uploadfile = $uploadPath . $filename;
                     if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
-                        $borrower->profile_image = $url;
-                        if($borrower->gender == 1){
-                            $borrower->gender = "Male";
+                        $user->profile_image = $url;
+                        if($user->gender == 1){
+                            $user->gender = "Male";
                         }
-                        else if($borrower->gender == 2){
-                            $borrower->gender = "Female";
+                        else if($user->gender == 2){
+                            $user->gender = "Female";
                         }
                         else{
                             $this->Flash->error(__("Please select your gender!"));
@@ -268,12 +275,12 @@ class HomeController extends AppController
                         }
         
                         $hasher = new DefaultPasswordHasher();
-                        $borrower->password = $hasher->hash($borrower_password);
+                        $user->password = $hasher->hash($user->password);
+                        $user->role = 'borrower';
         
-                        if($this->Borrowers->save($borrower)){
-                            // $this->Auth->login($borrower);
+                        if($this->Users->save($user)){
                             $this->Flash->success(__('Your account has been registered successfully'));
-                            return $this->redirect(['controller' => 'home', 'action' => 'index']);
+                            return $this->redirect(['controller' => 'home', 'action' => 'login']);
                         }
                         else{
                             $this->Flash->error(__("Fail to register"));
@@ -283,11 +290,11 @@ class HomeController extends AppController
     
                 }
                 else{
-                    if($borrower->gender == 1){
-                        $borrower->gender = "Male";
+                    if($user->gender == 1){
+                        $user->gender = "Male";
                     }
-                    else if($borrower->gender == 2){
-                        $borrower->gender = "Female";
+                    else if($user->gender == 2){
+                        $user->gender = "Female";
                     }
                     else{
                         $this->Flash->error(__("Please select your gender!"));
@@ -295,12 +302,12 @@ class HomeController extends AppController
                     }
     
                     $hasher = new DefaultPasswordHasher();
-                    $borrower->password = $hasher->hash($borrower_password);
+                    $user->password = $hasher->hash($user->password);
+                    $user->role = 'borrower';
     
-                    if($this->Borrowers->save($borrower)){
-                        // $this->Auth->login($borrower);
+                    if($this->Users->save($user)){
                         $this->Flash->success(__('Your account has been registered successfully'));
-                        return $this->redirect(['controller' => 'home', 'action' => 'index']);
+                        return $this->redirect(['controller' => 'home', 'action' => 'login']);
                     }
                     else{
                         $this->Flash->error(__("Fail to register"));
@@ -312,15 +319,30 @@ class HomeController extends AppController
             }
             
         }
-        $this->set('borrower', $borrower);
+        $this->set('user', $user);
     }
 
     public function login(){
         if($this->request->is('post')){
+
             $user = $this->Auth->identify();
             if($user){
+                $this->loadModel('Users');
+                $user = $this->Users->find()
+                ->where([
+                    'Users.user_id' => $user['user_id']
+                ])
+                ->first();
+                $this->loadModel('Users');
+                $user = $this->Users->find()
+                ->where([
+                    'Users.user_id' => $user['user_id']
+                ])
+                ->first();
+
                 $this->Auth->setUser($user);
-                $this->Flash->success(__("You have successfully login"));
+                $this->Flash->success(__("Welcome, " . $user['first_name']));
+
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error(__("Invalid user ID and password. Please try again!"));

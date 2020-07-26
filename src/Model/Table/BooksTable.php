@@ -39,7 +39,7 @@ class BooksTable extends Table
         $this->setPrimaryKey('book_number');
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Librarians', [
+        $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
@@ -124,7 +124,7 @@ class BooksTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Librarians'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['subject_id'], 'Subjects'));
         $rules->add($rules->existsIn(['language_id'], 'Languages'));
 

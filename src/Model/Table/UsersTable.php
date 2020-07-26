@@ -5,22 +5,20 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\Event;
-use ArrayObject;
-use Cake\I18n\Time;
+
 /**
- * Borrowers Model
+ * Users Model
  *
- * @method \App\Model\Entity\Borrower get($primaryKey, $options = [])
- * @method \App\Model\Entity\Borrower newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Borrower[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Borrower|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Borrower saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Borrower patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Borrower[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Borrower findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\User get($primaryKey, $options = [])
+ * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\User|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
  */
-class BorrowersTable extends Table
+class UsersTable extends Table
 {
     /**
      * Initialize method
@@ -33,18 +31,24 @@ class BorrowersTable extends Table
         parent::initialize($config);
         $this->addBehavior('Timestamp');
 
-        $this->setTable('borrowers');
+        $this->setTable('users');
         $this->setDisplayField('user_id');
         $this->setPrimaryKey('user_id');
+
     }
 
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
     public function validationDefault(Validator $validator)
     {
         $validator
             ->scalar('user_id')
             ->maxLength('user_id', 14)
-            ->requirePresence('user_id', 'create')
-            ->notEmptyString('user_id');
+            ->allowEmptyString('user_id', null, 'create');
 
         $validator
             ->scalar('first_name')
@@ -76,13 +80,13 @@ class BorrowersTable extends Table
             ->requirePresence('confirm_password', 'create')
             ->notEmptyString('confirm_password');
 
-        // $validator
-        //     ->scalar('account_status')
-        //     ->maxLength('account_status', 25)
-        //     ->requirePresence('account_status', 'create')
-        //     ->notEmptyString('account_status');
-
         $validator
+            ->scalar('role')
+            ->maxLength('role', 10)
+            ->requirePresence('role', 'create')
+            ->notEmptyString('role');
+
+            $validator
             ->scalar('mobile_no')
             ->maxLength('mobile_no', 13)
             ->requirePresence('mobile_no', 'create')
@@ -110,16 +114,6 @@ class BorrowersTable extends Table
         $validator
             ->integer('num_of_books_taken')
             ->allowEmptyString('num_of_books_taken');
-
-        // $validator
-        //     ->date('date_created')
-        //     ->requirePresence('date_created', 'create')
-        //     ->notEmptyDate('date_created');
-
-        // $validator
-        //     ->date('last_modified')
-        //     ->requirePresence('last_modified', 'create')
-        //     ->allowEmptyDate('last_modified');
 
         return $validator;
     }

@@ -61,7 +61,7 @@ foreach($borrowerBookRatings as $borrowerBookRating){ ?>
         float: right;   
     }
 
-    .card{
+    #no-book-found{
         margin: 15% 0;
         background-color:#FFCD94;
         text-align: center;

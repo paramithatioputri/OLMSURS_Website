@@ -1,5 +1,5 @@
 <?= $this->Html->css('button-custom.css');?>
-<?php //echo $this->element('header'); ?>
+<?php echo $this->element('header'); ?>
 
 <?php 
     $categories = ['All Categories', 'Title', 'Author', 'Subject', 'ISBN', 'Book Number']; 
@@ -235,6 +235,7 @@
     .card-text{
         font-size: 15px;
         color:#000000;
+        margin: 0;
     }
 
     .card:hover{
@@ -252,11 +253,6 @@
         border-radius: 25px;
         margin-bottom: 20px;
     }
-
-    p{
-        margin: 0;
-    }
-    
 
 </style>
 <?php $this->end('css') ?>

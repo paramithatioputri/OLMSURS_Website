@@ -15,7 +15,7 @@
         echo $this->Form->control('subject_id', ['options' => $subjects]);
         echo $this->Form->control('language_id', ['options' => $languages]);
         echo $this->Form->control('synopsis', ['type' => 'textarea', 'cols' => 40, 'rows' => 5]);
-        echo $this->Form->control('bookCoverImage', ['type' => 'file', 'accept' => 'image/png, image/jpg, image/jpeg']);
+        echo $this->Form->control('book_cover_image', ['type' => 'file', 'accept' => 'image/png, image/jpg, image/jpeg']);
     ?>
 </fieldset>
 <?= $this->Form->button(__('UPDATE BOOK'), ['id' => 'update-book-btn']) ?>

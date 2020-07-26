@@ -1,21 +1,13 @@
-<?= $this->Html->css('library-background');?>
 <?= $this->Html->css('button-custom.css');?>
 <div id="login-container">
     <div class="login-form">
-        <?php
-            // echo $this->Form->create($user);
-            // echo $this->Form->control('', ['autofocus', 'type' => 'text', 'id' => 'userId-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user ID']);
-            // echo $this->Form->control('password', ['type' => 'password', 'min' => 8, 'id' => 'password-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user password']);
-            // echo $this->Form->button(__('Login'), ['id' => 'login-btn']);
-            // echo $this->Form->end();
-
-        ?>
-        <form>
+        <?= $this->Form->create($userEntity) ?>
             <p id="login-title">Login</p>
 
             <div class="form-group input-container">
                 <label for="userId-textbox" class="login-input-label">User ID:</label>
-                <input autofocus type="text" id="userId-textbox" class="form-control" placeholder="Enter user ID" />
+                <!-- <?= $this->Form->input('user_id', ['autofocus', 'type' => 'text', 'id' => 'userId-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user ID', 'label' => '']); ?> -->
+                <input name="user_id" autofocus type="text" id="userId-textbox" class="form-control" placeholder="Enter user ID" />
             </div>
             <div class="form-group input-container">
                 <div>
@@ -23,13 +15,14 @@
                 </div>
                 <div id="password-input-container">
                     <div>
-                        <input type="password" min="8" id="password-textbox" class="form-control" placeholder="Enter user password" />
+                        <!-- <?= $this->Form->input('password', ['type' => 'password', 'min' => 8, 'id' => 'password-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user password', 'label' => '']); ?> -->
+                        <input name="password" type="password" min="8" id="password-textbox" class="form-control" placeholder="Enter user password" />
                         <button id="showhide" onclick="toggle_password('password-textbox');" type="button"><i class= "fa fa-eye"></i></button>
                     </div>
                 </div>
             </div>
             <button id="login-btn" type="submit">Login</button>
-        </form>
+        <?= $this->Form->end() ?>
         <div class="register-small-note">
             <small>Haven't had any account yet?</small>
             <small><?= $this->Html->link('Click here to register', '/home/self-register', ['class' => 'register-link', 'target' => '_self']); ?></small>
@@ -43,6 +36,8 @@
     body{
         margin: 0;
         padding: 0;
+        background-image: url("http://localhost:2/olmsurs_website/webroot/img/navigation/library-bg-image.jpeg");
+        background-size:cover;
     }
 
     .login-form{

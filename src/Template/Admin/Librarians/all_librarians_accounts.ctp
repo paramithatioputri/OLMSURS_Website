@@ -24,28 +24,29 @@
         <?php foreach ($librarians as $librarian): ?>
         <tr>
             <td class="wrapper">
-                <div>
-                    <div>
-                    <?php if(empty($librarian->profile_image)){ 
-                        if($librarian->gender == "Male"){?>
-                            <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '100', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
-                        <?php } else if($librarian->gender == "Female"){ ?>
-                            <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '100', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
-                        <?php
-                        }}else{ ?>
-                        <?= $this->Html->image(h($librarian->profile_image), ['width' => '100', 'alt' => 'profile-image', 'class' => "image"]); ?>
-                    <?php } ?>
-                    
+                <div class="row">
+                    <div class="col-md-5">
+                        <div>
+                        <?php if(empty($librarian->profile_image)){ 
+                            if($librarian->gender == "Male"){?>
+                                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
+                            <?php } else if($librarian->gender == "Female"){ ?>
+                                <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '200', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
+                            <?php
+                            }}else{ ?>
+                            <?= $this->Html->image(h($librarian->profile_image), ['width' => '200', 'alt' => 'profile-image', 'class' => "image"]); ?>
+                        <?php } ?>
+                        </div>
                     </div>
-                </div>
-                <div class="librarian-content">
-                    <p><b>Librarian ID: </b><?= h($librarian->user_id) ?></p>
-                    <p><b>Librarian Name: </b><?= h($librarian->first_name) ?> <?= h($librarian->last_name) ?></p>
-                    <!-- <p><b>Email Address: </b><?= h($librarian->email_address) ?></p>
-                    <p><b>Date of Birth: </b><?= h($librarian->date_of_birth) ?></p>
-                    <p><b>Account Status: </b><?= h($librarian->account_status) ?></p>
-                    <p><b>Mobile Number: </b><?= h($librarian->mobile_no) ?></p> -->
-                    <p><b>Gender: </b><?= h($librarian->gender) ?></p>
+                    <div class="librarian-content col-md-7">
+                        <p class="about-librarian"><b>Librarian ID: </b><?= h($librarian->user_id) ?></p>
+                        <p class="about-librarian"><b>Librarian Name: </b><?= h($librarian->first_name) ?> <?= h($librarian->last_name) ?></p>
+                        <!-- <p><b>Email Address: </b><?= h($librarian->email_address) ?></p>
+                        <p><b>Date of Birth: </b><?= h($librarian->date_of_birth) ?></p>
+                        <p><b>Account Status: </b><?= h($librarian->account_status) ?></p>
+                        <p><b>Mobile Number: </b><?= h($librarian->mobile_no) ?></p> -->
+                        <p class="about-librarian"><b>Gender: </b><?= h($librarian->gender) ?></p>
+                    </div>
                 </div>
             </td>
             <td class="actions">
@@ -114,6 +115,10 @@
     #search-btn{
         margin-bottom: 20px;
         width: 10em;
+    }
+
+    .about-librarian{
+        margin: 0;
     }
 </style>
 <?php $this->end('css') ?>

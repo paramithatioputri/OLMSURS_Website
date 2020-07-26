@@ -13,6 +13,7 @@ $currDate = date("Y-m-d");
         <p><b>Borrower ID: </b><?= h($borrower->user_id) ?></p>
         <p><b>Borrower Name: </b><?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
         <p><b>Account Status: </b><?= h($borrower->account_status) ?></p>
+        <p id="total-fines"><b>Total Fines: RM0</b></p>
     </div>
 </div>
 
@@ -49,13 +50,15 @@ $currDate = date("Y-m-d");
     </table>
 </div>
 
-<div id="pay-charge">
+<div class="pay-charge">
     <div>
         <p><b>Total charges payable now:</b> <label id="total-payable"></label></p>
     </div>
-    <?= $this->Form->create('paynowform', ['id' => 'paynowform']) ?>
-        <button name="charge_amount" id="pay-btn" type="submit">Pay Now</button>
-    <?= $this->Form->end() ?>
+    <div id="pay-charge">
+        <?= $this->Form->create('paynowform', ['id' => 'paynowform']) ?>
+            <button name="charge_amount" id="pay-btn" type="submit">Pay Now</button>
+        <?= $this->Form->end() ?>
+    </div>
 </div>
 
 
@@ -74,7 +77,7 @@ $currDate = date("Y-m-d");
         margin-top: 3%;
     }
 
-    #pay-charge{
+    .pay-charge{
         text-align: right;
     }
 
@@ -108,7 +111,9 @@ $currDate = date("Y-m-d");
         var totalChargeClass = document.getElementsByClassName('charge-amount');
         var payNowBtn = document.getElementById('pay-btn');
         var totalCharges = 0;
+        var totalFines = 0;
         var totChargesLimitDec = 0;
+        var totFinesLimitDec = 0;
         var chargeArr = [];
 
         
@@ -128,6 +133,19 @@ $currDate = date("Y-m-d");
             }
             
         }
+
+        //Show total fines
+        for(var i = 0; i < totalChargeClass.length; i++){
+            var fineCurr = totalChargeClass[i].innerHTML;
+
+            var fineAmnt = fineCurr.replace("RM", "");
+            totalFines = parseFloat(totalFines) + parseFloat(fineAmnt);
+            totFinesLimitDec = totalFines.toFixed(2);
+        }
+        var finesDisplay = document.getElementById('total-fines');
+        finesDisplay.innerHTML = "Your Fines: RM" + totFinesLimitDec;
+        finesDisplay.style.fontWeight = 'bold';
+
         //Set the fines value to Pay Now Button
         payNowBtn.value = chargeArr;
 

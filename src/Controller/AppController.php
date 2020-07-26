@@ -45,7 +45,40 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-        // $this->loadComponent('Auth');
+        $this->loadComponent('Auth', [
+            'authorize' => ['Controller'],
+            'authenticate' => [
+                'Form' => [
+                    'userModel' => 'Users',
+                    'fields' => [
+                        'username' => 'user_id',
+                        'password' => 'password'
+                    ]
+                ],
+                'Basic' => [
+                    'userModel' => 'Users',
+                    'fields' => [
+                        'username' => 'user_id',
+                        'password' => 'password'
+                    ]
+                ]
+
+            ],
+            'loginAction' => [
+                'controller' => 'Home',
+                'action' => 'login'
+            ],
+            'loginRedirect' => [
+                'controller' => 'Home',
+                'action' => 'index'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Home',
+                'action' => 'index',
+            ],
+            'storage' => 'Session'
+        ]);
+
 
         /*
          * Enable the following component for recommended CakePHP security settings.
@@ -54,103 +87,46 @@ class AppController extends Controller
         //$this->loadComponent('Security');
     }
 
-    // public function beforeFilter(Event $event)
-    // {
-    //     parent::beforeFilter($event);
-        
-    //     //To tell the Auth not to check authentication when doing the following actions
-    //     $this->Auth->allow(
-    //         'display'
-    //     );
-        
 
-    //     if ($this->request->prefix == 'admin') 
-    //     {
-    //         // $this->viewBuilder()->layout('admin');
-            
-    //         $this->Auth->config([
-    //             'authenticate' => [
-    //                 'Form' => [
-    //                     'userModel' => 'Librarians',
-    //                     'fields' => [
-    //                         'username' => 'librarian_id',
-    //                         'password' => 'password'
-    //                     ]
-    //                 ],
-    //             ],
-    //             'loginAction' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'login',
-    //             ],
-    //             'loginRedirect' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'index'
-    //             ],
-    //             'logoutRedirect' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'login',
-    //             ],
-    //             'storage' => [
-    //                 'className' => 'Session',
-    //                 'key' => 'Auth.Admin',               
-    //             ],
-    //             //'unauthorizedRedirect' => $this->referer(),
-    //             'unauthorizedRedirect' => false,
-    //             'authorize' => ['Controller'],
-    //         ]);
-            
-            
-    //     }
-    //     else
-    //     {
-    //         //Add Auth config for users
-    //         $this->Auth->config([
-    //             'authenticate' => [
-    //                 'Form' => [
-    //                     'userModel' => 'Borrowers',
-    //                     'fields' => [
-    //                         'username' => 'borrower_id',
-    //                         'password' => 'password'
-    //                     ]
-    //                 ],
-    //             ],
-    //             'loginAction' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'login',
-    //             ],
-    //             'loginRedirect' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'index'
-    //             ],
-    //             'logoutRedirect' => [
-    //                 'controller' => 'Home',
-    //                 'action' => 'login',
-    //             ],
-    //         ]);
-    //     }
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->authorize = 'Controller';
+        //To tell the Auth not to check authentication when doing the following actions
+        $this->Auth->allow(
+            ['login', 'display']
+        );
 
-    // }
+    }
 
-    // public function isAuthorized($user = null)
-    // {
-    //     //Any registered user can accesss public functions
-    //     if(empty($this->request->params['prefix']))
-    //     {
-    //         return true;
-    //     }
+    public function beforeRender(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->set('auth_user', $this->Auth->user());
+    }
+
+    public function isAuthorized($user = null)
+    {
+        // dd($user);
+        //Only admins can access admin functions
+        // if($this->request->params['prefix'] === 'admin')
+        // {   
+        //     dd($user);
+        //     if(($user['role'] == 'librarian') && ($user['account_status'] == 'active'))
+        //     {
+        //         dd($user);
+        //         return true;
+        //     }
+        //     return false;
+        // }
+        // //Any registered user can accesss public functions
+        // if(empty($this->request->params['prefix']))
+        // {
+        //     return true;
+        // }
         
-    //     //Only admins can access admin functions
-    //     if($this->request->params['prefix'] === 'admin')
-    //     {
-            
-    //         if(($user['role'] == 2) && ($user['status'] == 1))
-    //         {
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-        
-    //     //Default deny
-    //     return false;
-    // }
+        // //Default deny
+        // return false;
+    }
 }

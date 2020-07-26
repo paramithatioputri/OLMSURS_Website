@@ -5,11 +5,12 @@
 
 <?php
     $gender = ["Select Gender", "Male", "Female"];
+    $role = ["Select Role", "Librarian", "Borrower"];
 ?>
 
-<h3 class="heading">Register New Account of Borrower</h3>
+<h3 class="heading">Register New Account</h3>
 
-<?= $this->Form->create($borrower, ["enctype" => 'multipart/form-data']);?>
+<?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
     <?php
         echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter the user ID", "label" => "User ID"]);
@@ -23,6 +24,7 @@
         ?>
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         <?php
+        echo $this->Form->control("role", ["type" => 'select', "options" => $role]);
         echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
         ?>
         <div class="form-group">
@@ -57,6 +59,10 @@
 
     .datepicker {
         width: 500px;
+    }
+
+    .heading{
+        font-weight: bold;
     }
 </style>
 

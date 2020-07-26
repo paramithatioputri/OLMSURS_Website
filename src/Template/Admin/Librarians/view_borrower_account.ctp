@@ -2,6 +2,7 @@
 <?= $this->Html->css('button-custom.css');?>
 
 <?= $this->element('header'); ?>
+
 <div class="borrowers view content">
     <h3>Borrower ID: <?= h($borrower->user_id) ?></h3>
     <div class="image">

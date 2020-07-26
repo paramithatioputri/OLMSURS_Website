@@ -17,7 +17,7 @@
         <?php } ?>
     </div>
     <div class="col-md-3" style="text-align:right;">
-        <p><b>Your Fines: RM<?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></p>
+        <p id="total-fines"><b>Your Fines: RM0</b></p>
     </div>
 </div>
 
@@ -43,20 +43,29 @@
                     <?= $this->Form->control('id', ['class' => 'select-this', 'type' => 'checkbox', 'value' => $borrower_book_status->id, 'label' => '']) ?>
                 </td>
                 <td>
-                <div>
-                <?php if(empty($borrower_book_status->book_copy->book->book_cover_image)){ ?>
-                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
-                <?php } else{?>
-                    <?= $this->Html->image(h($borrower_book_status->book_copy->book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
-                <?php }?>
-                </div>
-                    <b>Title: </b><?= h($borrower_book_status->book_copy->book->title) ?><br/>
-                    <b>Author: </b><?= h($borrower_book_status->book_copy->book->author) ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <?php if(empty($borrower_book_status->book_copy->book->book_cover_image)){ ?>
+                            <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
+                        <?php } else{?>
+                            <?= $this->Html->image(h($borrower_book_status->book_copy->book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
+                        <?php }?>
+                        </div>
+                        <div class="col-md-6">
+                            <b>Book Call Number: </b><?= h($borrower_book_status->book_call_number) ?><br/>
+                            <b>Book Number: </b><?= h($borrower_book_status->book_copy->book_number) ?><br/>
+                            <b>Title: </b><?= h($borrower_book_status->book_copy->book->title) ?><br/>
+                            <b>Author: </b><?= h($borrower_book_status->book_copy->book->author) ?>
+                        </div>
+                    </div>
+                    
                 </td>
                 <td><?= isset($borrower_book_status->times_renewed) ? $borrower_book_status->times_renewed : '0' ?> / 2</td>
                 <td><?= h($borrower_book_status->book_date_due) ?></td>
                 <td class="overdue-status"><?= (date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate) ? 'Overdue' : '' ?></td>
-                <td>RM<?= isset($borrower_book_status->charge_amount) ? $borrower_book_status->charge_amount : '0' ?></td>
+                <td class="charge-amount" id="<?= $borrower_book_status->id ?>">RM<?= $borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate ? isset($borrower_book_status->charge_amount) ? ($borrower_book_status->charge_amount + (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)
+                : $borrower_book_status->charge_amount
+                ?></td>
             </tr>
         <?php } ?>
         </tbody>
@@ -169,6 +178,22 @@
 
     $(document).ready(function(){
         $(".overdue-status").css({"color": "red", "font-weight": "bold", "font-style": "italic"});
+
+        // Show the total fines
+        var totalChargeClass = document.getElementsByClassName('charge-amount');
+        var totalFines = 0;
+        var totFinesLimitDec = 0;
+
+        for(var i = 0; i < totalChargeClass.length; i++){
+            var fineCurr = totalChargeClass[i].innerHTML;
+
+            var fineAmnt = fineCurr.replace("RM", "");
+            totalFines = parseFloat(totalFines) + parseFloat(fineAmnt);
+            totFinesLimitDec = totalFines.toFixed(2);
+        }
+        var finesDisplay = document.getElementById('total-fines');
+        finesDisplay.innerHTML = "Your Fines: RM" + totFinesLimitDec;
+        finesDisplay.style.fontWeight = 'bold';
     });
 </script>
 <?php $this->end('script') ?>

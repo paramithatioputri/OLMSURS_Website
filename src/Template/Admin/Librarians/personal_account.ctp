@@ -63,5 +63,9 @@
     .image{
         text-align: center;
     }
+
+    .heading{
+        font-weight: bold;
+    }
 </style>
 <?php $this->end('css')?>

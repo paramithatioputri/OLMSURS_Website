@@ -94,5 +94,9 @@
     .copyLstBtn:hover{
         background-color: red;
     }
+
+    .heading{
+        font-weight: bold;
+    }
 </style>
 <?php $this->end('css') ?>

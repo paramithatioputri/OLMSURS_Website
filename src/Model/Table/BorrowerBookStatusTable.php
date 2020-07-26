@@ -36,7 +36,7 @@ class BorrowerBookStatusTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Borrowers', [
+        $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
@@ -129,7 +129,7 @@ class BorrowerBookStatusTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Borrowers'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

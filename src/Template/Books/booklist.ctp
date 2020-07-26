@@ -26,16 +26,19 @@
         <table class="table-bordered table-hover">
             <thead>
                 <tr>
-                    <th scope="col" id="title"><?= $this->Paginator->sort('title') ?></th>
+                    <th scope="col" id="item">Item</th>
+                    <?php if(!empty($auth_user) && $auth_user['role'] === 'librarian'){ ?>
                     <th scope="col" class="actions"><?= __('Actions') ?></th>
+                    <?php } ?>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($books as $book): ?>
                 <tr>
                     <td class="wrapper">
-                        <a href="view/<?= $book->book_number ?>">
-                            <div>
+                    <a href="view/<?= $book->book_number ?>">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div>
                                 <?php if(empty($book->book_cover_image)){ ?>
                                     <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
@@ -45,7 +48,7 @@
                                 
                                 </div>
                             </div>
-                            <div class="book-content">
+                            <div class="book-content col-md-6">
                                 <div><b>Book Title: </b><?= h($book->title) ?></div>
                                 <div><b>Author: </b><?= h($book->author) ?></div>
                                 <div><b>Publisher: </b><?= h($book->publisher) ?></div>
@@ -55,13 +58,16 @@
                                     <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
                                 </div>
                             </div>
-                        </a>
+                        </div>
+                    </a>
                     </td>
+                    <?php if(!empty($auth_user) && $auth_user['role'] === 'librarian'){ ?>
                     <td class="actions">
                         <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-primary']) ?>
                         <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-warning']) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-danger']) ?>
                     </td>
+                    <?php } ?>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -95,7 +101,7 @@
         vertical-align: middle;
     }
 
-    #title{
+    #item{
         text-align: center;
     }
 

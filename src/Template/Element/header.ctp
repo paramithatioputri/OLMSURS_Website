@@ -1,4 +1,5 @@
-<?php if ($this->request->prefix == 'admin'){ ?>
+<?php
+if ($auth_user['role'] == 'librarian'){ ?>
         <?= $this->element('librarian-navigation');?>
     <?php }
     else{ ?>

@@ -25,28 +25,30 @@
         <?php foreach ($borrowers as $borrower): ?>
         <tr>
             <td class="wrapper">
-                <div>
-                    <div>
-                    <?php if(empty($borrower->profile_image)){ 
-                        if($borrower->gender == "Male"){?>
-                            <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '100', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
-                        <?php } else if($borrower->gender == "Female"){ ?>
-                            <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '100', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
-                        <?php
-                        }}else{ ?>
-                        <?= $this->Html->image(h($borrower->profile_image), ['width' => '100', 'alt' => 'profile-image', 'class' => "image"]); ?>
-                    <?php } ?>
-                    
+                <div class="row">
+                    <div class="col-md-5">
+                        <div>
+                        <?php if(empty($borrower->profile_image)){ 
+                            if($borrower->gender == "Male"){?>
+                                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
+                            <?php } else if($borrower->gender == "Female"){ ?>
+                                <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '200', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
+                            <?php
+                            }}else{ ?>
+                            <?= $this->Html->image(h($borrower->profile_image), ['width' => '200', 'alt' => 'profile-image', 'class' => "image"]); ?>
+                        <?php } ?>
+                        
+                        </div>
                     </div>
-                </div>
-                <div class="borrower-content">
-                    <p><b>Borrower ID: </b><?= h($borrower->user_id) ?></p>
-                    <p><b>Borrower Name: </b><?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
-                    <!-- <p><b>Email Address: </b><?= h($borrower->email_address) ?></p>
-                    <p><b>Date of Birth: </b><?= h($borrower->date_of_birth) ?></p>
-                    <p><b>Account Status: </b><?= h($borrower->account_status) ?></p>
-                    <p><b>Mobile Number: </b><?= h($borrower->mobile_no) ?></p> -->
-                    <p><b>Gender: </b><?= h($borrower->gender) ?></p>
+                    <div class="borrower-content col-md-7">
+                        <p class="about-borrower"><b>Borrower ID: </b><?= h($borrower->user_id) ?></p>
+                        <p class="about-borrower"><b>Borrower Name: </b><?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
+                        <!-- <p class="about-borrower"><b>Email Address: </b><?= h($borrower->email_address) ?></p>
+                        <p class="about-borrower"><b>Date of Birth: </b><?= h($borrower->date_of_birth) ?></p>
+                        <p class="about-borrower"><b>Account Status: </b><?= h($borrower->account_status) ?></p>
+                        <p class="about-borrower"><b>Mobile Number: </b><?= h($borrower->mobile_no) ?></p> -->
+                        <p class="about-borrower"><b>Gender: </b><?= h($borrower->gender) ?></p>
+                    </div>
                 </div>
             </td>
             <td class="actions">
@@ -115,6 +117,10 @@
     #search-btn{
         margin-bottom: 20px;
         width: 10em;
+    }
+
+    .about-borrower{
+        margin: 0;
     }
 </style>
 <?php $this->end('css') ?>

@@ -73,7 +73,5 @@
     width: 10em;
 }
 
-
-
 </style>
 <?php $this->end('css') ?>

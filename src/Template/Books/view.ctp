@@ -63,10 +63,10 @@
             </td>
         </tr>
     </table>
-    <div class="row">
+    <!-- <div class="row"> -->
         <h4><?= __('Synopsis') ?></h4>
         <?= $this->Text->autoParagraph(h($book->synopsis)); ?>
-    </div>
+    <!-- </div> -->
 </div>
 
 <?php $this->append('css') ?>

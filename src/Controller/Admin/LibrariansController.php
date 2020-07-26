@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Routing\Router;
-
+use Cake\Event\Event;
 /**
  * Librarians Controller
  *
@@ -18,6 +18,38 @@ class LibrariansController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+    public function beforeFilter(){
+        // $this->Auth->allow(['logout']);
+    }
+
+    public function initialize(){
+        parent::initialize();
+
+        $this->loadComponent('Paginator');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth');
+    }
+
+    public function isAuthorized($user = null){
+        // dd($this->request->action);
+        if($this->request->action === 'personalAccount'
+        || $this->request->action === 'registerAccounts'
+        || $this->request->action === 'viewBorrowerAccount'
+        || $this->request->action === 'viewLibrarianAccount'
+        || $this->request->action === 'allLibrariansAccounts'
+        || $this->request->action === 'allBorrowersAccounts'
+        )
+        {
+            if($user['role'] === 'librarian'){
+                return true;
+            }
+            
+        }
+        return false;
+
+        return parent::isAuthorized($user);
+    }
+
     public function index()
     {
         // $librarians = $this->paginate($this->Librarians);
@@ -105,59 +137,74 @@ class LibrariansController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function registerBorrowers(){
+    public function registerAccounts(){
         $currDateTime = date("Y-m-d");
 
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
-        $borrower = $this->Borrowers->NewEntity();
+        $user = $this->Users->NewEntity();
 
         if($this->request->is('post')){
-            $borrower->account_status = 'active';
-            $borrower = $this->Borrowers->patchEntity($borrower, $this->request->getData());
+            $user->account_status = 'active';
+            $user = $this->Users->patchEntity($user, $this->request->getData());
 
-            $borrowerId = $this->Borrowers->find()
+            $userId = $this->Users->find()
             ->where([
-                'user_id' => $borrower->user_id
+                'user_id' => $user->user_id
             ])
             ->first();
 
-            if($borrower->password != $borrower->confirm_password || $borrower->password == "" || $borrower->confirm_password == "" || strlen($borrower->password) < 6){
+            if($user->password != $user->confirm_password || $user->password == "" || $user->confirm_password == "" || strlen($user->password) < 6){
                 $this->Flash->error(__("Please enter the correct password!"));
                 return $this->redirect($this->referer());
             }
-            else if($borrowerId){
+            else if($userId){
                 $this->Flash->error(__("The borrower with this ID already exists"));
                 return $this->redirect($this->referer());
             }
             else{
                 if(!empty($this->request->data["profile_image"]["name"])){
                     $temp = explode(".", $_FILES["profile_image"]["name"]);
-                    $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
+                    $filename = 'profile_' . $user->user_id . '.' . $temp[1];
                     $url = Router::url('/', true) . '/img/profile-img/' . $filename;
                     $uploadPath = 'img/profile-img/';
     
                     $uploadfile = $uploadPath . $filename;
                     if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
-                        $borrower->profile_image = $url;
-                        if($borrower->gender == 1){
-                            $borrower->gender = "Male";
+                        $user->profile_image = $url;
+                        if($user->gender == 1){
+                            $user->gender = "Male";
                         }
-                        else if($borrower->gender == 2){
-                            $borrower->gender = "Female";
+                        else if($user->gender == 2){
+                            $user->gender = "Female";
                         }
                         else{
-                            $this->Flash->error(__("Please select the gender!"));
+                            $this->Flash->error(__("Please select a gender!"));
+                            return $this->redirect($this->referer());
+                        }
+
+                        if($user->role == 1){
+                            $user->role = "librarian";
+                        }
+                        else if($user->role == 2){
+                            $user->role = "borrower";
+                        }
+                        else{
+                            $this->Flash->error(__("Please select a role!"));
                             return $this->redirect($this->referer());
                         }
         
                         $hasher = new DefaultPasswordHasher();
-                        $borrower->password = $hasher->hash($borrower_password);
+                        $user->password = $hasher->hash($user->password);
         
-                        if($this->Borrowers->save($borrower)){
-                            // $this->Auth->login($borrower);
+                        if($this->Users->save($user)){
                             $this->Flash->success(__('This account has been registered successfully'));
-                            return $this->redirect(['controller' => 'librarians', 'action' => 'all_borrowers_accounts']);
+                            if($user['role'] === 'librarian'){
+                                return $this->redirect(['controller' => 'Librarians', 'action' => 'all_librarians_accounts']);
+                            }
+                            else{
+                                return $this->redirect(['controller' => 'Librarians', 'action' => 'all_borrowers_accounts']);
+                            }
                         }
                         else{
                             $this->Flash->error(__("Fail to register"));
@@ -167,11 +214,11 @@ class LibrariansController extends AppController
     
                 }
                 else{
-                    if($borrower->gender == 1){
-                        $borrower->gender = "Male";
+                    if($user->gender == 1){
+                        $user->gender = "Male";
                     }
-                    else if($borrower->gender == 2){
-                        $borrower->gender = "Female";
+                    else if($user->gender == 2){
+                        $user->gender = "Female";
                     }
                     else{
                         $this->Flash->error(__("Please select the gender!"));
@@ -179,142 +226,59 @@ class LibrariansController extends AppController
                     }
     
                     $hasher = new DefaultPasswordHasher();
-                    $borrower->password = $hasher->hash($borrower_password);
+                    $user->password = $hasher->hash($user->password);
     
-                    if($this->Borrowers->save($borrower)){
+                    if($this->Users->save($user)){
 
                         $this->Flash->success(__('This account has been registered successfully'));
-                        return $this->redirect(['controller' => 'home', 'action' => 'index']);
-                    }
-                    else{
-                        $this->Flash->error(__("Fail to register"));
-                        return $this->redirect($this->referer());
-                    }
-                }
-
-                
-            }
-            
-        }
-        $this->set('borrower', $borrower);
-
-    }
-
-    public function registerLibrarians(){
-        $currDateTime = date("Y-m-d");
-
-        $this->loadModel('Librarians');
-
-        $librarian = $this->Librarians->NewEntity();
-
-        if($this->request->is('post')){
-            $librarian->account_status = 'active';
-            $librarian = $this->Librarians->patchEntity($librarian, $this->request->getData());
-
-            $librarianId = $this->Librarians->find()
-            ->where([
-                'user_id' => $librarian->user_id
-            ])
-            ->first();
-
-            if($librarian->password != $librarian->confirm_password || $librarian->password == "" || $librarian->confirm_password == "" || strlen($librarian->password) < 6){
-                $this->Flash->error(__("Please enter the correct password!"));
-                return $this->redirect($this->referer());
-            }
-            else if($librarianId){
-                $this->Flash->error(__("The librarian with this ID already exists"));
-                return $this->redirect($this->referer());
-            }
-            else{
-                if(!empty($this->request->data["profile_image"]["name"])){
-                    $temp = explode(".", $_FILES["profile_image"]["name"]);
-                    $filename = 'profile_' . $librarian->user_id . '.' . $temp[1];
-                    $url = Router::url('/', true) . '/img/profile-img/' . $filename;
-                    $uploadPath = 'img/profile-img/';
-    
-                    $uploadfile = $uploadPath . $filename;
-                    if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
-                        $librarian->profile_image = $url;
-                        if($librarian->gender == 1){
-                            $librarian->gender = "Male";
-                        }
-                        else if($librarian->gender == 2){
-                            $librarian->gender = "Female";
+                        if($user['role'] === 'librarian'){
+                            return $this->redirect(['controller' => 'Librarians', 'action' => 'all_librarians_accounts']);
                         }
                         else{
-                            $this->Flash->error(__("Please select the gender!"));
-                            return $this->redirect($this->referer());
+                            return $this->redirect(['controller' => 'Librarians', 'action' => 'all_borrowers_accounts']);
                         }
                         
-                        $hasher = new DefaultPasswordHasher();
-                        $librarian->password = $hasher->hash($librarian_password);
-        
-                        if($this->Librarians->save($librarian)){
-
-                            $this->Flash->success(__('This account has been registered successfully'));
-                            return $this->redirect(['controller' => 'librarians', 'action' => 'all_librarians_accounts']);
-                        }
-                        else{
-                            $this->Flash->error(__("Fail to register"));
-                            return $this->redirect($this->referer());
-                        }
-                    }
-    
-                }
-                else{
-                    if($librarian->gender == 1){
-                        $librarian->gender = "Male";
-                    }
-                    else if($librarian->gender == 2){
-                        $librarian->gender = "Female";
-                    }
-                    else{
-                        $this->Flash->error(__("Please select the gender!"));
-                        return $this->redirect($this->referer());
-                    }
-                    
-                    $hasher = new DefaultPasswordHasher();
-                    $librarian->password = $hasher->hash($librarian_password);
-                    
-    
-                    if($this->Librarians->save($librarian)){
-                        // $this->Auth->login($borrower);
-                        $this->Flash->success(__('This account has been registered successfully'));
-                        return $this->redirect(['controller' => 'home', 'action' => 'index']);
                     }
                     else{
                         $this->Flash->error(__("Fail to register"));
                         return $this->redirect($this->referer());
                     }
                 }
+
                 
             }
             
         }
-        $this->set('librarian', $librarian);
+        $this->set('user', $user);
+
     }
+
 
     public function allBorrowersAccounts(){
         $query = $this->request->query();
 
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
         if(!empty($query['search_borrower'])){
             $this->set('search_borrower', $query['search_borrower']);
             
             $q = str_replace(' ', '%', $query['search_borrower']);
 
-            $borrowers = $this->Borrowers->find()
+            $borrowers = $this->Users->find()
             ->where([
+                'Users.role' => 'borrower',
                 'OR' => [
-                    'Borrowers.user_id LIKE ' => '%' . $q . '%',
+                    'Users.user_id LIKE ' => '%' . $q . '%',
                 ]
             ]);
         }else{
-            $borrowers = $this->Borrowers->find();
+            $borrowers = $this->Users->find()
+            ->where(['Users.role' => 'borrower']);
         }
 
-        $totBorrowers = $this->Borrowers->find()->count();
+        $totBorrowers = $this->Users->find()
+        ->where(['Users.role' => 'borrower'])
+        ->count();
 
         $this->set(compact('borrowers', 'totBorrowers'));
     }
@@ -322,34 +286,43 @@ class LibrariansController extends AppController
     public function allLibrariansAccounts(){
         $query = $this->request->query();
 
-        $this->loadModel('Librarians');
+        $this->loadModel('Users');
 
         if(!empty($query['search_librarian'])){
             $this->set('search_librarian', $query['search_librarian']);
             
             $q = str_replace(' ', '%', $query['search_librarian']);
 
-            $librarians = $this->Librarians->find()
+            $librarians = $this->Users->find()
             ->where([
+                'Users.role' => 'librarian',
                 'OR' => [
                     'Librarians.user_id LIKE ' => '%' . $q . '%',
                 ]
             ]);
         }else{
-            $librarians = $this->Librarians->find();
+            $librarians = $this->Users->find()
+            ->where([
+                'Users.role' => 'librarian',
+            ]);
         }
 
-        $totLibrarians = $this->Librarians->find()->count();
+        $totLibrarians = $this->Users->find()
+        ->where([
+            'Users.role' => 'librarian',
+        ])
+        ->count();
 
         $this->set(compact('librarians', 'totLibrarians'));
     }
 
     public function viewBorrowerAccount($id=null){
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
-        $borrower = $this->Borrowers->find()
+        $borrower = $this->Users->find()
         ->where([
-            'user_id' => $id
+            'Users.user_id' => $id,
+            'Users.role' => 'borrower'
         ])
         ->first();
 
@@ -357,21 +330,24 @@ class LibrariansController extends AppController
     }
 
     public function viewLibrarianAccount($id=null){
-        $this->loadModel('Librarians');
+        $this->loadModel('Users');
 
-        $librarian = $this->Librarians->find()
+        $librarian = $this->Users->find()
         ->where([
-            'user_id' => $id
+            'Users.user_id' => $id,
+            'Users.role' => 'librarian'
         ])
         ->first();
 
         $this->set(compact('librarian'));
     }
 
-    public function personalAccount($id = null){
-        $librarian = $this->Librarians->find()
+    public function personalAccount(){
+        $this->loadModel('Users');
+        $librarian = $this->Users->find()
         ->where([
-            'user_id' => $id
+            'user_id' => $this->Auth->user('user_id'),
+            'role' => 'librarian',
         ])
         ->first();
 

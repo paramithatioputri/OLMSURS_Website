@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Routing\Router;
+use Cake\Utility\Security;
 /**
  * Books Controller
  *
@@ -17,6 +18,50 @@ class BooksController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+
+
+    public function beforeFilter(){
+
+        $this->Auth->allow([
+            'booklist', 'view'
+        ]);
+    }
+    
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('Paginator');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth');
+    } 
+
+    public function isAuthorized($user = null){
+        if($this->request->action === 'checkout'
+        || $this->request->action === 'viewBookBorrowingHistory'
+        || $this->request->action === 'rateBooks'
+        || $this->request->action === 'fines')
+        {
+            return true;
+        }
+        else if($this->request->action === 'addBooks'
+        || $this->request->action === 'updateBooks'
+        || $this->request->action === 'delete'
+        || $this->request->action === 'returnBooks'
+        || $this->request->action === 'issueBookList'
+        || $this->request->action === 'issueBooks'){
+            if($user['role'] === 'librarian'){
+
+                return true;
+
+            }
+        }
+        //Default deny
+        return false;
+
+        return parent::isAuthorized($user);
+    }
+    
     public function booklist()
     {
         $query = $this->request->query();
@@ -162,6 +207,7 @@ class BooksController extends AppController
                 else{
                     if(move_uploaded_file($this->request->data['book_cover_image']['tmp_name'],$uploadfile)){
                         $book->book_cover_image = $url;
+                        $book->user_id = $this->Auth->user('user_id');
                         if ($this->Books->save($book)) {
                             $this->Flash->success(__('The book has been saved.'));
             
@@ -177,6 +223,7 @@ class BooksController extends AppController
                     return $this->redirect($this->referer());
                 }
                 else{
+                    $book->user_id = $this->Auth->user('user_id');
                     if ($this->Books->save($book)) {
                         $this->Flash->success(__('The book has been saved.'));
         
@@ -186,12 +233,10 @@ class BooksController extends AppController
                 }
             }
 
-            
         }
-        $librarians = $this->Books->Librarians->find('list', ['limit' => 200]);
         $subjects = $this->Books->Subjects->find('list', ['limit' => 200, 'keyField' => 'subject_id', 'valueField' => 'subject_name']);
         $languages = $this->Books->Languages->find('list', ['limit' => 200, 'keyField' => 'language_id', 'valueField' => 'language_name']);
-        $this->set(compact('book', 'librarians', 'subjects', 'languages'));
+        $this->set(compact('book', 'subjects', 'languages'));
     }
 
     /**
@@ -206,19 +251,51 @@ class BooksController extends AppController
         $book = $this->Books->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $book = $this->Books->patchEntity($book, $this->request->getData());
-            if ($this->Books->save($book)) {
-                $this->Flash->success(__('The book has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // Deleting the image from the webroot
+            $bookUrlExplode = explode('/', $book->book_cover_image);
+            $bookImgLocalPath = WWW_ROOT . 'img' . DS . 'book-cover-img' . DS . $bookUrlExplode[6];
+
+            if(file_exists($bookImgLocalPath)){
+                unlink($bookImgLocalPath);
+            };
+
+            $book = $this->Books->patchEntity($book, $this->request->getData());
+
+            if(!empty($this->request->data['book_cover_image']['name'])){
+                $temp = explode(".", $_FILES['book_cover_image']['name']);
+                $filename = 'bookcover_' . $book->book_number . '.' . $temp[1];
+                $url = Router::url('/', true). 'img/book-cover-img/' . $filename;
+                $uploadPath = 'img/book-cover-img/';
+
+                $uploadfile = $uploadPath . $filename;
+                if(move_uploaded_file($this->request->data['book_cover_image']['tmp_name'],$uploadfile)){
+                    $book->book_cover_image = $url;
+                    $book->user_id = $this->Auth->user('user_id');
+                    if ($this->Books->save($book)) {
+                        $this->Flash->success(__('The book has been updated successfully.'));
+        
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The book could not be updated. Please, try again.'));
+                }
             }
-            $this->Flash->error(__('The book could not be saved. Please, try again.'));
+            else{
+                $book->user_id = $this->Auth->user('user_id');
+                if ($this->Books->save($book)) {
+                    $this->Flash->success(__('The book has been updated successfully.'));
+    
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The book could not be updated. Please, try again.'));
+                    
+            }
         }
-        $librarians = $this->Books->Librarians->find('list', ['limit' => 200]);
+
         $subjects = $this->Books->Subjects->find('list', ['limit' => 200, 'keyField' => 'subject_id', 'valueField' => 'subject_name']);
         $languages = $this->Books->Languages->find('list', ['limit' => 200, 'keyField' => 'language_id', 'valueField' => 'language_name']);
-        $this->set(compact('book', 'librarians', 'subjects', 'languages'));
+        $this->set(compact('book', 'subjects', 'languages'));
     }
 
     /**
@@ -232,7 +309,14 @@ class BooksController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $book = $this->Books->get($id);
+
+        $bookUrlExplode = explode('/', $book->book_cover_image);
+        $bookImgLocalPath = WWW_ROOT . 'img' . DS . 'book-cover-img' . DS . $bookUrlExplode[6];
+
         if ($this->Books->delete($book)) {
+            if(file_exists($bookImgLocalPath)){
+                unlink($bookImgLocalPath);
+            };
             $this->Flash->success(__('The book has been deleted.'));
         } else {
             $this->Flash->error(__('The book could not be deleted. Please, try again.'));
@@ -272,17 +356,18 @@ class BooksController extends AppController
         $status = ['Place Hold', 'Checked Out', 'Returned', 'Overdue'];
 
         $query = $this->request->query();
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
         if(!empty($query['searchborrower'])){
             $this->set('searchborrower', $query['searchborrower']);
 
             $q = str_replace(' ', '%', $query['searchborrower']);
 
-            $borrowers = $this->Borrowers->find()
+            $borrowers = $this->Users->find()
             ->where([
+                'Users.role' => 'borrower',
                 'OR' => [
-                    'Borrowers.user_id LIKE' => '%' . $q . '%',
+                    'Users.user_id LIKE' => '%' . $q . '%',
                 ]
             ])
             ->toArray();
@@ -310,7 +395,7 @@ class BooksController extends AppController
          
         if($this->request->is('post')){
 
-            $this->loadModel('Borrowers');
+            $this->loadModel('Users');
             $this->loadModel('BookCopies');
             $this->loadModel('BorrowerBookRating');
 
@@ -338,9 +423,9 @@ class BooksController extends AppController
 
             $bookCopy->availability_status = $bookAvailabilityStatus[1];
 
-            $borrower = $this->Borrowers->find()
+            $borrower = $this->Users->find()
             ->where([
-                'Borrowers.user_id' => $borrower_issue_book->user_id,
+                'Users.user_id' => $borrower_issue_book->user_id,
             ])
             ->first();
 
@@ -358,7 +443,7 @@ class BooksController extends AppController
             ])
             ->first();
             
-            if($this->BorrowerBookStatus->save($borrower_issue_book) && $this->Borrowers->save($borrower) && $this->BookCopies->save($bookCopy)){
+            if($this->BorrowerBookStatus->save($borrower_issue_book) && $this->Users->save($borrower) && $this->BookCopies->save($bookCopy)){
                 if(empty($borrowerBookRating)){
                     $borrowerBookRatingNew = $this->BorrowerBookRating->newEntity();
                     $borrowerBookRatingNew->user_id = $borrower_issue_book->user_id;
@@ -378,15 +463,15 @@ class BooksController extends AppController
 
     }
 
-    public function checkout($id = null){
+    public function checkout(){
         $currDate = date("Y-m-d");
 
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
 
-        $borrower = $this->Borrowers->find()
+        $borrower = $this->Users->find()
         ->where([
-            'Borrowers.user_id' => $id,
-            // 'Borrowers.user_id' => $this->Auth->borrower('id')
+            'Users.user_id' => $this->Auth->user('user_id'),
+            'Users.role' => 'borrower'
         ])
         ->first();
 
@@ -395,7 +480,7 @@ class BooksController extends AppController
         $borrower_book_statuses = $this->BorrowerBookStatus->find()
         ->contain(['BookCopies.Books'])
         ->where([
-            'BorrowerBookStatus.user_id' => $id,
+            'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
             'BorrowerBookStatus.status' => 'Checked Out',
         ])
         ->toArray();
@@ -403,7 +488,7 @@ class BooksController extends AppController
         $overdueBooks = $this->BorrowerBookStatus->find()
         ->contain(['BookCopies.Books'])
         ->where([
-            'BorrowerBookStatus.user_id' => $id,
+            'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
             'BorrowerBookStatus.status' => 'Checked Out',
             'BorrowerBookStatus.book_date_due <' => $currDate,
         ])
@@ -450,7 +535,7 @@ class BooksController extends AppController
 
     public function returnBooks(){
         $this->loadModel('BorrowerBookStatus');
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
         $this->loadModel('BookCopies');
 
         $query = $this->request->query();
@@ -460,9 +545,10 @@ class BooksController extends AppController
 
             $q = str_replace(' ', '%', $query['borrower_return_q']);
 
-            $borrower = $this->Borrowers->find()
+            $borrower = $this->Users->find()
             ->where([
-                'Borrowers.user_id' => $q,
+                'Users.user_id' => $q,
+                'Users.role' => 'borrower'
             ])
             ->first();
 
@@ -484,7 +570,7 @@ class BooksController extends AppController
             $bookReturnedArr = explode(" ", $bookTobeReturned);
 
             $returnThisBook = $this->BorrowerBookStatus->find()
-            ->contain(['BookCopies.Books', 'Borrowers'])
+            ->contain(['BookCopies.Books', 'Users'])
             ->where([
                 'BorrowerBookStatus.user_id' => $bookReturnedArr[0],
                 'BorrowerBookStatus.book_call_number' => $bookReturnedArr[1],
@@ -495,9 +581,9 @@ class BooksController extends AppController
             $returnThisBook->status = 'Returned';
             $returnThisBook->book_return_date = $currDate;
             $returnThisBook->book_copy->availability_status = 'Available';
-            $returnThisBook->borrower->num_of_books_taken = $returnThisBook->borrower->num_of_books_taken - 1;
+            $returnThisBook->user->num_of_books_taken = $returnThisBook->user->num_of_books_taken - 1;
 
-            if($this->BorrowerBookStatus->save($returnThisBook) && $this->Borrowers->save($returnThisBook->borrower) && $this->BookCopies->save($returnThisBook->book_copy)){
+            if($this->BorrowerBookStatus->save($returnThisBook) && $this->Users->save($returnThisBook->borrower) && $this->BookCopies->save($returnThisBook->book_copy)){
                 $this->Flash->success(__("The book has been returned successfully"));
                 return $this->redirect($this->referer());
             }
@@ -508,16 +594,16 @@ class BooksController extends AppController
 
     public function fines($id=null){
         $this->loadModel('BorrowerBookStatus');
-        $this->loadModel('Borrowers');
+        $this->loadModel('Users');
         
-        $borrower = $this->Borrowers->find()
+        $borrower = $this->Users->find()
         ->where([
-            'Borrowers.user_id' =>$id,
+            'Users.user_id' =>$id,
         ])
         ->first();
 
         $borrower_book_statuses = $this->BorrowerBookStatus->find()
-        ->contain(['BookCopies.Books', 'Borrowers'])
+        ->contain(['BookCopies.Books', 'Users'])
         ->where([
             'BorrowerBookStatus.user_id' => $id,
         ])
@@ -555,28 +641,26 @@ class BooksController extends AppController
 
     }
 
-    public function viewBookBorrowingHistory($user_id = null){
+    public function viewBookBorrowingHistory(){
         $this->loadModel('BorrowerBookStatus');
-
         $borrowerBookStatuses = $this->BorrowerBookStatus->find()
-        ->contain(['BookCopies.Books', 'Borrowers'])
+        ->contain(['BookCopies.Books', 'Users'])
         ->where([
-            'BorrowerBookStatus.user_id' => $user_id,
+            'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
             //Auth
         ])
         ->toArray();
-
         $this->set(compact('borrowerBookStatuses'));
 
     }
 
-    public function rateBooks($user_id = null){
-        $this->loadModel('BorrowerBookRating'); 
+    public function rateBooks(){
+        $this->loadModel('BorrowerBookRating');
 
         $borrowerBookRatings = $this->BorrowerBookRating->find()
         ->contain('Books')
         ->where([
-            'BorrowerBookRating.user_id' => $user_id,
+            'BorrowerBookRating.user_id' => $this->Auth->user('user_id'),
         ])
         ->toArray();
 
@@ -584,7 +668,6 @@ class BooksController extends AppController
 
         if($this->request->is('post')){
             $data = $this->request->getData();
-
             if(empty($data['rating_given'])){
                 $this->Flash->error(__('The book is not rated yet'));
                 return $this->redirect($this->referer());
@@ -593,7 +676,7 @@ class BooksController extends AppController
             $ratedBook = $this->BorrowerBookRating->find()
             ->contain('Books')
             ->where([
-                'BorrowerBookRating.user_id' => $user_id,
+                'BorrowerBookRating.user_id' => $this->Auth->user('user_id'),
                 'BorrowerBookRating.book_number' => $data['book_number'],
             ])
             ->first();

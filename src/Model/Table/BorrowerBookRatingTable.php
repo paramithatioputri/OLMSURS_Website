@@ -6,20 +6,6 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * BorrowerBookRating Model
- *
- * @property &\Cake\ORM\Association\BelongsTo $Users
- *
- * @method \App\Model\Entity\BorrowerBookRating get($primaryKey, $options = [])
- * @method \App\Model\Entity\BorrowerBookRating newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\BorrowerBookRating[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\BorrowerBookRating|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\BorrowerBookRating saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\BorrowerBookRating patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\BorrowerBookRating[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\BorrowerBookRating findOrCreate($search, callable $callback = null, $options = [])
- */
 class BorrowerBookRatingTable extends Table
 {
     /**
@@ -36,7 +22,7 @@ class BorrowerBookRatingTable extends Table
         $this->setDisplayField('rating_id');
         $this->setPrimaryKey('rating_id');
 
-        $this->belongsTo('Borrowers', [
+        $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
@@ -82,7 +68,7 @@ class BorrowerBookRatingTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Borrowers'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

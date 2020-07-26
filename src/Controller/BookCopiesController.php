@@ -12,6 +12,35 @@ use App\Controller\AppController;
  */
 class BookCopiesController extends AppController
 {
+    public function beforeFilter(){
+
+        $this->Auth->allow();
+    }
+    
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('Paginator');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth');
+    } 
+
+
+    public function isAuthorized($user = null){
+        if($this->request->action === 'viewBookCopies'
+        || $this->request->action === 'addBookCopies'
+        || $this->request->action === 'deleteBookCopies')
+        {
+            if($user['role'] === 'librarian'){
+                return true;
+            }
+        }
+        //Default deny
+        return false;
+
+        return parent::isAuthorized($user);
+    }
 
     public function index()
     {
@@ -65,6 +94,7 @@ class BookCopiesController extends AppController
         $addBookCopy = $this->BookCopies->newEntity();
         if ($this->request->is('post')) {
             $addBookCopy = $this->BookCopies->patchEntity($addBookCopy, $this->request->getData());
+            $addBookCopy->book_call_number = strtolower($this->request->data['book_call_number']);
             
             $addBookCopy->book_number = $id;
             $addBookCopy->availability_status = $bookAvailabilityStatus[0];
