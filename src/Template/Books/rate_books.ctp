@@ -81,6 +81,11 @@ foreach($borrowerBookRatings as $borrowerBookRating){ ?>
         font-weight: bold !important;
     }
 
+    .card{
+        margin: 15px 0;
+        text-align: center;
+    }
+
 
 </style>
 <?php $this->end('css') ?>

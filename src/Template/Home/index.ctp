@@ -1,4 +1,5 @@
 <?= $this->Html->css('button-custom.css');?>
+<?= $this->Html->css('page-config.css'); ?>
 <?php echo $this->element('header'); ?>
 
 <?php 
@@ -9,22 +10,14 @@
 ?>
 
 <div class="split" id="search-container">
-    <div class="logo-container">
-        <?= $this->Html->Image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'home-logo']); ?>
-    </div>
     <div id="search-container1">
         <form>
             <label>Search:</label>
             <div id="search-input-container">
                 <input autofocus id="search-textbox" type="text" placeholder="Please insert any keywords to search" name="query1" value="<?= isset($index) ? $index : '' ?>"/>
-                <select id="search-category-dropdown">
-                    <?php
-                        foreach($categories as $category){ ?>
-                            <option name="query2" value="<?= $category ?>"><?= $category; ?></option>
-                    <?php
-                         }
-                    ?>
-                </select>
+                <?php
+                    echo $this->Form->control('categories', ['options' => $categories, 'name' => 'query2', 'id' =>'book-category-dropdown', 'label' => '']);
+                ?>
             </div>
             <div class="search-btn-container">
                 <div id="btn-container">
@@ -74,8 +67,8 @@
                                         <img class="card-img-top" src="<?= $bookRecom->book_cover_image ?>" style="height:150px" alt="Book image">
                                             <div class="card-body">
                                                 <div name="average_rating" style="text-align:center">
-                                                    <input value="<?= h($bookRecom->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($bookRecom->book_number) ?>">
-                                                    <div class="rateit" data-rateit-backingfld="#<?= h($bookRecom->book_number) ?>"></div>
+                                                    <input value="<?= h($bookRecom->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="recom<?= h($bookRecom->book_number) ?>">
+                                                    <div class="rateit" data-rateit-backingfld="#recom<?= h($bookRecom->book_number) ?>"></div>
                                                 </div>
                                                 <h4 class="card-title"><?= $bookRecom->title ?></h4>
                                                 <p class="card-text"><b>Author: </b><?= $bookRecom->author ?></p>
@@ -205,20 +198,6 @@
         text-align: center;
     }
 
-    #search-container .home-logo{
-        width: 15em;
-        top: 17em;
-    }
-
-    .home-logo{
-        width: 9.5em !important;
-    }
-
-    .logo-container{
-        text-align: center;
-        margin: 20px 0;
-    }
-
     #cards-container{
         text-align: center;
     }
@@ -252,6 +231,14 @@
         padding: 15px;
         border-radius: 25px;
         margin-bottom: 20px;
+    }
+
+    #book-category-dropdown{
+        width:10em;
+        background-color: #FFA500;
+        height: 2.5em;
+        font-size: 20px;
+        margin-bottom: 1em;
     }
 
 </style>

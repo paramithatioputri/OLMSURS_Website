@@ -58,7 +58,6 @@ class HomeController extends AppController
                 'Books.average_rating' => "DESC",
             ]);
 
-
         if((!empty($query['query1'])) && ($query['query2'] == 0)){
             $this->set('query1', $query['query1']);
             
@@ -67,7 +66,6 @@ class HomeController extends AppController
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
                 'OR' => [
                     'Books.book_number LIKE' => '%' . $q . '%',
                     'Books.title LIKE' => '%' . $q . '%',
@@ -87,7 +85,6 @@ class HomeController extends AppController
             ])
             ->count();
 
-            
         }
         else if((!empty($query['query1'])) && ($query['query2'] == 1)){
             $this->set('query1', $query['query1']);
@@ -97,7 +94,6 @@ class HomeController extends AppController
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
                 'OR' => [
                     'Books.title LIKE' => '%' . $q . '%',
                 ]
@@ -114,13 +110,13 @@ class HomeController extends AppController
             ->count();
         }
         else if((!empty($query['query1'])) && ($query['query2'] == 2)){
+
             $this->set('query1', $query['query1']);
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
                 'OR' => [
                     'Books.author LIKE' => '%' . $q . '%',
                 ]
@@ -143,7 +139,6 @@ class HomeController extends AppController
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
                 'OR' => [
                     'Subjects.subject_name LIKE' => '%' . $q . '%',
                 ]
@@ -166,7 +161,7 @@ class HomeController extends AppController
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
+
                 'OR' => [
                     'Books.isbn LIKE' => '%' . $q . '%',
                 ]
@@ -189,7 +184,6 @@ class HomeController extends AppController
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
             ->where([
-                'Books.average_rating <' => 4,
                 'OR' => [
                     'Books.book_number LIKE' => '%' . $q . '%',
                 ]
@@ -208,9 +202,6 @@ class HomeController extends AppController
         else{
             $books = $this->Books->find()
             ->contain(['Subjects', 'Languages'])
-            ->where([
-                'Books.average_rating <' => 4,
-            ])
             ->order([
                 'Books.average_rating' => "DESC",
             ]);

@@ -180,7 +180,7 @@
 
     $(document).ready(function(){
 
-        // $("#Returned").hide();
+        $("#Returned").hide();
         $(".overdue-status").css({"color": "red", "font-weight": "bold", "font-style": "italic"});
 
         // Show the total fines

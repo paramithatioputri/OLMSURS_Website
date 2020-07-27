@@ -52,6 +52,11 @@ foreach($borrowerBookStatuses as $borrowerBookStatus){ ?>
     #no-book-found{
         margin: 15% 0;
         background-color:#FFCD94;
+        
+    }
+    
+    .card{
+        margin: 15px 0;
         text-align: center;
     }
 

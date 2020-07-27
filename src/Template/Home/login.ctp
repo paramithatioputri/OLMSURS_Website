@@ -1,5 +1,8 @@
 <?= $this->Html->css('button-custom.css');?>
 <div id="login-container">
+    <div class="logo-container">
+        <?= $this->Html->Image("../img/navigation/OLMSURS_Website_Logo.png", ['alt' => 'olmsurs logo', 'class' => 'home-logo']); ?>
+    </div>
     <div class="login-form">
         <?= $this->Form->create($userEntity) ?>
             <p id="login-title">Login</p>
@@ -21,7 +24,9 @@
                     </div>
                 </div>
             </div>
-            <button id="login-btn" type="submit">Login</button>
+            <div class="btn-container">
+                <button id="login-btn" type="submit">Login</button>
+            </div>
         <?= $this->Form->end() ?>
         <div class="register-small-note">
             <small>Haven't had any account yet?</small>
@@ -55,10 +60,6 @@
         margin-bottom: 1em;
     }
 
-    #login-btn{
-        margin-left: 20%;
-    }
-
     .register-small-note{
         text-align: center;
     }
@@ -79,22 +80,27 @@
         display: inline-block;
     }
 
-    #password-input-container{
-        display: flex;
-        flex-wrap: wrap;
-    }
-
     #showhide{
         padding-bottom: 0.25em;
         right: 4.45em;
         top: 0.3em;
         background-color: #FFA500;
         width: fit-content;
-        
+        -ms-transform: scale(1.0,1.0);
+        transform: scale(1.0,1.0);
     }
-    
+
     .login-input-label{
         font-size: 15px;
+    }
+   
+    .home-logo{
+        width: 13em !important;
+        margin-top: 2em;
+    }
+
+    .btn-container{
+        text-align: center;
     }
 
 </style>
