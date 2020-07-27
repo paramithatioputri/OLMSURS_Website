@@ -152,6 +152,8 @@
             border-radius: 50%;
             position: fixed;
             right: 0;
+            filter: drop-shadow(6px 6px 6px #FFA500);
+            box-shadow: 3px 3px 3px #000000;
         }
 
         #greeting-text{

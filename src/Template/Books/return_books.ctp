@@ -1,6 +1,7 @@
 <?= $this->Html->css('page-config.css');?>
 <?= $this->Html->css('button-custom.css');?>
-<?= $this->element('header'); ?>
+<?php echo $this->element('header'); 
+$currDate = date("Y-m-d");?>
 
 <h3 class="heading"><?= __('Returning Books') ?></h3>
 <div>
@@ -12,13 +13,13 @@
         </div>
     </form>
 </div>
-<?php if(!empty($borrowerTransacts)){ ?>
 <div>
     <p>Borrower ID: <?= h($borrower->user_id) ?></p>
     <p>Borrower Name: <?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
-    <p>Total Fines: <a href="fines/<?= $borrower->user_id ?>"><b>RM<?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></a></p>
+    <p>Total Fines: <a href="fines/<?= $borrower->user_id ?>"><b>RM</b><label id="total-fines"><b><?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></label></a></p>
     <p>Books Taken: <?= isset($borrower->num_of_books_taken) ? $borrower->num_of_books_taken : '0' ?></p>
 </div>
+<?php if(!empty($borrowerTransacts)){ ?>
 <div>
     <table class="table-bordered table-hover">
         <thead>
@@ -27,8 +28,10 @@
             <th>Actions</th>
         </thead>
         <tbody>
-        <?php foreach($borrowerTransacts as $borrowerTransact){ ?>
-            <tr>
+        <?php foreach($borrowerTransacts as $borrowerTransact){ 
+            $overdueCharge = date_diff(date_create($borrowerTransact->book_date_due),date_create($currDate))->format('%a') * 0.1;
+            ?>
+            <tr class="hide-returned-books" id="<?= $borrowerTransact->status ?>">
                 <td class="images">
                 <?php if(empty($borrowerTransact->book_copy->book->book_cover_image)){ ?>
                     <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
@@ -41,10 +44,13 @@
                     <p><b>Book Number: </b><?= h($borrowerTransact->book_copy->book->book_number) ?></p>
                     <p><b>Issue Date: </b><?= h($borrowerTransact->book_checkout_date) ?></p>
                     <p><b>Due Date: </b><?= h($borrowerTransact->book_date_due) ?></p>
+                    <p class="hide-charge-amount"><label><b>Charge Amount: </b>RM</label><label class="charge-amount"><?= $borrowerTransact->status == 'Checked Out' && date('Y-m-d', strtotime($borrowerTransact->book_date_due)) < $currDate ? isset($borrowerTransact->charge_amount) ? ($borrowerTransact->charge_amount + (date_diff(date_create($borrowerTransact->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrowerTransact->book_date_due),date_create($currDate))->format('%a') * 0.1)
+                : $borrowerTransact->charge_amount
+                ?></label></p>
                 </td>
                 <td class="actions">
                     <?=  $this->Form->create('return_book', ['id' => 'submit-form'])?>
-                        <button name="borrower-transaction" class="return-book-btn" value="<?= $borrowerTransact->user_id?> <?= $borrowerTransact->book_call_number ?>">Return Book</button>
+                        <button name="borrower-transaction" class="return-book-btn" value="<?= $borrowerTransact->user_id?> <?= $borrowerTransact->book_call_number ?> <?= $overdueCharge ?>">Return Book</button>
                     <?= $this->Form->end() ?>
                 </td>
             </tr>
@@ -97,8 +103,8 @@
     }
 
     #search-return-book, #search-btn{
-    font-size: 20px;
-    margin-bottom: 1em;
+        font-size: 20px;
+        margin-bottom: 1em;
     }
 
     #search-return-book{
@@ -118,6 +124,44 @@
         width: 10em;
     }
 
+    #total-fines{
+        margin: 0;
+        color: #000000;
+    }
+
+    .charge-amount{
+        color: #000000;
+    }
+
 
 </style>
 <?php $this->end('css') ?>
+
+<?php $this->append('script') ?>
+<script>
+$(document).ready(function(){
+        //Hide charge Amount
+        $('.hide-charge-amount').hide();
+        $('#Returned').hide();
+
+        // Show the total fines
+        var totalChargeClass = document.getElementsByClassName('charge-amount');
+        var totalFines = 0;
+        var totFinesLimitDec = 0;
+
+        for(var i = 0; i < totalChargeClass.length; i++){
+            
+            var fineAmnt = totalChargeClass[i].innerHTML;
+
+            totalFines = parseFloat(totalFines) + parseFloat(fineAmnt);
+            totFinesLimitDec = totalFines.toFixed(2);
+
+        }
+        var finesDisplay = document.getElementById('total-fines');
+        finesDisplay.innerHTML = totFinesLimitDec;
+        finesDisplay.style.fontWeight = 'bold';
+
+        
+});
+</script>
+<?php $this->end('script') ?>

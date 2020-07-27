@@ -481,7 +481,7 @@ class BooksController extends AppController
         ->contain(['BookCopies.Books'])
         ->where([
             'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
-            'BorrowerBookStatus.status' => 'Checked Out',
+            // 'BorrowerBookStatus.status' => 'Checked Out',
         ])
         ->toArray();
 
@@ -502,11 +502,17 @@ class BooksController extends AppController
             $bookIdArr = explode(",", $bookIds);
 
             for($i = 0; $i < count($bookIdArr); $i++){
+                $bookIdFine = explode(" ", $bookIdArr[$i]);
+
                 $bookRenew = $this->BorrowerBookStatus->find()
                 ->where([
-                    'BorrowerBookStatus.id' => $bookIdArr[$i],
+                    'BorrowerBookStatus.id' => $bookIdFine[0],
                 ])
                 ->first();
+
+                if($bookRenew->status == "Returned"){
+                    continue;
+                }
 
                 if($bookRenew->times_renewed >= 2){
                     $this->Flash->error(__('Times renewed of these books have reached the limit'));
@@ -514,16 +520,15 @@ class BooksController extends AppController
                 }
 
                 $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;
+                $bookRenew->charge_amount = $bookRenew->charge_amount + $bookIdFine[1];
 
                 $bookDateDue = date('Y-m-d', strtotime($bookRenew->book_date_due));
                 if($currDate >= $bookDateDue){
                     $bookRenew->book_date_due = date('Y-m-d', strtotime($currDate . ' + 7 days'));
-                    
                 }
                 else{
                     $bookRenew->book_date_due = date('Y-m-d', strtotime($bookRenew->book_date_due . ' + 7 days'));
                 }
-                
 
                 if($this->BorrowerBookStatus->save($bookRenew)){
                 }
@@ -556,16 +561,18 @@ class BooksController extends AppController
             ->contain(['BookCopies.Books'])
             ->where([
                 'BorrowerBookStatus.user_id' => $q,
-                'BorrowerBookStatus.status' => 'Checked Out',
+                // 'BorrowerBookStatus.status' => 'Checked Out',
             ])
             ->toArray();
         }
+
 
         $this->set(compact('borrowerTransacts', 'borrower'));
 
         if($this->request->is('post')){
             $currDate = date("Y-m-d");
             $data = $this->request->getData();
+
             $bookTobeReturned = $data['borrower-transaction'];
             $bookReturnedArr = explode(" ", $bookTobeReturned);
 
@@ -578,12 +585,13 @@ class BooksController extends AppController
             ])
             ->first();
 
+            $returnThisBook->charge_amount = $returnThisBook->charge_amount + $bookReturnedArr[2];
             $returnThisBook->status = 'Returned';
             $returnThisBook->book_return_date = $currDate;
             $returnThisBook->book_copy->availability_status = 'Available';
             $returnThisBook->user->num_of_books_taken = $returnThisBook->user->num_of_books_taken - 1;
 
-            if($this->BorrowerBookStatus->save($returnThisBook) && $this->Users->save($returnThisBook->borrower) && $this->BookCopies->save($returnThisBook->book_copy)){
+            if($this->BorrowerBookStatus->save($returnThisBook) && $this->Users->save($returnThisBook->user) && $this->BookCopies->save($returnThisBook->book_copy)){
                 $this->Flash->success(__("The book has been returned successfully"));
                 return $this->redirect($this->referer());
             }
