@@ -38,7 +38,7 @@
                     <td class="wrapper">
                     <a href="view/<?= $book->book_number ?>">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-3">
                                 <div>
                                 <?php if(empty($book->book_cover_image)){ ?>
                                     <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
@@ -48,11 +48,23 @@
                                 
                                 </div>
                             </div>
-                            <div class="book-content col-md-6">
+                            <div class="book-content col-md-6 col-lg-9">
                                 <div><b>Book Title: </b><?= h($book->title) ?></div>
                                 <div><b>Author: </b><?= h($book->author) ?></div>
                                 <div><b>Publisher: </b><?= h($book->publisher) ?></div>
-                                <div><b>Availability: </b></div>
+                                <div><b>Availability: </b>
+                                <?php foreach($bookCopies as $bookCopy){
+                                    if($bookCopy->book_number == $book->book_number){
+                                        echo "Available for Loan";
+                                        break;
+                                    }
+                                    $flag = 0;
+                                }
+                                    if($flag == 0){
+                                        echo "On Loan";
+                                    }
+                                     ?>
+                                </div>
                                 <div name="average_rating">
                                     <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
                                     <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>

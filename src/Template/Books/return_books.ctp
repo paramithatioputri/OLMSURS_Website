@@ -28,10 +28,16 @@ $currDate = date("Y-m-d");?>
             <th>Actions</th>
         </thead>
         <tbody>
-        <?php foreach($borrowerTransacts as $borrowerTransact){ 
-            $overdueCharge = date_diff(date_create($borrowerTransact->book_date_due),date_create($currDate))->format('%a') * 0.1;
+        <?php foreach($borrowerTransacts as $borrowerTransact){
+            if($borrowerTransact->status == 'Checked Out' && date('Y-m-d', strtotime($borrowerTransact->book_date_due)) < $currDate){
+                $overdueCharge = date_diff(date_create($borrowerTransact->book_date_due),date_create($currDate))->format('%a') * 0.1;
+            }
+            else{
+                $overdueCharge = 0;
+            }
+            
             ?>
-            <tr class="hide-returned-books" id="<?= $borrowerTransact->status ?>">
+            <tr class="hide-returned-books <?= $borrowerTransact->status ?>">
                 <td class="images">
                 <?php if(empty($borrowerTransact->book_copy->book->book_cover_image)){ ?>
                     <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
@@ -142,7 +148,7 @@ $currDate = date("Y-m-d");?>
 $(document).ready(function(){
         //Hide charge Amount
         $('.hide-charge-amount').hide();
-        $('#Returned').hide();
+        $('.Returned').hide();
 
         // Show the total fines
         var totalChargeClass = document.getElementsByClassName('charge-amount');

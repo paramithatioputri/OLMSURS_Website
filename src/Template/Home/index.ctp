@@ -117,7 +117,7 @@
                 <img class="card-img-top" src="<?= $book->book_cover_image ?>" style="height:150px" alt="Book image">
                     <div class="card-body">
                         <div name="average_rating" style="text-align:center">
-                            <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
+                            <input class="rating-class" value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
                             <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
                         </div>
                         <h4 class="card-title"><?= $book->title ?></h4>
@@ -239,6 +239,10 @@
         height: 2.5em;
         font-size: 20px;
         margin-bottom: 1em;
+    }
+
+    .card-title{
+        font-size: 18px;
     }
 
 </style>

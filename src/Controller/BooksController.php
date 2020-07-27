@@ -64,6 +64,15 @@ class BooksController extends AppController
     
     public function booklist()
     {
+        $this->loadModel('BookCopies');
+
+        $bookCopies = $this->BookCopies->find()
+        ->contain(['Books'])
+        ->where([
+            'BookCopies.availability_status' => 'Available'
+        ])
+        ->toArray();
+
         $query = $this->request->query();
 
         if((!empty($query['query1'])) && ($query['query2'] == 0)){
@@ -82,7 +91,6 @@ class BooksController extends AppController
                     'Books.isbn LIKE' => '%' . $q . '%',
                 ]
             ]);
-            
         }
         else if((!empty($query['query1'])) && ($query['query2'] == 1)){
             $this->set('query1', $query['query1']);
@@ -149,7 +157,7 @@ class BooksController extends AppController
             ->contain(['Subjects', 'Languages']);
         }
 
-        $this->set('books', $this->paginate($books));
+        $this->set(compact('books', 'bookCopies'));
     }
 
     /**
@@ -170,6 +178,7 @@ class BooksController extends AppController
         $totalBookCopies = $this->BookCopies->find()
         ->where([
             'BookCopies.book_number' => $id,
+            'BookCopies.availability_status' => 'Available'
         ])
         ->count();
 

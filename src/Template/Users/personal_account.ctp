@@ -2,45 +2,51 @@
 <?= $this->Html->css('button-custom.css');?>
 
 <?= $this->element('header'); ?>
+
+<h3 class="heading">Personal Account</h3>
+
 <div class="borrowers view content">
-    <h3>Borrower ID:<?= h($borrower->user_id) ?></h3>
-    <div class="image">
+    <div class="image-container">
         <?php if(empty($borrower->profile_image)){ 
             if($borrower->gender == "Male"){?>
-                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '300', 'alt' => 'no-profile-male']); ?>
+                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '300', 'alt' => 'no-profile-male', 'class' => 'image']); ?>
             <?php } else if($borrower->gender == "Female"){ ?>
-                <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '300', 'alt' => 'no-profile-female']); ?>
+                <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '300', 'alt' => 'no-profile-female', 'class' => 'image']); ?>
             <?php
             }}else{ ?>
-            <?= $this->Html->image(h($borrower->profile_image), ['width' => '300', 'alt' => 'profile-image']); ?>
+            <?= $this->Html->image(h($borrower->profile_image), ['width' => '300', 'alt' => 'profile-image', 'class' => 'image']); ?>
         <?php } ?>
     </div>
     <div>
-        <label>First Name: </label>
+        <label><b>Borrower ID: </b></label>
+        <label><?= h($borrower->user_id) ?></label>
+    </div>
+    <div>
+        <label><b>First Name: </b></label>
         <label><?= h($borrower->first_name) ?></label>
     </div>
     <div>
-        <label>Last Name: </label>
+        <label><b>Last Name: </b></label>
         <label><?= h($borrower->last_name) ?></label>
     </div>
     <div>
-        <label>Email Address: </label>
+        <label><b>Email Address: </b></label>
         <label><?= h($borrower->email_address) ?></label>
     </div>
     <div>
-        <label>Mobile Number: </label>
+        <label><b>Mobile Number: </b></label>
         <label><?= h($borrower->mobile_no) ?></label>
     </div>
     <div>
-        <label>Date of Birth: </label>
+        <label><b>Date of Birth: </b></label>
         <label><?= h($borrower->date_of_birth) ?></label>
     </div>
     <div>
-        <label>Gender: </label>
+        <label><b>Gender: </b></label>
         <label><?= h($borrower->gender) ?></label>
     </div>
     <div>
-        <label>Account Status: </label>
+        <label><b>Account Status: </b></label>
         <label><?= h($borrower->account_status) ?></label>
     </div>
     
@@ -57,8 +63,17 @@
         font-size: 18px;
     }
 
-    .image{
+    .image-container{
         text-align: center;
+        margin-bottom: 2em;
+    }
+
+    .heading{
+        font-weight: bold;
+    }
+
+    .image{
+        border: 5px solid #000000;
     }
 </style>
 <?php $this->end('css')?>

@@ -165,6 +165,7 @@
         #greetings{
             font-weight: bold;
             font-size: 20px;
+            text-shadow: 2px 2px 8px #FFA500;
         }
 
         a, a:hover{

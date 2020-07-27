@@ -38,9 +38,14 @@
         <?= $this->Form->create('renewBooks', ['id' => 'renew-book']) ?>
         <?= $this->Form->end() ?>
         <?php foreach($borrower_book_statuses as $borrower_book_status){
-            $overdueCharge = date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1;
+            if($borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate){
+                $overdueCharge = date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1;
+            }
+            else{
+                $overdueCharge = 0;
+            }
             ?>
-            <tr class="hide-returned-books" id="<?= $borrower_book_status->status ?>">
+            <tr class="hide-returned-books <?= $borrower_book_status->status ?>">
                 <td>
                     <?= $this->Form->control('id', ['class' => 'select-this', 'type' => 'checkbox', 'value' => $borrower_book_status->id . " " . $overdueCharge, 'label' => '']) ?>
                 </td>
@@ -180,7 +185,7 @@
 
     $(document).ready(function(){
 
-        $("#Returned").hide();
+        $(".Returned").hide();
         $(".overdue-status").css({"color": "red", "font-weight": "bold", "font-style": "italic"});
 
         // Show the total fines
