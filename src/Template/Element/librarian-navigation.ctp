@@ -26,7 +26,7 @@
     <div id="header-bottom">
         <div class="header-bottom-child">
         <?php if(!empty($auth_user)){ ?>
-        <?= $this->Html->link('Home', ['controller' => '/home', 'action' => 'index'], ['class' => 'button nav-button']);?>
+        <?= $this->Html->link('Home', ['controller' => '/home', 'action' => 'index','prefix' => false], ['class' => 'button nav-button']);?>
         <div class="dropdown" id="manage-account-dropdown">
             <button type="button" class="dropdown-toggle nav-button" data-toggle="dropdown">Manage Accounts</button>
             <ul class="dropdown-menu">

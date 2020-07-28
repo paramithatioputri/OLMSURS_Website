@@ -109,7 +109,7 @@
     </div>
     <!--/.Carousel Wrapper-->
     <hr style="border: 2px solid;"/>
-    <div>
+    <div id="all-book-container">
     <?php
      foreach($books as $book){ ?>
             <a href="<?= h('books/view/' . $book->book_number)?>">
@@ -198,10 +198,6 @@
         text-align: center;
     }
 
-    #cards-container{
-        text-align: center;
-    }
-
     .card{
         margin: 10px;
         display: inline-block;
@@ -219,8 +215,8 @@
 
     .card:hover{
         border: 2px solid #FFA500;
-        -ms-transform:scale(1.1,1.1);
-        transform:scale(1.1,1.1);
+        -ms-transform:scale(1.05,1.05);
+        transform:scale(1.05,1.05);
         transition: 0.25s;
         color: #000000;
     }
@@ -231,6 +227,7 @@
         padding: 15px;
         border-radius: 25px;
         margin-bottom: 20px;
+        text-align:center;
     }
 
     #book-category-dropdown{
@@ -243,6 +240,10 @@
 
     .card-title{
         font-size: 18px;
+    }
+
+    #all-book-container{
+        text-align: left;
     }
 
 </style>

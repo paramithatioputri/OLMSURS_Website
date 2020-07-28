@@ -53,7 +53,7 @@
                                 <div><b>Author: </b><?= h($book->author) ?></div>
                                 <div><b>Publisher: </b><?= h($book->publisher) ?></div>
                                 <div><b>Availability: </b>
-                                <?php 
+                                <i><?php 
                                 $flag = 0;
                                 foreach($bookCopies as $bookCopy){
                                     if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
@@ -63,9 +63,9 @@
                                         $flag = 1;
                                 }
                                     if($flag == 1){
-                                        echo "On Loan";
+                                        echo "Not available for loan";
                                     }
-                                     ?>
+                                     ?></i>
                                 </div>
                                 <div name="average_rating">
                                     <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
