@@ -31,7 +31,10 @@ $currDate = date("Y-m-d");
         </thead>
         <tbody>
         <?php foreach($borrower_book_statuses as $borrower_book_status){ 
-            if(!empty($borrower_book_status->charge_amount) || date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate){ ?>
+            if(!empty($borrower_book_status->charge_amount) || date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate){ 
+                if($borrower_book_status->charge_amount == 0 && $borrower_book_status->status == "Returned"){
+                    continue;
+                }?>
             <tr>
                 <td></td>
                 <td>
@@ -119,6 +122,7 @@ $currDate = date("Y-m-d");
         
         for(var i = 0; i < totalChargeClass.length; i++){
             if(overdueStat[i].innerHTML != 'Overdue'){
+
                 var chargeAmntCurr = totalChargeClass[i].innerHTML;
                 
                 //Input payable charge amount inside Pay Now Button
@@ -148,6 +152,7 @@ $currDate = date("Y-m-d");
 
         //Set the fines value to Pay Now Button
         payNowBtn.value = chargeArr;
+        console.log(payNowBtn.value);
 
         //Set the color of total charge payable
         var totalPayable = document.getElementById('total-payable');

@@ -635,9 +635,11 @@ class BooksController extends AppController
 
             $finesToBePaidArr = explode(",", $finesToBePaid);
 
-            for($i = 0; $i < count($finesToBePaid); $i++){
-                $fineAndIdArr = explode(" ",$finesToBePaidArr[$i]);
 
+            for($i = 0; $i < count($finesToBePaidArr); $i++){
+
+                $fineAndIdArr = explode(" ",$finesToBePaidArr[$i]);
+                
                 $borrowerPay = $this->BorrowerBookStatus->find()
                 ->where([
                     'BorrowerBookStatus.id' => $fineAndIdArr[1],
@@ -645,8 +647,9 @@ class BooksController extends AppController
                     'BorrowerBookStatus.charge_amount' => $fineAndIdArr[0],
                 ])
                 ->first();
+                
 
-                $borrowerPay->charge_amount = $borrowerPay->charge_amount - $fineAndIdArr[0];
+                $borrowerPay->charge_amount = (int)($borrowerPay->charge_amount - $fineAndIdArr[0]);
 
                 if($this->BorrowerBookStatus->save($borrowerPay)){
                 }
@@ -664,7 +667,6 @@ class BooksController extends AppController
         ->contain(['BookCopies.Books', 'Users'])
         ->where([
             'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
-            //Auth
         ])
         ->toArray();
         $this->set(compact('borrowerBookStatuses'));
