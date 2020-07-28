@@ -571,6 +571,7 @@ class BooksController extends AppController
 
                 $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;
                 $bookRenew->charge_amount = $bookRenew->charge_amount + $bookIdFine[1];
+                $bookRenew->billing_date = $currDate;
 
                 $bookDateDue = date('Y-m-d', strtotime($bookRenew->book_date_due));
                 if($currDate >= $bookDateDue){
@@ -636,6 +637,7 @@ class BooksController extends AppController
             ->first();
 
             $returnThisBook->charge_amount = $returnThisBook->charge_amount + $bookReturnedArr[2];
+            $returnThisBook->billing_date = $currDate;
             $returnThisBook->status = 'Returned';
             $returnThisBook->book_return_date = $currDate;
             $returnThisBook->book_copy->availability_status = 'Available';

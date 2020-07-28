@@ -69,7 +69,7 @@
                 </td>
                 <td><?= isset($borrower_book_status->times_renewed) ? $borrower_book_status->times_renewed : '0' ?> / 2</td>
                 <td><?= h($borrower_book_status->book_date_due) ?></td>
-                <td class="overdue-status"><?= (date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate && $borrower_book_status->status != 'Returned') ? 'Overdue' : '' ?></td>
+                <td class="overdue-status"><?= (date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate && $borrower_book_status->status != 'Returned') ? 'Overdue' : '-' ?></td>
                 <td class="charge-amount" id="<?= $borrower_book_status->id ?>">RM<?= $borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate ? isset($borrower_book_status->charge_amount) ? ($borrower_book_status->charge_amount + (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)
                 : $borrower_book_status->charge_amount
                 ?></td>

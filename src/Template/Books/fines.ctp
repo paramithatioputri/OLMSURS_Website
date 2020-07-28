@@ -3,6 +3,7 @@
 
 <?php echo $this->element('header'); 
 $currDate = date("Y-m-d");
+$billReason = ['Late return of book'];
 ?>
 <h1>About Fines</h1>
 <div class="row">
@@ -36,14 +37,14 @@ $currDate = date("Y-m-d");
                     continue;
                 }?>
             <tr>
-                <td></td>
+                <td><?= h($billReason[0]) ?></td>
                 <td>
                     <p class="tb-cont"><b>Book Call Number: </b><?= h($borrower_book_status->book_call_number) ?></p>
                     <p class="tb-cont"><b>Book Number: </b><?= h($borrower_book_status->book_copy->book->book_number) ?></p>
                     <p class="tb-cont"><b>Book Title: </b><?= h($borrower_book_status->book_copy->book->title) ?></p>
                 </td>
                 <td class="overdue-status"><?= ($borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate) ? 'Overdue' : $borrower_book_status->status ?></td>
-                <td></td>
+                <td><?= isset($borrower_book_status->billing_date) ? $borrower_book_status->billing_date : '-' ?></td>
                 <td class="charge-amount" id="<?= $borrower_book_status->id ?>">RM<?= $borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate ? isset($borrower_book_status->charge_amount) ? ($borrower_book_status->charge_amount + (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)) : (date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1)
                 : $borrower_book_status->charge_amount
                 ?></td>
