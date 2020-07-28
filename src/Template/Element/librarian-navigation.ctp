@@ -114,6 +114,8 @@
             font-weight: bold;
             margin: 0;
             text-decoration: none;
+            -ms-transform: scale(1.0,1.0);
+            transform: scale(1.0,1.0);
         }
 
         .dropdown:hover .dropdown-menu{

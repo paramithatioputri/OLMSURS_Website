@@ -36,7 +36,7 @@
                 <?php foreach ($books as $book): ?>
                 <tr>
                     <td class="wrapper">
-                    <a href="view/<?= $book->book_number ?>">
+                    <a href= "view/<?= $book->book_number ?>">
                         <div class="row">
                             <div class="col-md-6 col-lg-3">
                                 <div>
@@ -53,14 +53,16 @@
                                 <div><b>Author: </b><?= h($book->author) ?></div>
                                 <div><b>Publisher: </b><?= h($book->publisher) ?></div>
                                 <div><b>Availability: </b>
-                                <?php foreach($bookCopies as $bookCopy){
-                                    if($bookCopy->book_number == $book->book_number){
+                                <?php 
+                                $flag = 0;
+                                foreach($bookCopies as $bookCopy){
+                                    if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
                                         echo "Available for Loan";
                                         break;
                                     }
-                                    $flag = 0;
+                                        $flag = 1;
                                 }
-                                    if($flag == 0){
+                                    if($flag == 1){
                                         echo "On Loan";
                                     }
                                      ?>

@@ -68,9 +68,6 @@ class BooksController extends AppController
 
         $bookCopies = $this->BookCopies->find()
         ->contain(['Books'])
-        ->where([
-            'BookCopies.availability_status' => 'Available'
-        ])
         ->toArray();
 
         $query = $this->request->query();
@@ -317,15 +314,59 @@ class BooksController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+
+        $this->loadModel('BookCopies');
+        $this->loadModel('BorrowerBookStatus');
+        $this->loadModel('BorrowerBookRating');
+
         $book = $this->Books->get($id);
+
+        $bookCopies = $this->BookCopies->find()
+        ->where([
+            'BookCopies.book_number' => $id,
+        ])
+        ->toArray();
+
+        foreach($bookCopies as $bookCopy){
+            if($bookCopy->availability_status == "On Loan"){
+                $this->Flash->error(__("The book record cannot be deleted since the copies of this book are still on loan"));
+                return $this->redirect($this->referer());
+                break;
+            }
+        }
+
+        $borrowerBookRatings = $this->BorrowerBookRating->find()
+        ->where([
+            'BorrowerBookRating.book_number' => $id,
+        ])
+        ->toArray();
+
+        $borrowerBookStatuses = $this->BorrowerBookStatus->find()
+        ->contain('BookCopies')
+        ->toArray();
+
 
         $bookUrlExplode = explode('/', $book->book_cover_image);
         $bookImgLocalPath = WWW_ROOT . 'img' . DS . 'book-cover-img' . DS . $bookUrlExplode[6];
 
         if ($this->Books->delete($book)) {
+            //deleting the image from webroot
             if(file_exists($bookImgLocalPath)){
                 unlink($bookImgLocalPath);
             };
+
+            foreach($borrowerBookStatuses as $borrowerBookStatus){
+                if($borrowerBookStatus->book_copy->book_number == $id){
+                    $this->BorrowerBookStatus->delete($borrowerBookStatus);
+                }
+            }
+
+            foreach($bookCopies as $bookCopy){
+                $this->BookCopies->delete($bookCopy);
+            }
+            foreach($borrowerBookRatings as $borrowerBookRating){
+                $this->BorrowerBookRating->delete($borrowerBookRating);
+            }
             $this->Flash->success(__('The book has been deleted.'));
         } else {
             $this->Flash->error(__('The book could not be deleted. Please, try again.'));
@@ -656,7 +697,6 @@ class BooksController extends AppController
             }
             $this->Flash->success(__('The fines have been paid'));
             return $this->redirect($this->referer());
-
         }
 
     }

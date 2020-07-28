@@ -144,8 +144,23 @@ class BookCopiesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $deleteBookCopy = $this->BookCopies->get($id);
+
+        if($deleteBookCopy->availability_status == 'On Loan'){
+            $this->Flash->error(__("This book copy record cannot be deleted since still on loan"));
+            return $this->redirect($this->referer());
+        }
+
+        $this->loadModel('BorrowerBookStatus');
+
+        $borrowerBookStatuses = $this->BorrowerBookStatus->find()
+        ->where(['BorrowerBookStatus.book_call_number' => $id])
+        ->toArray();
         
         if ($this->BookCopies->delete($deleteBookCopy)) {
+            foreach($borrowerBookStatuses as $borrowerBookStatus){
+                $this->BorrowerBookStatus->delete($borrowerBookStatus);
+            }
+            
             $this->Flash->success(__('The book copy has been deleted.'));
         } else {
             $this->Flash->error(__('The book copy could not be deleted. Please, try again.'));
