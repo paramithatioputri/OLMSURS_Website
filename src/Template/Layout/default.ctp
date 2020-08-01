@@ -47,7 +47,6 @@ $cakeDescription = 'Online Library Management System with User Rating System';
     <!-- <link href="rateit.css" rel="stylesheet" type="text/css"> -->
     <!-- <script src="jquery.rateit.js"></script> -->
 
-
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -72,6 +71,11 @@ $cakeDescription = 'Online Library Management System with User Rating System';
         <?= $this->fetch('content') ?>
     </div>
     <footer>
+    <hr/>
+        <div style="margin:2em auto;" class="text-center">
+            <p>Proudly developed by Paramitha Aryananda Tioputri (TP047112) / UC3F1911SE</p>
+            <p>Asia Pacific University of Technology and Innovation</p>
+        </div>
     </footer>
 </body>
 </html>

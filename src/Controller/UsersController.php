@@ -42,5 +42,18 @@ class UsersController extends AppController
         ->first();
 
         $this->set(compact('borrower'));
+
+        if($this->request->is(['patch', 'post', 'put'])){
+            $data = $this->request->getData();
+            $borrower = $this->Users->patchEntity($borrower, $data);
+
+            if($this->Users->save($borrower)){
+                $this->Flash->success(__("The profile info is updated successfully!"));
+                return $this->redirect($this->referer());
+            }
+            $this->Flash->error(__("Fail to update profile info"));
+            return $this->redirect($this->referer());
+
+        }
     }
 }

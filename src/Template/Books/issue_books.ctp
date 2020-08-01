@@ -4,7 +4,6 @@
 
 <?php $currDateTime = date("Y-m-d"); ?>
 
-<h3 class="heading">Issue Book</h3>
 
 <div class="books form content split left">
     <?= $this->Form->create($book) ?>
@@ -44,8 +43,8 @@
 </div>
 <div class="split right">
     <form>
-        <label>Search:</label>
-        <input type="text" placeholder="Enter Borrower ID" name="searchborrower" value="<?= isset($issue_books) ? $issue_books : '' ?>"/>
+        <label for="search-borrower">Search:</label>
+        <input id="search-borrower"type="text" placeholder="Enter Borrower ID" name="searchborrower" value="<?= isset($issue_books) ? $issue_books : '' ?>"/>
         <button class="issue-btn" type="submit">Search</button>
     </form>
     <ul>

@@ -48,7 +48,8 @@ class UsersTable extends Table
         $validator
             ->scalar('user_id')
             ->maxLength('user_id', 14)
-            ->allowEmptyString('user_id', null, 'create');
+            ->requirePresence('user_id', 'create')
+            ->notEmptyString('user_id');
 
         $validator
             ->scalar('first_name')
@@ -86,7 +87,7 @@ class UsersTable extends Table
             ->requirePresence('role', 'create')
             ->notEmptyString('role');
 
-            $validator
+        $validator
             ->scalar('mobile_no')
             ->maxLength('mobile_no', 13)
             ->requirePresence('mobile_no', 'create')

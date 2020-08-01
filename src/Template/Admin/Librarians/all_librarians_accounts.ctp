@@ -3,6 +3,7 @@
 
 <?= $this->element('header'); ?>
 <h3 class="heading">All Librarians' Accounts: <?= h($totLibrarians) ?></h3>
+<hr/>
 
 <form>
     <label>Search: </label>

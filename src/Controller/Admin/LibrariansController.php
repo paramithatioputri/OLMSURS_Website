@@ -327,6 +327,18 @@ class LibrariansController extends AppController
         ->first();
 
         $this->set(compact('borrower'));
+
+        if($this->request->is(['patch', 'post', 'put'])){
+            $data = $this->request->getData();
+            $borrower = $this->Users->patchEntity($borrower, $data);
+            if($this->Users->save($borrower)){
+                $this->Flash->success(__("The profile info is updated successfully!"));
+                return $this->redirect($this->referer());
+            }
+            $this->Flash->error(__("Fail to update profile info"));
+            return $this->redirect($this->referer());
+        }
+
     }
 
     public function viewLibrarianAccount($id=null){
@@ -340,6 +352,18 @@ class LibrariansController extends AppController
         ->first();
 
         $this->set(compact('librarian'));
+        
+        if($this->request->is(['patch', 'post', 'put'])){
+            $data = $this->request->getData();
+            $librarian = $this->Users->patchEntity($librarian, $data);
+            if($this->Users->save($librarian)){
+                $this->Flash->success(__("The profile info is updated successfully!"));
+                return $this->redirect($this->referer());
+            }
+            $this->Flash->error(__("Fail to update profile info"));
+            return $this->redirect($this->referer());
+
+        }
     }
 
     public function personalAccount(){
@@ -352,5 +376,16 @@ class LibrariansController extends AppController
         ->first();
 
         $this->set(compact('librarian'));
+
+        if($this->request->is(['patch', 'post', 'put'])){
+            $data = $this->request->getData();
+            $librarian = $this->Users->patchEntity($librarian, $data);
+            if($this->Users->save($librarian)){
+                $this->Flash->success(__("The profile info is updated successfully!"));
+                return $this->redirect($this->referer());
+            }
+            $this->Flash->error(__("Fail to update profile info"));
+            return $this->redirect($this->referer());
+        }
     }
 }

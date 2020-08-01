@@ -4,7 +4,7 @@
 <?= $this->element('header'); ?>
 
 <h3 class="heading">All Borrowers' Accounts: <?= h($totBorrowers) ?></h3>
-
+<hr/>
 <form>
     <label>Search: </label>
     <div class="search-container">

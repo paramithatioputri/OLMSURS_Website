@@ -4,6 +4,7 @@
 <?php echo $this->element('header'); ?>
 
 <h3 class="heading">Book Borrowing History</h3>
+<hr/>
 
 <div class="card-container">
 <?php if(!empty($borrowerBookStatuses)){

@@ -4,9 +4,10 @@
 $currDate = date("Y-m-d");?>
 
 <h3 class="heading"><?= __('Returning Books') ?></h3>
+<hr/>
 <div>
     <form>
-        <label>Search: </label>
+        <label for="search-return-book">Search: </label>
         <div class="search-container">
             <input autofocus id="search-return-book" type="text" name="borrower_return_q" placeholder="Enter borrower ID" value="<?= isset($return_books) ? $return_books : '' ?>" />
             <button id="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>

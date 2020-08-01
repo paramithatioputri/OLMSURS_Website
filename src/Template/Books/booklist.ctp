@@ -9,9 +9,13 @@
 <!-- <div id="books" class="m-t-1"> -->
     <!-- <div class="container-fluid container-lg"> -->
         <h3 class="heading"><?= __('Booklist') ?></h3>
+        <hr/>
+        <?php if(!empty($auth_user) && $auth_user['role'] === 'librarian'){ ?>
+        <?= $this->Html->link($this->Html->tag('i', ' ', ['class' => 'fa fa-plus' ]) . ' Add New Book', ['controller' => 'books', 'action' => 'add_books'], ['class' => 'btn btn-outline-warning', 'escape' => false]); ?>
+        <?php } ?>
         <div>
             <form>
-                <label>Search:</label>
+                <label for="search-booklist">Search:</label>
                 <div class="search-container">
                     <input id="search-booklist" autofocus type="text" name="query1" placeholder="Insert any keyword" value="<?= isset($booklist) ? $booklist: '' ?>" />
                     <?php
@@ -28,58 +32,65 @@
                 <tr>
                     <th scope="col" id="item">Item</th>
                     <?php if(!empty($auth_user) && $auth_user['role'] === 'librarian'){ ?>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                    <th scope="col">Created By</th>
                     <?php } ?>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($books as $book): ?>
+                <?php foreach ($books as $book):?>
                 <tr>
                     <td class="wrapper">
-                    <a href= "view/<?= $book->book_number ?>">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3">
-                                <div>
-                                <?php if(empty($book->book_cover_image)){ ?>
-                                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
-                                <?php } else{?>
-                                    <?= $this->Html->image(h($book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
-                                <?php }?>
-                                
-                                </div>
-                            </div>
-                            <div class="book-content col-md-6 col-lg-9">
-                                <div><b>Book Title: </b><?= h($book->title) ?></div>
-                                <div><b>Author: </b><?= h($book->author) ?></div>
-                                <div><b>Publisher: </b><?= h($book->publisher) ?></div>
-                                <div><b>Availability: </b>
-                                <i><?php 
-                                $flag = 0;
-                                foreach($bookCopies as $bookCopy){
-                                    if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
-                                        echo "Available for Loan";
-                                        break;
-                                    }
-                                        $flag = 1;
-                                }
-                                    if($flag == 1){
-                                        echo "Not available for loan";
-                                    }
-                                     ?></i>
-                                </div>
-                                <div name="average_rating">
-                                    <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
-                                    <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div>
+                            <?php if(empty($book->book_cover_image)){ ?>
+                                <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
+                            <?php } else{?>
+                                <?= $this->Html->image(h($book->book_cover_image), ['width' => '200', 'class' => 'image']) ?>
+                            <?php }?>
+                            
                             </div>
                         </div>
-                    </a>
+                        <div class="book-content col-md-6 col-lg-9">
+                            <div><b>Book Title: </b><?= h($book->title) ?></div>
+                            <div><b>Author: </b><?= h($book->author) ?></div>
+                            <div><b>Publisher: </b><?= h($book->publisher) ?></div>
+                            <div><b>Availability: </b>
+                            <i><?php 
+                            $flag = 0;
+                            foreach($bookCopies as $bookCopy){
+                                if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
+                                    echo "Available for Loan";
+                                    break;
+                                }
+                                    $flag = 1;
+                            }
+                                if($flag == 1){
+                                    echo "Not available for loan";
+                                }
+                                    ?></i>
+                            </div>
+                            <div name="average_rating">
+                                <input value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
+                                <div class="rateit" data-rateit-backingfld="#<?= h($book->book_number) ?>"></div>
+                            </div>
+                        </div>
+                    </div>
                     </td>
                     <?php if(!empty($auth_user) && $auth_user['role'] === 'librarian'){ ?>
+                    <td>
+                        <?= h($book->user->first_name) ?> <?= h($book->user->last_name) ?>
+                    </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-primary']) ?>
-                        <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-warning']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-danger']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-primary']) ?>
+                        <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-outline-success']) ?>
+                        <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-outline-danger']) ?>
+                    </td>
+                    <?php } else{ ?>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-primary']) ?>
                     </td>
                     <?php } ?>
                 </tr>
@@ -151,6 +162,14 @@
     #search-btn{
         margin-bottom: 20px;
         width: 12em;
+    }
+
+    .btn-outline-warning:hover{
+        color: #FFFFFF;
+    }
+
+    form > label {
+        margin-top: 2em;
     }
 
 </style>

@@ -26,7 +26,11 @@
                             <b style="color: #90949C;">Not rated yet!</b>
                         <?php } ?>
                     </div>
-                    
+                    <div>
+                        <?php if(isset($totalBorrowersRateThisBook) && $totalBorrowersRateThisBook > 0 && $book->average_rating > 0){ ?>
+                            <span class="numberBorrowersRate"><?= h($totalBorrowersRateThisBook) ?> borrowers rated this book.</span>
+                        <?php } ?>
+                    </div>
                 </label>
             </div>
         </div>
@@ -99,5 +103,10 @@
     .num-of-copies{
         text-align: right;
     }
+
+    .numberBorrowersRate{
+        font-weight: bold;
+    }
+
 </style>
 <?php $this->end('css') ?>

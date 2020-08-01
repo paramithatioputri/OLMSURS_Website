@@ -7,6 +7,7 @@ echo $this->element('rate-book-modal', [
 ]); ?>
 
 <h3 class="heading">List of Books to be Rated</h3>
+<hr/>
 
 <div class="card-container">
 <?php if(!empty($borrowerBookRatings)){

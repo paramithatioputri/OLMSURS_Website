@@ -18,7 +18,6 @@
                 </div>
                 <div id="password-input-container">
                     <div>
-                        <!-- <?= $this->Form->input('password', ['type' => 'password', 'min' => 8, 'id' => 'password-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user password', 'label' => '']); ?> -->
                         <input name="password" type="password" min="8" id="password-textbox" class="form-control" placeholder="Enter user password" />
                         <button id="showhide" onclick="toggle_password('password-textbox');" type="button"><i class= "fa fa-eye"></i></button>
                     </div>

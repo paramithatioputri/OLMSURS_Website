@@ -6,6 +6,7 @@
 ?>
 
 <h3 class="heading">Checked out Books</h3>
+<hr/>
 
 <div class="row">
     <div class="col-md-9">

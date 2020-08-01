@@ -7,9 +7,9 @@
 
     $gender = ["Select Gender", "Male", "Female"];
 ?>
-<?= $this->Form->create($borrower, ["enctype" => 'multipart/form-data']);?>
+<?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
-    <legend><?= __('MEMBERSHIP REGISTRATION FORM') ?></legend>
+    <legend><?= __('LIBRARY MEMBERSHIP REGISTRATION FORM') ?></legend>
     <?php
         echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
         echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter your first name"]);
@@ -24,13 +24,11 @@
         <?php
         echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]);
         ?>
-        <div class="form-group">
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                </div>
-                <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
+        <div class="input-group date">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
             </div>
+            <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
         </div>
         <?php
         echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);

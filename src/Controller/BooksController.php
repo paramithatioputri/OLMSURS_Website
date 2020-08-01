@@ -78,7 +78,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Books.book_number LIKE' => '%' . $q . '%',
@@ -94,7 +94,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Books.title LIKE' => '%' . $q . '%',
@@ -106,7 +106,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Books.author LIKE' => '%' . $q . '%',
@@ -118,7 +118,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Subjects.subject_name LIKE' => '%' . $q . '%',
@@ -130,7 +130,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Books.isbn LIKE' => '%' . $q . '%',
@@ -142,7 +142,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages'])
+            ->contain(['Subjects', 'Languages', 'Users'])
             ->where([
                 'OR' => [
                     'Books.book_number LIKE' => '%' . $q . '%',
@@ -151,7 +151,7 @@ class BooksController extends AppController
         }
         else{
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages']);
+            ->contain(['Subjects', 'Languages', 'Users']);
         }
 
         $this->set(compact('books', 'bookCopies'));
@@ -179,7 +179,16 @@ class BooksController extends AppController
         ])
         ->count();
 
-        $this->set(compact('book', 'totalBookCopies'));
+        $this->loadModel('BorrowerBookRating');
+
+        $totalBorrowersRateThisBook = $this->BorrowerBookRating->find()
+        ->where([
+            'BorrowerBookRating.book_number' => $id,
+            'BorrowerBookRating.rating_given > ' => 0,
+        ])
+        ->count();
+
+        $this->set(compact('book', 'totalBookCopies', 'totalBorrowersRateThisBook'));
     }
 
     /**

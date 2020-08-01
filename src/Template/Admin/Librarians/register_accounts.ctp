@@ -9,6 +9,7 @@
 ?>
 
 <h3 class="heading">Register New Account</h3>
+<hr/>
 
 <?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
@@ -27,13 +28,11 @@
         echo $this->Form->control("role", ["type" => 'select', "options" => $role]);
         echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
         ?>
-        <div class="form-group">
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                </div>
-                <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
+        <div class="input-group date">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
             </div>
+            <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
         </div>
         <?php
         echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);

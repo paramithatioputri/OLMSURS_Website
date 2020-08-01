@@ -12,7 +12,7 @@
 <div class="split" id="search-container">
     <div id="search-container1">
         <form>
-            <label>Search:</label>
+            <label for="search-textbox">Search:</label>
             <div id="search-input-container">
                 <input autofocus id="search-textbox" type="text" placeholder="Please insert any keywords to search" name="query1" value="<?= isset($index) ? $index : '' ?>"/>
                 <?php

@@ -6,6 +6,7 @@ $currDate = date("Y-m-d");
 $billReason = ['Late return of book'];
 ?>
 <h1>About Fines</h1>
+<hr/>
 <div class="row">
     <div class="col-md-7">
         <p id="fine-exp">The borrower can only pay the fine once the items borrowed have been returned or renewed.</p>

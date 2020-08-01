@@ -15,10 +15,10 @@
             <?php  }?>
             <div id="greeting-text">
                 <p id="greetings">Welcome, <?= h($auth_user['first_name']) ?> <?= h($auth_user['last_name']) ?>!</p>
-                <p><?= $this->Html->link('Logout', ['controller' => 'home', 'action' => 'logout', 'prefix' => false]); ?></p>
+                <p><?= $this->Html->link('Logout', ['controller' => 'home', 'action' => 'logout', 'prefix' => false], ['class' => 'btn btn-outline-warning']); ?></p>
             </div>
         <?php }else{ ?>
-            <label class="login-register"><?= $this->Html->link('LOGIN',['controller' => 'home', 'action' => 'login']); ?> | <?= $this->Html->link('REGISTER',['controller' => 'home', 'action' => 'self-register']); ?></label>
+            <label class="login-register"><?= $this->Html->link('LOGIN',['controller' => 'home', 'action' => 'login'], ['class' => 'btn btn-outline-warning']); ?> | <?= $this->Html->link('REGISTER',['controller' => 'home', 'action' => 'self-register'], ['class' => 'btn btn-outline-warning']); ?></label>
         <?php } ?>
         <div id="header-top-bg"></div>
     </div>

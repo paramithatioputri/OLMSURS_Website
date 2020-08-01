@@ -3,8 +3,10 @@
 <?= $this->element('header'); ?>
 
 <h3 class="heading"><?= __('Issue Books') ?></h3>
+<hr/>
+
 <div>
-    <label>Search:</label>
+    <label for="search-issue-book">Search:</label>
     <form>
         <div class="search-container">
             <input id="search-issue-book" autofocus type="text" name="searchq" placeholder="Insert book number" value="<?= isset($issue_book_list) ? $issue_book_list: '' ?>" />
