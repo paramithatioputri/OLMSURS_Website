@@ -206,6 +206,7 @@ class BooksController extends AppController
      */
     public function addBooks()
     {
+        $currDate = date("Y-m-d");
         $book = $this->Books->newEntity();
         if ($this->request->is('post')) {
             $book = $this->Books->patchEntity($book, $this->request->getData());
@@ -231,6 +232,7 @@ class BooksController extends AppController
                     if(move_uploaded_file($this->request->data['book_cover_image']['tmp_name'],$uploadfile)){
                         $book->book_cover_image = $url;
                         $book->user_id = $this->Auth->user('user_id');
+                        $book->date_created = $currDate;
                         if ($this->Books->save($book)) {
                             $this->Flash->success(__('The book has been saved.'));
             
@@ -247,6 +249,7 @@ class BooksController extends AppController
                 }
                 else{
                     $book->user_id = $this->Auth->user('user_id');
+                    $book->date_created = $currDate;
                     if ($this->Books->save($book)) {
                         $this->Flash->success(__('The book has been saved.'));
         
@@ -271,6 +274,8 @@ class BooksController extends AppController
      */
     public function updateBooks($id = null)
     {
+        $currDate = date("Y-m-d");
+
         $book = $this->Books->get($id, [
             'contain' => [],
         ]);
@@ -296,6 +301,7 @@ class BooksController extends AppController
                 if(move_uploaded_file($this->request->data['book_cover_image']['tmp_name'],$uploadfile)){
                     $book->book_cover_image = $url;
                     $book->user_id = $this->Auth->user('user_id');
+                    $book->last_modified = $currDate;
                     if ($this->Books->save($book)) {
                         $this->Flash->success(__('The book has been updated successfully.'));
         
@@ -306,6 +312,7 @@ class BooksController extends AppController
             }
             else{
                 $book->user_id = $this->Auth->user('user_id');
+                $book->last_modified = $currDate;
                 if ($this->Books->save($book)) {
                     $this->Flash->success(__('The book has been updated successfully.'));
     

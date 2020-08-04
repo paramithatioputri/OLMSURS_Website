@@ -196,6 +196,7 @@ class LibrariansController extends AppController
         
                         $hasher = new DefaultPasswordHasher();
                         $user->password = $hasher->hash($user->password);
+                        $user->date_created = $currDateTime;
         
                         if($this->Users->save($user)){
                             $this->Flash->success(__('This account has been registered successfully'));
@@ -227,6 +228,7 @@ class LibrariansController extends AppController
     
                     $hasher = new DefaultPasswordHasher();
                     $user->password = $hasher->hash($user->password);
+                    $user->date_created = $currDateTime;
     
                     if($this->Users->save($user)){
 
@@ -317,6 +319,8 @@ class LibrariansController extends AppController
     }
 
     public function viewBorrowerAccount($id=null){
+        $currDateTime = date("Y-m-d");
+
         $this->loadModel('Users');
 
         $borrower = $this->Users->find()
@@ -331,6 +335,8 @@ class LibrariansController extends AppController
         if($this->request->is(['patch', 'post', 'put'])){
             $data = $this->request->getData();
             $borrower = $this->Users->patchEntity($borrower, $data);
+            $borrower->last_modified = $currDateTime;
+
             if($this->Users->save($borrower)){
                 $this->Flash->success(__("The profile info is updated successfully!"));
                 return $this->redirect($this->referer());
@@ -342,6 +348,8 @@ class LibrariansController extends AppController
     }
 
     public function viewLibrarianAccount($id=null){
+        $currDateTime = date("Y-m-d");
+
         $this->loadModel('Users');
 
         $librarian = $this->Users->find()
@@ -356,6 +364,8 @@ class LibrariansController extends AppController
         if($this->request->is(['patch', 'post', 'put'])){
             $data = $this->request->getData();
             $librarian = $this->Users->patchEntity($librarian, $data);
+            $librarian->last_modified = $currDateTime;
+
             if($this->Users->save($librarian)){
                 $this->Flash->success(__("The profile info is updated successfully!"));
                 return $this->redirect($this->referer());
@@ -367,6 +377,8 @@ class LibrariansController extends AppController
     }
 
     public function personalAccount(){
+        $currDateTime = date("Y-m-d");
+
         $this->loadModel('Users');
         $librarian = $this->Users->find()
         ->where([
@@ -380,6 +392,8 @@ class LibrariansController extends AppController
         if($this->request->is(['patch', 'post', 'put'])){
             $data = $this->request->getData();
             $librarian = $this->Users->patchEntity($librarian, $data);
+            $librarian->last_modified = $currDateTime;
+            
             if($this->Users->save($librarian)){
                 $this->Flash->success(__("The profile info is updated successfully!"));
                 return $this->redirect($this->referer());

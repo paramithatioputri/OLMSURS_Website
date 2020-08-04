@@ -34,6 +34,8 @@ class UsersController extends AppController
     }
     
     public function personalAccount(){
+        $currDateTime = date("Y-m-d");
+
         $borrower = $this->Users->find()
         ->where([
             'Users.user_id' => $this->Auth->user('user_id'),
@@ -46,6 +48,7 @@ class UsersController extends AppController
         if($this->request->is(['patch', 'post', 'put'])){
             $data = $this->request->getData();
             $borrower = $this->Users->patchEntity($borrower, $data);
+            $borrower->last_modified = $currDateTime;
 
             if($this->Users->save($borrower)){
                 $this->Flash->success(__("The profile info is updated successfully!"));

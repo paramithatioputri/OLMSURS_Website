@@ -268,6 +268,7 @@ class HomeController extends AppController
                         $hasher = new DefaultPasswordHasher();
                         $user->password = $hasher->hash($user->password);
                         $user->role = 'borrower';
+                        $user->date_created = $currDateTime;
         
                         if($this->Users->save($user)){
                             $this->Flash->success(__('Your account has been registered successfully'));
@@ -295,6 +296,7 @@ class HomeController extends AppController
                     $hasher = new DefaultPasswordHasher();
                     $user->password = $hasher->hash($user->password);
                     $user->role = 'borrower';
+                    $user->date_created = $currDateTime;
     
                     if($this->Users->save($user)){
                         $this->Flash->success(__('Your account has been registered successfully'));
