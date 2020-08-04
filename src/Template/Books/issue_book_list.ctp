@@ -2,7 +2,7 @@
 <?= $this->Html->css('button-custom.css');?>
 <?= $this->element('header'); ?>
 
-<h3 class="heading"><?= __('Issue Books') ?></h3>
+<h3 class="heading"><?= __('Issue Book List') ?></h3>
 <hr/>
 
 <div>

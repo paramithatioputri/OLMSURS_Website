@@ -42,7 +42,7 @@
                 <tr>
                     <td class="wrapper">
                     <div class="row">
-                        <div class="col-md-6 col-lg-3">
+                        <div class="col-md-6">
                             <div>
                             <?php if(empty($book->book_cover_image)){ ?>
                                 <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '200', 'class' => 'image']) ?>
@@ -52,23 +52,23 @@
                             
                             </div>
                         </div>
-                        <div class="book-content col-md-6 col-lg-9">
+                        <div class="book-content col-md-6">
                             <div><b>Book Title: </b><?= h($book->title) ?></div>
                             <div><b>Author: </b><?= h($book->author) ?></div>
                             <div><b>Publisher: </b><?= h($book->publisher) ?></div>
                             <div><b>Availability: </b>
                             <i><?php 
-                            $flag = 0;
-                            foreach($bookCopies as $bookCopy){
-                                if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
-                                    echo "Available for Loan";
-                                    break;
-                                }
-                                    $flag = 1;
-                            }
-                                if($flag == 1){
-                                    echo "Not available for loan";
-                                }
+                            // $flag = 0;
+                            // foreach($bookCopies as $bookCopy){
+                            //     if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
+                            //         echo "Available for Loan";
+                            //         break;
+                            //     }
+                            //         $flag = 1;
+                            // }
+                            //     if($flag == 1){
+                            //         echo "Not available for loan";
+                            //     }
                                     ?></i>
                             </div>
                             <div name="average_rating">
@@ -83,14 +83,14 @@
                         <?= h($book->user->first_name) ?> <?= h($book->user->last_name) ?>
                     </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-primary']) ?>
-                        <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-outline-success']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
+                        <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                         <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-outline-danger']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-outline-warning']) ?>
                     </td>
                     <?php } else{ ?>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-primary']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                     </td>
                     <?php } ?>
                 </tr>

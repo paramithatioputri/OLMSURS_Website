@@ -188,7 +188,15 @@ class BooksController extends AppController
         ])
         ->count();
 
-        $this->set(compact('book', 'totalBookCopies', 'totalBorrowersRateThisBook'));
+        $borrowerRatings = $this->BorrowerBookRating->find()
+        ->contain('Users', 'Books')
+        ->where([
+            'BorrowerBookRating.book_number' => $id,
+            'BorrowerBookRating.rating_given >' => 0, 
+        ])
+        ->toArray();
+
+        $this->set(compact('book', 'borrowerRatings', 'totalBookCopies', 'totalBorrowersRateThisBook'));
     }
 
     /**
@@ -738,6 +746,7 @@ class BooksController extends AppController
 
         if($this->request->is('post')){
             $data = $this->request->getData();
+
             if(empty($data['rating_given'])){
                 $this->Flash->error(__('The book is not rated yet'));
                 return $this->redirect($this->referer());
@@ -752,6 +761,7 @@ class BooksController extends AppController
             ->first();
 
             $ratedBook->rating_given = $data['rating_given'];
+            $ratedBook->comment = $data['comment'];
 
             if($this->BorrowerBookRating->save($ratedBook)){
                 //Update the average rating of the book

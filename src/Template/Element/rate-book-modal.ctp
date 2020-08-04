@@ -21,9 +21,11 @@
             <?= $this->Form->create($rateBook, ['controller' => 'books', 'action' => 'rate_books/' . $borrowerBookRating->user_id]) ?>
             <div class="modal-body">
                 <div style="text-align:center">
-                    <input name="rating_given" value="<?= h($borrowerBookRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" id="<?= h($borrowerBookRating->rating_id) ?>">
+                    <input required name="rating_given" value="<?= h($borrowerBookRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" id="<?= h($borrowerBookRating->rating_id) ?>">
                     <div class="rateit" data-rateit-backingfld="#<?= h($borrowerBookRating->rating_id) ?>"></div>
                 </div>
+                <label for="borrower-comment"><b>Comment:</b></label>
+                <textarea class="form-control" id="borrower-comment" name="comment" ></textarea>
                 <p>Your honest rating will be very helpful for future borrowers in searching the right books</p>
             </div>
             <div class="modal-footer" id="btn-container">
@@ -70,6 +72,9 @@
         margin: auto;
     }
 
+    #borrower-comment{
+        margin-bottom: 1em;
+    }
 
 </style>
 <?php $this->end('css') ?>

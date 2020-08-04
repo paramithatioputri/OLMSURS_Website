@@ -5,7 +5,7 @@
     $currDate = date("Y-m-d");
 ?>
 
-<h3 class="heading">Checked out Books</h3>
+<h3 class="heading">Checked-out Books</h3>
 <hr/>
 
 <div class="row">

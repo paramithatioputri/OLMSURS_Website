@@ -78,10 +78,56 @@
             <label><?= !empty($totalBookCopies) ? $totalBookCopies : '0' ?></label>
         </div>
     </div>
-    <div>
+    <div id="synopsis">
         <h4><?= __('Synopsis') ?></h4>
-        <?= $this->Text->autoParagraph(h($book->synopsis)); ?>
+        <?php
+            if(!empty($book->synopsis)){ ?>
+                <?= $this->Text->autoParagraph(h($book->synopsis)); ?>
+            <?php }else{ ?>
+            <div>
+                <p class="text-center no-synopsis">The synopsis of this book is not available</p>
+            </div>
+         <?php   }
+        ?>
+        
     </div>
+    <h4 id="comments">Comments</h4>
+    
+    <?php if(!empty($borrowerRatings)){
+    foreach($borrowerRatings as $borrowerRating){ ?>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-">
+                <?php if(empty($borrowerRating->user->profile_image)){ 
+                    if($borrowerRating->user->gender == "Male"){?>
+                        <?= $this->Html->image('../img/no-profile-male.jpg', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
+                    <?php } else if($borrowerRating->user->gender == "Female"){ ?>
+                        <?= $this->Html->image('../img/no-profile-female.jpg', ['alt' => 'no-profile-female', 'class' => 'profile-image']); ?>
+                    <?php
+                    }}else{ ?>
+                    <?= $this->Html->image(h($borrowerRating->user->profile_image), ['alt' => 'profile-image', 'class' => 'profile-image']); ?>
+                <?php } ?>
+                </div>
+                <div class="col-">
+                    <p class="borrower-name"><?= h($borrowerRating->user->first_name) ?> <?= h($borrowerRating->user->last_name) ?></p>
+                    <input value="<?= h($borrowerRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($borrowerRating->user_id) ?>">
+                    <div class="rateit" data-rateit-backingfld="#<?= h($borrowerRating->user_id) ?>"></div>
+                </div>
+            </div>
+            <?php if(!empty($borrowerRating->comment)){ ?>
+                <p class="comment-exist"><i class="fa fa-quote-left" aria-hidden="true"></i> <?= h($borrowerRating->comment) ?> <i class="fa fa-quote-right" aria-hidden="true"></i></p>
+            <?php } else{ ?>
+                <p class="no-comment">No comments available</p>
+            <?php } ?>
+        </div>
+    </div>
+    <?php }}else{ ?>
+        <div class="text-center">
+            <p class="no-comment">No comments available</p>
+        </div>
+        
+    <?php } ?>
 </div>
 
 <?php $this->append('css') ?>
@@ -108,5 +154,34 @@
         font-weight: bold;
     }
 
+    #synopsis{
+        margin-bottom: 8em;
+    }
+
+    .borrower-name {
+        margin-bottom: 0;
+        font-weight: bold;
+    }
+
+    .card{
+        margin-bottom: 1em;
+    }
+
+    .no-comment, .no-synopsis{
+        color: grey;
+        font-style: italic;
+    }
+
+    .profile-image{
+        padding: 0;
+        margin-right: 10px;
+        width:2.5em;
+        height:2.5em;
+        border-radius: 50%;
+    }
+
+    .fa-quote-left, .fa-quote-right{
+        color: #FFA500;
+    }
 </style>
 <?php $this->end('css') ?>
