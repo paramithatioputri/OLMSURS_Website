@@ -4,7 +4,8 @@
 <?php echo $this->element('header'); 
 echo $this->element('rate-book-modal', [
     'borrowerBookRatings' => $borrowerBookRatings,
-]); ?>
+]);
+?>
 
 <h3 class="heading">List of Books to be Rated</h3>
 <hr/>
@@ -34,6 +35,13 @@ foreach($borrowerBookRatings as $borrowerBookRating){ ?>
                 <div class="col-md-2 book-btn">
                 <?php if(!empty($borrowerBookRating->rating_given)){ ?>
                     <button class="rate-book-btn no-transform" disabled><i class="fa fa-check"></i> Rated</button>
+                    <div>
+                    <?= $this->Form->create('delete-rating', ['controller' => 'books', 'action' => 'delete_borrower_rating']); ?>
+                        <button name="rating-id-deleted" value="<?= $borrowerBookRating->rating_id ?>" class="delete-icon float-right"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <?= $this->Form->end(); ?>
+                    <button class="update-icon float-right" data-toggle="modal" data-target="#rateBookModalCenter<?= $borrowerBookRating->rating_id ?>"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    </div>
+                    
                 <?php } else{ ?>
                     <button class="rate-book-btn" data-toggle="modal" data-target="#rateBookModalCenter<?= $borrowerBookRating->rating_id ?>">Rate Book</button>
                 <?php  }?>
@@ -84,9 +92,35 @@ foreach($borrowerBookRatings as $borrowerBookRating){ ?>
 
     .card{
         margin: 15px 0;
-        text-align: center;
     }
 
+    .update-icon, .delete-icon{
+        padding: 0;
+        width: 2.5em;
+        margin-top: 10px;
+    }
+
+    .update-icon{
+        background-color: #45B6FE;
+    }
+
+    .delete-icon{
+        background-color: #FF2300;
+    }
+
+    .update-icon:hover{
+        background-color: #037EFA;
+    }
+
+    .delete-icon:hover{
+        background-color: #BF0000;
+    }
+
+    .update-icon:hover, .delete-icon:hover{
+        font-weight: normal;
+        -ms-transform:scale(1.0,1.0);
+        transform:scale(1.0,1.0);
+    }
 
 </style>
 <?php $this->end('css') ?>

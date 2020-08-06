@@ -58,17 +58,18 @@
                             <div><b>Publisher: </b><?= h($book->publisher) ?></div>
                             <div><b>Availability: </b>
                             <i><?php 
-                            // $flag = 0;
-                            // foreach($bookCopies as $bookCopy){
-                            //     if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
-                            //         echo "Available for Loan";
-                            //         break;
-                            //     }
-                            //         $flag = 1;
-                            // }
-                            //     if($flag == 1){
-                            //         echo "Not available for loan";
-                            //     }
+                            $flag = 0;
+                            foreach($bookCopies as $bookCopy){
+                                if($bookCopy->book_number == $book->book_number && $bookCopy->availability_status == "Available"){
+                                    echo "Available for Loan";
+                                    $flag = 0;
+                                    break;
+                                }
+                                    $flag = 1;
+                            }
+                                if($flag == 1){
+                                    echo "Not available for loan";
+                                }
                                     ?></i>
                             </div>
                             <div name="average_rating">

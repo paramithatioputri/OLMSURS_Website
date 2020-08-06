@@ -40,7 +40,7 @@ class BooksController extends AppController
         if($this->request->action === 'checkout'
         || $this->request->action === 'viewBookBorrowingHistory'
         || $this->request->action === 'rateBooks'
-        || $this->request->action === 'fines')
+        || $this->request->action === 'deleteBorrowerRating')
         {
             return true;
         }
@@ -49,7 +49,8 @@ class BooksController extends AppController
         || $this->request->action === 'delete'
         || $this->request->action === 'returnBooks'
         || $this->request->action === 'issueBookList'
-        || $this->request->action === 'issueBooks'){
+        || $this->request->action === 'issueBooks'
+        || $this->request->action === 'fines'){
             if($user['role'] === 'librarian'){
 
                 return true;
@@ -279,6 +280,8 @@ class BooksController extends AppController
         $book = $this->Books->get($id, [
             'contain' => [],
         ]);
+
+        $bookImagePath = $book->book_cover_image;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Deleting the image from the webroot
@@ -799,6 +802,52 @@ class BooksController extends AppController
                 if($this->Books->save($bookAverageRating)){
                     $this->Flash->success(__('The book has been rated successfully'));
                     return $this->redirect($this->referer());
+                }
+            }
+        }
+    }
+
+    public function deleteBorrowerRating(){
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+
+            $this->loadModel('BorrowerBookRating');
+
+            $ratingDeleted = $this->BorrowerBookRating->get($data);
+
+            $ratingDeleted->rating_given = '';
+            $ratingDeleted->comment = '';
+
+            if($this->BorrowerBookRating->save($ratingDeleted)){
+                //Update the average rating of the book
+                $bookAverageRating = $this->Books->find()
+                ->where([
+                    'book_number' => $ratingDeleted['book_number'],
+                ])
+                ->first();
+
+
+                $calcBookAvgs= $this->BorrowerBookRating->find()
+                ->where([
+                    'book_number' => $ratingDeleted['book_number'],
+                ])
+                ->toArray();
+
+                //Calculate the average rating of the book
+                $count = 0;
+                foreach($calcBookAvgs as $calcBookAvg){
+                    if(!empty($calcBookAvg->rating_given)){
+                        $total += $calcBookAvg->rating_given;
+                        $count++;
+                    }
+                }
+                $avg = $total/$count;
+
+                $bookAverageRating->average_rating = $avg;
+                
+                if($this->Books->save($bookAverageRating)){
+                    $this->Flash->success(__('The rating has been deleted successfully'));
+                    return $this->redirect(['controller' => 'books', 'action' => 'rate_books']);
                 }
             }
         }

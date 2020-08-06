@@ -1,6 +1,5 @@
 <!-- Modal -->
-<?php foreach($borrowerBookRatings as $borrowerBookRating){
-    if(empty($borrowerBookRating->rating_given)){ ?>
+<?php foreach($borrowerBookRatings as $borrowerBookRating){ ?>
     <div class="modal fade" id="rateBookModalCenter<?= $borrowerBookRating->rating_id ?>" >
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -25,7 +24,7 @@
                     <div class="rateit" data-rateit-backingfld="#<?= h($borrowerBookRating->rating_id) ?>"></div>
                 </div>
                 <label for="borrower-comment"><b>Comment:</b></label>
-                <textarea class="form-control" id="borrower-comment" name="comment" ></textarea>
+                <textarea class="form-control borrower-comment" name="comment"><?= h($borrowerBookRating->comment) ?></textarea>
                 <p>Your honest rating will be very helpful for future borrowers in searching the right books</p>
             </div>
             <div class="modal-footer" id="btn-container">
@@ -35,7 +34,7 @@
         </div>
     </div>
     </div>
-<?php } } ?>
+<?php  } ?>
 
 <?php $this->append('css') ?>
 <style>
@@ -78,3 +77,14 @@
 
 </style>
 <?php $this->end('css') ?>
+
+<?php $this->append('script') ?>
+<script>
+    // $(document).ready(function(){
+    //     var borrowerComments = document.getElementsByClassName('borrower-comment');
+    //     for(var i = 0; i < borrowerComments.length; i++){
+    //         console.log(borrowerComments.value);
+    //     }
+    // });
+</script>
+<?php $this->end('script') ?>

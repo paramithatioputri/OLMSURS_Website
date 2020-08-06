@@ -58,7 +58,6 @@ foreach($borrowerBookStatuses as $borrowerBookStatus){ ?>
     
     .card{
         margin: 15px 0;
-        text-align: center;
     }
 
     .book-container p {

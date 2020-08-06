@@ -19,6 +19,7 @@
     </div>
     <div class="col-md-3" style="text-align:right;">
         <p id="total-fines"><b>Your Fines: RM0</b></p>
+        <p><b>Total payable now: </b><label id ="total-payable"></label></p>
     </div>
 </div>
 
@@ -193,6 +194,8 @@
         var totalChargeClass = document.getElementsByClassName('charge-amount');
         var totalFines = 0;
         var totFinesLimitDec = 0;
+        var totalCharges = 0;
+        var totChargesLimitDec = 0;
 
         for(var i = 0; i < totalChargeClass.length; i++){
             var fineCurr = totalChargeClass[i].innerHTML;
@@ -204,6 +207,31 @@
         var finesDisplay = document.getElementById('total-fines');
         finesDisplay.innerHTML = "Your Fines: RM" + totFinesLimitDec;
         finesDisplay.style.fontWeight = 'bold';
+
+        //Function to get the total payable fines
+        var overdueStat = document.getElementsByClassName('overdue-status');
+
+        for(var i = 0; i < totalChargeClass.length; i++){
+            if(overdueStat[i].innerHTML != 'Overdue'){
+
+                var chargeAmntCurr = totalChargeClass[i].innerHTML;
+
+                //Remove letters from string
+                var chargeAmnt = chargeAmntCurr.replace("RM", "");
+                
+                //to get the total charge amount
+                totalCharges = parseFloat(totalCharges) + parseFloat(chargeAmnt);
+                totChargesLimitDec = totalCharges.toFixed(2);
+            }
+            
+        }
+        console.log(totChargesLimitDec);
+
+        //Set the color of total charge payable
+        var totalPayable = document.getElementById('total-payable');
+        totalPayable.innerHTML = "RM" + totChargesLimitDec;
+        totalPayable.style.color = 'red';
+        totalPayable.style.fontWeight = 'bold';
     });
 </script>
 <?php $this->end('script') ?>

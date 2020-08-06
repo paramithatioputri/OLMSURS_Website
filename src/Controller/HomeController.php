@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Routing\Router;
+use Cake\Mailer\Email;
 
 /**
  * Home Controller
@@ -14,6 +15,8 @@ use Cake\Routing\Router;
  */
 class HomeController extends AppController
 {
+    public $components = array("Email");
+
     public function beforeFilter(){
 
         $this->Auth->allow([
@@ -271,8 +274,17 @@ class HomeController extends AppController
                         $user->date_created = $currDateTime;
         
                         if($this->Users->save($user)){
-                            $this->Flash->success(__('Your account has been registered successfully'));
-                            return $this->redirect(['controller' => 'home', 'action' => 'login']);
+                            $to = $user->email_address;
+                            $subject = 'Hi buddy';
+                            $message = 'Just test out my Email Component using PHPMailer.';
+                            try{
+                                $mail = $this->Email->send_mail($to, $subject, $message);
+                                $this->Flash->success(__('Your account has been registered successfully'));
+                                return $this->redirect(['controller' => 'home', 'action' => 'login']);
+                            }
+                            catch(Exception $e){
+                                echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+                            }
                         }
                         else{
                             $this->Flash->error(__("Fail to register"));
@@ -307,7 +319,6 @@ class HomeController extends AppController
                         return $this->redirect($this->referer());
                     }
                 }
-
                 
             }
             
