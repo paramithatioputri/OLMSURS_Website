@@ -23,7 +23,7 @@
                     <input required name="rating_given" value="<?= h($borrowerBookRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" id="<?= h($borrowerBookRating->rating_id) ?>">
                     <div class="rateit" data-rateit-backingfld="#<?= h($borrowerBookRating->rating_id) ?>"></div>
                 </div>
-                <label for="borrower-comment"><b>Comment:</b></label>
+                <label for="borrower-comment"><b>Review:</b></label>
                 <textarea class="form-control borrower-comment" name="comment"><?= h($borrowerBookRating->comment) ?></textarea>
                 <p>Your honest rating will be very helpful for future borrowers in searching the right books</p>
             </div>
@@ -77,14 +77,3 @@
 
 </style>
 <?php $this->end('css') ?>
-
-<?php $this->append('script') ?>
-<script>
-    // $(document).ready(function(){
-    //     var borrowerComments = document.getElementsByClassName('borrower-comment');
-    //     for(var i = 0; i < borrowerComments.length; i++){
-    //         console.log(borrowerComments.value);
-    //     }
-    // });
-</script>
-<?php $this->end('script') ?>

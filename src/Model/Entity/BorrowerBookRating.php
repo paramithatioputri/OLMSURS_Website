@@ -29,5 +29,6 @@ class BorrowerBookRating extends Entity
         'user_id' => true,
         'book_number' => true,
         'rating_given' => true,
+        'comment' => true,
     ];
 }

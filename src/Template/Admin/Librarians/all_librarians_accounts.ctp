@@ -51,7 +51,7 @@
                 </div>
             </td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view_librarian_account', $librarian->user_id],['class' => 'button btn btn-primary']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view_librarian_account', $librarian->user_id],['class' => 'button btn btn-outline-warning']) ?>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -120,6 +120,10 @@
 
     .about-librarian{
         margin: 0;
+    }
+
+    .btn-outline-warning:hover{
+        color: #FFFFFF;
     }
 </style>
 <?php $this->end('css') ?>

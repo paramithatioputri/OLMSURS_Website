@@ -197,7 +197,65 @@ class BooksController extends AppController
         ])
         ->toArray();
 
-        $this->set(compact('book', 'borrowerRatings', 'totalBookCopies', 'totalBorrowersRateThisBook'));
+        $rateThisBook = $this->BorrowerBookRating->find()
+        ->where([
+            'BorrowerBookRating.book_number' => $id,
+            'BorrowerBookRating.user_id' => $this->Auth->user('user_id'),
+        ])
+        ->first();
+
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+
+            if(empty($rateThisBook)){
+                $rateThisBook = $this->BorrowerBookRating->newEntity();
+                $rateThisBook = $this->BorrowerBookRating->patchEntity($rateThisBook, $data);
+                $rateThisBook->user_id = $this->Auth->user('user_id');
+                if(!$this->BorrowerBookRating->save($rateThisBook)){
+                    $this->Flash->error(__('Fail to rate this book!'));
+                    return $this->redirect($this->referer());
+                }
+            }
+            else if(!empty($rateThisBook) && ($rateThisBook->rating_given == 0 || empty($rateThisBook->rating_given))){
+                $rateThisBook = $this->BorrowerBookRating->patchEntity($rateThisBook, $data);
+                if(!$this->BorrowerBookRating->save($rateThisBook)){
+                // calculate the new average rating
+                    $this->Flash->error(__('Fail to rate this book!'));
+                    return $this->redirect($this->referer());
+                }
+            }
+            //Update the average rating of the book
+            $bookAverageRating = $this->Books->find()
+            ->where([
+                'book_number' => $data['book_number'],
+            ])
+            ->first();
+
+            $calcBookAvgs= $this->BorrowerBookRating->find()
+            ->where([
+                'book_number' => $data['book_number'],
+            ])
+            ->toArray();
+
+            //Calculate the average rating of the book
+            $count = 0;
+            foreach($calcBookAvgs as $calcBookAvg){
+                if(!empty($calcBookAvg->rating_given)){
+                    $total += $calcBookAvg->rating_given;
+                    $count++;
+                }
+            }
+            $avg = $total/$count;
+
+            $bookAverageRating->average_rating = $avg;
+            
+            if($this->Books->save($bookAverageRating)){
+                $this->Flash->success(__('The book has been rated successfully!'));
+                return $this->redirect($this->referer());
+            }
+        }
+
+        $this->set(compact('book', 'borrowerRatings', 'totalBookCopies', 'totalBorrowersRateThisBook', 'rateThisBook'));
     }
 
     /**
@@ -847,7 +905,7 @@ class BooksController extends AppController
                 
                 if($this->Books->save($bookAverageRating)){
                     $this->Flash->success(__('The rating has been deleted successfully'));
-                    return $this->redirect(['controller' => 'books', 'action' => 'rate_books']);
+                    return $this->redirect($this->referer());
                 }
             }
         }

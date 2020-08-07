@@ -52,7 +52,7 @@
                 </div>
             </td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view_borrower_account', $borrower->user_id],['class' => 'button btn btn-primary']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view_borrower_account', $borrower->user_id],['class' => 'button btn btn-outline-warning']) ?>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -121,6 +121,10 @@
 
     .about-borrower{
         margin: 0;
+    }
+
+    .btn-outline-warning:hover{
+        color: #FFFFFF;
     }
 </style>
 <?php $this->end('css') ?>
