@@ -487,6 +487,8 @@ class BooksController extends AppController
     }
 
     public function issueBooks($id=null){
+        $currDate = date("Y-m-d");
+        
         $bookAvailabilityStatus = ['Available', 'On Loan'];
         $status = ['Place Hold', 'Checked Out', 'Returned', 'Overdue'];
 
@@ -538,6 +540,7 @@ class BooksController extends AppController
 
             $borrower_issue_book = $this->BorrowerBookStatus->patchEntity($borrower_issue_book, $data);
             $borrower_issue_book->status = $status[1];
+            $borrower_issue_book->book_checkout_date = $currDate;
 
             if(empty($data['book_date_due'])){
                 $this->Flash->error(__('Please enter the due date for returning the book'));

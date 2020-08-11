@@ -147,7 +147,6 @@ class LibrariansController extends AppController
         if($this->request->is('post')){
             $user->account_status = 'active';
             $user = $this->Users->patchEntity($user, $this->request->getData());
-
             $userId = $this->Users->find()
             ->where([
                 'user_id' => $user->user_id
@@ -182,7 +181,6 @@ class LibrariansController extends AppController
                             $this->Flash->error(__("Please select a gender!"));
                             return $this->redirect($this->referer());
                         }
-
                         if($user->role == 1){
                             $user->role = "librarian";
                         }
@@ -193,7 +191,6 @@ class LibrariansController extends AppController
                             $this->Flash->error(__("Please select a role!"));
                             return $this->redirect($this->referer());
                         }
-        
                         $hasher = new DefaultPasswordHasher();
                         $user->password = $hasher->hash($user->password);
                         $user->date_created = $currDateTime;
@@ -223,6 +220,17 @@ class LibrariansController extends AppController
                     }
                     else{
                         $this->Flash->error(__("Please select the gender!"));
+                        return $this->redirect($this->referer());
+                    }
+
+                    if($user->role == 1){
+                        $user->role = "librarian";
+                    }
+                    else if($user->role == 2){
+                        $user->role = "borrower";
+                    }
+                    else{
+                        $this->Flash->error(__("Please select a role!"));
                         return $this->redirect($this->referer());
                     }
     

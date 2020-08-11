@@ -3,11 +3,7 @@
 
 <?= $this->element('header'); ?>
 
-<?php
-
-    $gender = ["Select Gender", "Male", "Female"];
-?>
-<?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
+<?= $this->Form->create($user, ["enctype" => 'multipart/form-data', "id" => "form"]);?>
 <fieldset>
     <legend><?= __('LIBRARY MEMBERSHIP REGISTRATION FORM') ?></legend>
     <?php
@@ -31,7 +27,11 @@
             <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
         </div>
         <?php
-        echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);
+        echo $this->Form->control("gender", ["type" => "select", "options" => [
+            "" => "Select Gender",
+            "1" => "Male",
+            "2" => "Female"
+        ]]);
         echo $this->Form->control("profile_image", ["type" => "file", "accept" => "image/png, image/jpg, image/jpeg"]);
         echo $this->Form->button(__('Register'), ['id' => "register-btn"]);
     ?>
@@ -99,5 +99,6 @@
             todayHighlight: true,
         });
     });
+
 </script>
 <?php $this->end('script') ?>

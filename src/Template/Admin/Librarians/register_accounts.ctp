@@ -4,7 +4,6 @@
 <?= $this->element('header'); ?>
 
 <?php
-    $gender = ["Select Gender", "Male", "Female"];
     $role = ["Select Role", "Librarian", "Borrower"];
 ?>
 
@@ -25,7 +24,11 @@
         ?>
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         <?php
-        echo $this->Form->control("role", ["type" => 'select', "options" => $role]);
+        echo $this->Form->control("role", ["type" => "select", "options" => [
+            "" => "Select Role",
+            "1" => "Librarian",
+            "2" => "Borrower"
+        ]]);
         echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
         ?>
         <div class="input-group date">
@@ -35,7 +38,11 @@
             <?= $this->Form->control('date_of_birth', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
         </div>
         <?php
-        echo $this->Form->control("gender", ["type" => "select", "options" => $gender]);
+        echo $this->Form->control("gender", ["type" => "select", "options" => [
+            "" => "Select Gender",
+            "1" => "Male",
+            "2" => "Female"
+        ]]);
         echo $this->Form->control("profile_image", ["type" => "file", "accept" => "image/png, image/jpg, image/jpeg"]);
         echo $this->Form->button(__('Register'), ['id' => "register-btn"]);
     ?>

@@ -54,7 +54,7 @@ foreach($borrowerBookRatings as $borrowerBookRating){ ?>
     <div class="card-container">
         <div class="card" id="no-book-found">
             <div class="card-body">
-                <h5 class="card-title">You have not borrowed any books from the library</h5>
+                <h5 class="card-title">You have not either borrowed or rated any books from the library</h5>
             </div>
         </div>
     </div>
