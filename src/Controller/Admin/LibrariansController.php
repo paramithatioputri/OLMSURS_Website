@@ -38,6 +38,7 @@ class LibrariansController extends AppController
         || $this->request->action === 'viewLibrarianAccount'
         || $this->request->action === 'allLibrariansAccounts'
         || $this->request->action === 'allBorrowersAccounts'
+        || $this->request->action === 'changePassword'
         )
         {
             if($user['role'] === 'librarian'){
@@ -263,7 +264,6 @@ class LibrariansController extends AppController
 
     }
 
-
     public function allBorrowersAccounts(){
         $query = $this->request->query();
 
@@ -409,5 +409,9 @@ class LibrariansController extends AppController
             $this->Flash->error(__("Fail to update profile info"));
             return $this->redirect($this->referer());
         }
+    }
+
+    public function changePassword(){
+        dd("Hei");
     }
 }

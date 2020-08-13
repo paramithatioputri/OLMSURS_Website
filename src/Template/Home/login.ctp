@@ -10,7 +10,7 @@
             <div class="form-group input-container">
                 <label for="userId-textbox" class="login-input-label">User ID:</label>
                 <!-- <?= $this->Form->input('user_id', ['autofocus', 'type' => 'text', 'id' => 'userId-textbox', 'class' => 'form-control', 'placeholder' => 'Enter user ID', 'label' => '']); ?> -->
-                <input name="user_id" autofocus type="text" id="userId-textbox" class="form-control" placeholder="Enter user ID" />
+                <input name="user_id" autofocus type="text" id="userId-textbox" class="form-control" placeholder="Enter user ID" required />
             </div>
             <div class="form-group input-container">
                 <div>
@@ -18,7 +18,7 @@
                 </div>
                 <div id="password-input-container">
                     <div>
-                        <input name="password" type="password" min="8" id="password-textbox" class="form-control" placeholder="Enter user password" />
+                        <input name="password" type="password" min="8" id="password-textbox" class="form-control" placeholder="Enter user password" required />
                         <button id="showhide" onclick="toggle_password('password-textbox');" type="button"><i class= "fa fa-eye"></i></button>
                     </div>
                 </div>

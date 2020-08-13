@@ -7,7 +7,7 @@
     <legend><?= __('Update Book') ?></legend>
     <?php
         echo $this->Form->control('book_number', ['type' => 'text', 'autofocus']);
-        echo $this->Form->control('isbn', ['type' => 'text']);
+        echo $this->Form->control('isbn', ['type' => 'text', 'label' => 'ISBN']);
         echo $this->Form->control('title', ['type' => 'text']);
         echo $this->Form->control('author', ['type' => 'text']);
         echo $this->Form->control('publisher', ['type' => 'text']);

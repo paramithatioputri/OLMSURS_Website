@@ -11,7 +11,7 @@
       </div>
       <?= $this->Form->create($addBookCopy, ['controller' => 'book_copies', 'action' => 'add_book_copies/' . $book->book_number]) ?>
         <div class="modal-body">
-        <?= $this->Form->input("book_call_number", ['type' => 'text']) ?>
+        <?= $this->Form->input("book_call_number", ['type' => 'text', 'required']) ?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Close</button>

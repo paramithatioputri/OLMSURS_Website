@@ -29,7 +29,7 @@
         <?php foreach ($bookCopies as $bookCopy): ?>
         <tr>
             <td>
-                <p><?= $this->Html->link($bookCopy->book_call_number, ['controller' => 'Books', 'action' => 'issue_books', $bookCopy->book_call_number]) ?></p>
+                <p><?= $this->Html->link($bookCopy->book_call_number, ['controller' => 'Books', 'action' => 'issue_books', $bookCopy->book_call_number], ['class' => 'book-copy-link']) ?></p>
             </td>
             <td>
                 <p><?= h($bookCopy->book_number) ?></p>
@@ -73,6 +73,15 @@
 #search-btn{
     margin-bottom: 20px;
     width: 10em;
+}
+
+.book-copy-link{
+    color: #0000EE;
+}
+
+.book-copy-link:hover{
+    color: #0000EE;
+    text-decoration: underline;
 }
 
 </style>

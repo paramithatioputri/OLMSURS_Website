@@ -95,6 +95,14 @@ class BooksTable extends Table
             ->integer('num_of_pages')
             ->allowEmptyString('num_of_pages');
 
+        $validator
+            ->scalar('subject_id')
+            ->notEmptyString('subject_id');
+
+        $validator
+            ->scalar('language_id')
+            ->allowEmptyString('language_id');
+
         // $validator
         //     ->numeric('average_rating')
         //     ->allowEmptyString('average_rating');
@@ -104,13 +112,13 @@ class BooksTable extends Table
             ->allowEmptyString('synopsis');
 
 
-        // $validator
-        //     ->dateTime('date_created')
-        //     ->notEmptyDateTime('date_created');
+        $validator
+            ->dateTime('date_created')
+            ->notEmptyDateTime('date_created');
 
-        // $validator
-        //     ->dateTime('last_modified')
-        //     ->allowEmptyDateTime('last_modified');
+        $validator
+            ->dateTime('last_modified')
+            ->allowEmptyDateTime('last_modified');
 
         return $validator;
     }

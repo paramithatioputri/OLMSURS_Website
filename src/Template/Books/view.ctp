@@ -187,7 +187,7 @@
     <div class="text-center">
         <p class="no-comment">No reviews available</p>
     </div>
-        
+    <hr/>
     <?php } ?>
     <?php if($auth_user['role'] === 'borrower' && (empty($rateThisBook) || empty($rateThisBook->rating_given) || $rateThisBook->rating_given == 0)){ ?>
     <div class="card">
@@ -350,6 +350,7 @@
     textarea{
         width: 100%;
     }
+
 </style>
 <?php $this->end('css') ?>
 

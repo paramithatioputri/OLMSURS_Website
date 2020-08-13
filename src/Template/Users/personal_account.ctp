@@ -27,15 +27,15 @@
     <?php
         echo $this->Form->create("UpdatePersonalAccount");
         echo $this->Form->control("user_id", ["disabled", "value" => $borrower->user_id, "type" => "text", "class" =>"form-update", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
-        echo $this->Form->control("first_name", ["type" => "text", "value" => $borrower->first_name, "class" =>"form-update", "placeholder" => "Enter your first name"]);
-        echo $this->Form->control("last_name", ["type" => "text", "value" => $borrower->last_name, "class" =>"form-update", "placeholder" => "Enter your last name"]);
-        echo $this->Form->control("email_address", ["type" => "email", "value" => $borrower->email_address, "class" =>"form-update", "placeholder" => "Enter your email address"]); 
-        echo $this->Form->control("mobile_no", ["type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]); ?>
+        echo $this->Form->control("first_name", ["type" => "text", "value" => $borrower->first_name, "class" =>"form-update", "placeholder" => "Enter your first name", "required"]);
+        echo $this->Form->control("last_name", ["type" => "text", "value" => $borrower->last_name, "class" =>"form-update", "placeholder" => "Enter your last name", "required"]);
+        echo $this->Form->control("email_address", ["type" => "email", "value" => $borrower->email_address, "class" =>"form-update", "placeholder" => "Enter your email address", "required"]); 
+        echo $this->Form->control("mobile_no", ["type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number", "required"]); ?>
         <div class="input-group date form-update">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
             </div>
-            <?= $this->Form->control('date_of_birth', ['type' => 'text', "value" => date("Y-m-d", strtotime($borrower->date_of_birth)), 'class' => 'form-control datepicker', "class" =>"form-update", 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
+            <?= $this->Form->control('date_of_birth', ['type' => 'text', "value" => date("Y-m-d", strtotime($borrower->date_of_birth)), 'class' => 'form-control datepicker', "class" =>"form-update", 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob', "required"]); ?>
         </div>
         <div class="form-group form-update">
             <label>Gender</label>

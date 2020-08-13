@@ -349,7 +349,7 @@ class HomeController extends AppController
 
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error(__("Invalid user ID and password. Please try again!"));
+            $this->Flash->error(__("Invalid user ID or password. Please try again!"));
         }
     }
 

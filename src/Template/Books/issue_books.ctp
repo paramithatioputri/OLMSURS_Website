@@ -32,7 +32,7 @@
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
-                        <?= $this->Form->control('book_date_due', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter the due date','id' => 'datepicker2']); ?>
+                        <?= $this->Form->control('book_date_due', ['type' => 'text', 'class' => 'form-control datepicker', 'placeholder' => 'Enter the due date','id' => 'datepicker2', 'required']); ?>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,7 @@ $currDate = date("Y-m-d");?>
 <div>
     <p>Borrower ID: <?= h($borrower->user_id) ?></p>
     <p>Borrower Name: <?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
-    <p>Total Fines: <a href="fines/<?= $borrower->user_id ?>"><b>RM</b><label id="total-fines"><b><?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></label></a></p>
+    <p>Total Fines: <a id="total-fines-id" href="fines/<?= $borrower->user_id ?>"><b>RM</b><label id="total-fines"><b><?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></label></a></p>
     <p>Books Taken: <?= isset($borrower->num_of_books_taken) ? $borrower->num_of_books_taken : '0' ?></p>
 </div>
 <?php if(!empty($borrowerTransacts)){ ?>
@@ -140,6 +140,11 @@ $currDate = date("Y-m-d");?>
         color: #000000;
     }
 
+    #total-fines-id{
+        color: #0000EE;
+        text-decoration: underline;
+    }
+
 
 </style>
 <?php $this->end('css') ?>
@@ -167,8 +172,8 @@ $(document).ready(function(){
         var finesDisplay = document.getElementById('total-fines');
         finesDisplay.innerHTML = totFinesLimitDec;
         finesDisplay.style.fontWeight = 'bold';
-
-        
+        finesDisplay.style.textDecoration = 'underline';
+        finesDisplay.style.color = '#0000EE';
 });
 </script>
 <?php $this->end('script') ?>

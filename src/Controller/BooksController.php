@@ -269,7 +269,6 @@ class BooksController extends AppController
         $book = $this->Books->newEntity();
         if ($this->request->is('post')) {
             $book = $this->Books->patchEntity($book, $this->request->getData());
-
             $bookNumber = $this->Books->find()
             ->where([
                 'Books.book_number' => $book->book_number
@@ -488,7 +487,7 @@ class BooksController extends AppController
 
     public function issueBooks($id=null){
         $currDate = date("Y-m-d");
-        
+
         $bookAvailabilityStatus = ['Available', 'On Loan'];
         $status = ['Place Hold', 'Checked Out', 'Returned', 'Overdue'];
 
@@ -554,7 +553,7 @@ class BooksController extends AppController
             ->first();
 
             if($bookCopy->availability_status == $bookAvailabilityStatus[1]){
-                $this->Flash->error(__("This book is loaned by another borrower"));
+                $this->Flash->error(__("This book is loaned to another borrower"));
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
 
@@ -592,8 +591,8 @@ class BooksController extends AppController
                 return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
             }
             else{
-                $this->Flash->error(__("Fail to issue the book"));
-                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+                $this->Flash->error(__("Fail to issue the book. Please insert all the fields before issuing the book!"));
+                return $this->redirect($this->referer());
             }
 
             
@@ -653,8 +652,9 @@ class BooksController extends AppController
                 }
 
                 if($bookRenew->times_renewed >= 2){
-                    $this->Flash->error(__('Times renewed of these books have reached the limit'));
-                    return $this->redirect($this->referer());
+                    // $this->Flash->error(__('Times renewed of these books have reached the limit'));
+                    continue;
+                    // return $this->redirect($this->referer());
                 }
 
                 $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;
@@ -670,8 +670,10 @@ class BooksController extends AppController
                 }
 
                 if($this->BorrowerBookStatus->save($bookRenew)){
+                    $flag = 0;
                 }
             }
+
             $this->Flash->success(__("The books selected have been renewed"));
             return $this->redirect($this->referer());
         }

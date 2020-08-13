@@ -92,8 +92,22 @@ class BookCopiesController extends AppController
         $bookAvailabilityStatus = ['Available', 'On Loan'];
 
         $addBookCopy = $this->BookCopies->newEntity();
+
+
         if ($this->request->is('post')) {
-            $addBookCopy = $this->BookCopies->patchEntity($addBookCopy, $this->request->getData());
+            $data = $this->request->getData();
+            $bookCopy = $this->BookCopies->find()
+            ->where([
+                'book_call_number' => $data['book_call_number'],
+            ])
+            ->first();
+
+            if(!empty($bookCopy)){
+                $this->Flash->error(__("Fail to save the copy. The book copy already exists"));
+                return $this->redirect($this->referer());
+            }
+
+            $addBookCopy = $this->BookCopies->patchEntity($addBookCopy, $data);
             $addBookCopy->book_call_number = strtolower($this->request->data['book_call_number']);
             
             $addBookCopy->book_number = $id;
