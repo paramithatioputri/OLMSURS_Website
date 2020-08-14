@@ -568,7 +568,7 @@ class BooksController extends AppController
 
             if($borrower->num_of_books_taken >= 5){
                 $this->Flash->error(__("You have borrowed 5 books or more"));
-                return $this->redirect(['controller' => 'books', 'action' => 'issue_book_list']);
+                return $this->redirect($this->referer());
             }
 
             $borrower->num_of_books_taken = $borrower->num_of_books_taken + 1;
@@ -594,7 +594,6 @@ class BooksController extends AppController
                 $this->Flash->error(__("Fail to issue the book. Please insert all the fields before issuing the book!"));
                 return $this->redirect($this->referer());
             }
-
             
         } 
 

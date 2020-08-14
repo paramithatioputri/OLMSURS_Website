@@ -11,7 +11,7 @@
       </div>
       <?= $this->Form->create($addBookCopy, ['controller' => 'book_copies', 'action' => 'add_book_copies/' . $book->book_number]) ?>
         <div class="modal-body">
-        <?= $this->Form->input("book_call_number", ['type' => 'text', 'required']) ?>
+        <?= $this->Form->input("book_call_number", ['type' => 'text', 'required', 'id' => 'book-copy-input']) ?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Close</button>
@@ -42,7 +42,17 @@
       transition: 0;
     }
 
-
-
 </style>
 <?php $this->end('css') ?>
+
+<?php $this->append('script') ?>
+<script>
+    //Validate user input to ensure only input letter and numeric characters
+    $(function(){
+      $('#book-copy-input').keyup(function(){
+        var element = document.getElementById('book-copy-input');
+        element.value = element.value.replace(/[^a-zA-Z0-9@]+/, '');
+      });
+    })
+</script>
+<?php $this->end('script') ?>

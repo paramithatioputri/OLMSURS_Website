@@ -13,7 +13,7 @@
 <?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
 <fieldset>
     <?php
-        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "placeholder" => "Enter the user ID", "label" => "User ID"]);
+        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "pattern" => "\d*", "minlength" => 14, "maxlength" => 14, "title" => "Accept number format only, with length 14", "placeholder" => "Enter the user ID", "label" => "User ID"]);
         echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter the first name"]);
         echo $this->Form->control("last_name", ["type" => "text", "placeholder" => "Enter the last name"]);
         echo $this->Form->control("email_address", ["type" => "email", "placeholder" => "Enter the email address"]);

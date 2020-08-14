@@ -30,7 +30,7 @@
                         <div>
                         <?php if(empty($librarian->profile_image)){ 
                             if($librarian->gender == "Male"){?>
-                                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
+                                <?= $this->Html->image('../img/no-profile-male.png', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
                             <?php } else if($librarian->gender == "Female"){ ?>
                                 <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '200', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
                             <?php
@@ -42,10 +42,6 @@
                     <div class="librarian-content col-md-7">
                         <p class="about-librarian"><b>Librarian ID: </b><?= h($librarian->user_id) ?></p>
                         <p class="about-librarian"><b>Librarian Name: </b><?= h($librarian->first_name) ?> <?= h($librarian->last_name) ?></p>
-                        <!-- <p><b>Email Address: </b><?= h($librarian->email_address) ?></p>
-                        <p><b>Date of Birth: </b><?= h($librarian->date_of_birth) ?></p>
-                        <p><b>Account Status: </b><?= h($librarian->account_status) ?></p>
-                        <p><b>Mobile Number: </b><?= h($librarian->mobile_no) ?></p> -->
                         <p class="about-librarian"><b>Gender: </b><?= h($librarian->gender) ?></p>
                     </div>
                 </div>

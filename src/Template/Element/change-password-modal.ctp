@@ -10,9 +10,9 @@
         </button>
       </div>
       <?php if($auth_user['role'] == 'librarian'){ ?>
-      <?= $this->Form->create('changePassword', ['controller' => 'librarians', 'action' => 'change_password'], ['id' => 'changePasswordForm']) ?>
+      <?= $this->Form->create('changePassword', ['controller' => 'librarians', 'action' => 'change_password', 'id' => 'changePasswordForm']) ?>
       <?php }else{ ?>
-      <?= $this->Form->create('changePassword', ['controller' => 'users', 'action' => 'change_password'], ['id' => 'changePasswordForm']) ?>
+      <?= $this->Form->create('changePassword', ['controller' => 'users', 'action' => 'change_password', 'id' => 'changePasswordForm']) ?>
       <?php } ?>
         <div class="modal-body">
         <?= $this->Form->control("Old Password", ['type' => 'password', 'required', 'placeholder' => 'Enter the old password', 'id' => 'old-password']) ?>
@@ -60,7 +60,7 @@
 <script>
     $(document).ready(function(){
 
-        $("form").submit(function(e){
+        $("#changePasswordForm").submit(function(e){
             if($("#old-password").val() == $("#new-password").val()){
                 alert("The old and new password should not be homogeneous");
                 e.preventDefault(e);

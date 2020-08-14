@@ -39,6 +39,7 @@
         <tbody>
         <?= $this->Form->create('renewBooks', ['id' => 'renew-book']) ?>
         <?= $this->Form->end() ?>
+        <fieldset id= "checkArray">
         <?php foreach($borrower_book_statuses as $borrower_book_status){
             if($borrower_book_status->status == 'Checked Out' && date('Y-m-d', strtotime($borrower_book_status->book_date_due)) < $currDate){
                 $overdueCharge = date_diff(date_create($borrower_book_status->book_date_due),date_create($currDate))->format('%a') * 0.1;
@@ -49,7 +50,11 @@
             ?>
             <tr class="hide-returned-books <?= $borrower_book_status->status ?>">
                 <td>
+                <?php if($borrower_book_status->times_renewed == 2){ ?>
+                    <?= $this->Form->control('id', ['class' => 'select-this', 'type' => 'checkbox', 'value' => $borrower_book_status->id . " " . $overdueCharge, 'label' => '', 'disabled']) ?>
+                <?php }else{ ?>
                     <?= $this->Form->control('id', ['class' => 'select-this', 'type' => 'checkbox', 'value' => $borrower_book_status->id . " " . $overdueCharge, 'label' => '']) ?>
+                <?php } ?>
                 </td>
                 <td>
                     <div class="row">
@@ -77,6 +82,7 @@
                 ?></td>
             </tr>
         <?php } ?>
+        </fieldset>
         </tbody>
     </table>
 </div>
@@ -156,7 +162,12 @@
         if(elem.checked){
             for (var i = 0; i < items.length; i++) {
             if (items[i].type == 'checkbox')
-                items[i].checked = true;
+                if(items[i].disabled){
+                    items[i].checked = false;
+                }
+                else{
+                    items[i].checked = true;
+                }
             }
         }
         else{
@@ -178,11 +189,20 @@
                 bookArr.push(checkbox[i].value);
             }
         }
-        selectedBooks.setAttribute('name', 'id');
-        selectedBooks.setAttribute('value', bookArr);
-        form.appendChild(selectedBooks);
 
-        form.submit();
+        //Check if no books selected
+        if(bookArr === undefined || bookArr.length == 0){
+            //Prevent Submitting form if no books selected to be renewed
+            alert("Select any books to be renewed");
+            event.preventDefault();
+        }
+        else{
+            selectedBooks.setAttribute('name', 'id');
+            selectedBooks.setAttribute('value', bookArr);
+            form.appendChild(selectedBooks);
+
+            form.submit();
+        }
     }
 
     $(document).ready(function(){
@@ -225,13 +245,26 @@
             }
             
         }
-        console.log(totChargesLimitDec);
 
         //Set the color of total charge payable
         var totalPayable = document.getElementById('total-payable');
         totalPayable.innerHTML = "RM" + totChargesLimitDec;
         totalPayable.style.color = 'red';
         totalPayable.style.fontWeight = 'bold';
+
+        //Disable Select All checkbox and Renew button if no books can be renewed
+        var flag = 0;
+        $(".select-this").each(function(){
+            if(!$(this).is(":disabled")){
+                flag = 1;
+                return false;
+            }
+        });
+        
+        if(flag == 0){
+            $("#select-all").prop('disabled',true);
+            $('#renew-btn').prop('disabled',true);
+        }
     });
 </script>
 <?php $this->end('script') ?>

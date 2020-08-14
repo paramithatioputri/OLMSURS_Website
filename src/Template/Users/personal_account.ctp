@@ -14,7 +14,7 @@
     <div class="image-container">
         <?php if(empty($borrower->profile_image)){ 
             if($borrower->gender == "Male"){?>
-                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '300', 'alt' => 'no-profile-male', 'class' => 'image']); ?>
+                <?= $this->Html->image('../img/no-profile-male.png', ['width' => '300', 'alt' => 'no-profile-male', 'class' => 'image']); ?>
             <?php } else if($borrower->gender == "Female"){ ?>
                 <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '300', 'alt' => 'no-profile-female', 'class' => 'image']); ?>
             <?php

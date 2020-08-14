@@ -17,11 +17,27 @@
             <h3 class="book-content"><b><?= h($borrowerBookRating->book->title) ?></b></h3>
             <p class="book-content"><b>Book Number: </b><?= h($borrowerBookRating->book_number) ?></p>
             <p class="book-content"><b>Author: </b><?= h($borrowerBookRating->book->author) ?></p>
-            <?= $this->Form->create($rateBook, ['controller' => 'books', 'action' => 'rate_books/' . $borrowerBookRating->user_id]) ?>
+            <?= $this->Form->create($rateBook, ['controller' => 'books', 'action' => 'rate_books/' . $borrowerBookRating->user_id, 'id' => 'rateForm' . $borrowerBookRating->rating_id]) ?>
             <div class="modal-body">
                 <div style="text-align:center">
-                    <input required name="rating_given" value="<?= h($borrowerBookRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" id="<?= h($borrowerBookRating->rating_id) ?>">
-                    <div class="rateit" data-rateit-backingfld="#<?= h($borrowerBookRating->rating_id) ?>"></div>
+                    <input name="rating_given" value="<?= h($borrowerBookRating->rating_given) ?>" min="0" max="5" value="0" step="0.1" id="borrower-rating-<?= h($borrowerBookRating->rating_id) ?>">
+                    <div class="rateit" data-rateit-backingfld="#borrower-rating-<?= h($borrowerBookRating->rating_id) ?>"></div>
+                    <p class="rating-required" id="rating-required-<?= $borrowerBookRating->rating_id ?>"></p>
+                    <?php $this->append('script') ?>
+                    <script>
+                        $(document).ready(function(){
+                            var ratingFromBorrower = document.getElementById('borrower-rating-<?= $borrowerBookRating->rating_id ?>');
+                            var ratingRequiredMsg = document.getElementById('rating-required-<?= $borrowerBookRating->rating_id ?>');
+
+                            $('#rateForm<?= $borrowerBookRating->rating_id ?>').submit(function(e){
+                                if(ratingFromBorrower.value == 0){
+                                    ratingRequiredMsg.innerHTML = "* Please give the rating";
+                                    e.preventDefault(e);
+                                }
+                            });
+                        });
+                    </script>
+                    <?php $this->end('script') ?>
                 </div>
                 <label for="borrower-comment"><b>Review:</b></label>
                 <textarea class="form-control borrower-comment" name="comment"><?= h($borrowerBookRating->comment) ?></textarea>
@@ -73,6 +89,14 @@
 
     #borrower-comment{
         margin-bottom: 1em;
+    }
+
+    .rating-required{
+        margin: 0;
+        padding-left: 1em;
+        color: red;
+        font-style: italic;
+        font-weight: bold;
     }
 
 </style>

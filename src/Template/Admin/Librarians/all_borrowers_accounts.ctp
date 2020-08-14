@@ -30,7 +30,7 @@
                         <div>
                         <?php if(empty($borrower->profile_image)){ 
                             if($borrower->gender == "Male"){?>
-                                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
+                                <?= $this->Html->image('../img/no-profile-male.png', ['width' => '200', 'alt' => 'no-profile-male', 'class' => "image"]); ?>
                             <?php } else if($borrower->gender == "Female"){ ?>
                                 <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '200', 'alt' => 'no-profile-female', 'class' => "image"]); ?>
                             <?php
@@ -43,10 +43,6 @@
                     <div class="borrower-content col-md-7">
                         <p class="about-borrower"><b>Borrower ID: </b><?= h($borrower->user_id) ?></p>
                         <p class="about-borrower"><b>Borrower Name: </b><?= h($borrower->first_name) ?> <?= h($borrower->last_name) ?></p>
-                        <!-- <p class="about-borrower"><b>Email Address: </b><?= h($borrower->email_address) ?></p>
-                        <p class="about-borrower"><b>Date of Birth: </b><?= h($borrower->date_of_birth) ?></p>
-                        <p class="about-borrower"><b>Account Status: </b><?= h($borrower->account_status) ?></p>
-                        <p class="about-borrower"><b>Mobile Number: </b><?= h($borrower->mobile_no) ?></p> -->
                         <p class="about-borrower"><b>Gender: </b><?= h($borrower->gender) ?></p>
                     </div>
                 </div>

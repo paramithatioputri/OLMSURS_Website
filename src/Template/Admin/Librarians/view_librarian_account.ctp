@@ -9,7 +9,7 @@
     <div class="image-container">
         <?php if(empty($librarian->profile_image)){ 
             if($librarian->gender == "Male"){?>
-                <?= $this->Html->image('../img/no-profile-male.jpg', ['width' => '300', 'alt' => 'no-profile-male', 'class' => 'image']); ?>
+                <?= $this->Html->image('../img/no-profile-male.png', ['width' => '300', 'alt' => 'no-profile-male', 'class' => 'image']); ?>
             <?php } else if($librarian->gender == "Female"){ ?>
                 <?= $this->Html->image('../img/no-profile-female.jpg', ['width' => '300', 'alt' => 'no-profile-female', 'class' => 'image']); ?>
             <?php
@@ -24,15 +24,15 @@
     <?php
         echo $this->Form->create("UpdatePersonalAccount");
         echo $this->Form->control("user_id", ["disabled", "value" => $librarian->user_id, "type" => "text", "class" =>"form-update", "placeholder" => "Enter your librarian ID", "label" => "Librarian ID"]);
-        echo $this->Form->control("first_name", ["type" => "text", "value" => $librarian->first_name, "class" =>"form-update", "placeholder" => "Enter your first name"]);
-        echo $this->Form->control("last_name", ["type" => "text", "value" => $librarian->last_name, "class" =>"form-update", "placeholder" => "Enter your last name"]);
-        echo $this->Form->control("email_address", ["type" => "email", "value" => $librarian->email_address, "class" =>"form-update", "placeholder" => "Enter your email address"]); 
-        echo $this->Form->control("mobile_no", ["type" => "text", "value" => $librarian->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]); ?>
+        echo $this->Form->control("first_name", ["required", "type" => "text", "value" => $librarian->first_name, "class" =>"form-update", "placeholder" => "Enter your first name"]);
+        echo $this->Form->control("last_name", ["required", "type" => "text", "value" => $librarian->last_name, "class" =>"form-update", "placeholder" => "Enter your last name"]);
+        echo $this->Form->control("email_address", ["required", "type" => "email", "value" => $librarian->email_address, "class" =>"form-update", "placeholder" => "Enter your email address"]); 
+        echo $this->Form->control("mobile_no", ["required", "type" => "text", "value" => $librarian->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]); ?>
         <div class="input-group date form-update">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
             </div>
-            <?= $this->Form->control('date_of_birth', ['type' => 'text', "value" => date("Y-m-d", strtotime($librarian->date_of_birth)), 'class' => 'form-control datepicker', "class" =>"form-update", 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
+            <?= $this->Form->control('date_of_birth', ["required", 'type' => 'text', "value" => date("Y-m-d", strtotime($librarian->date_of_birth)), 'class' => 'form-control datepicker', "class" =>"form-update", 'placeholder' => 'Enter your date of birth','id' => 'datepickerDob']); ?>
         </div>
         <div class="form-group form-update">
             <label>Gender</label>

@@ -7,7 +7,7 @@
 <fieldset>
     <legend><?= __('LIBRARY MEMBERSHIP REGISTRATION FORM') ?></legend>
     <?php
-        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "title" => "Accept number format only, with length 14", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
+        echo $this->Form->control("user_id", ["autofocus", "type" => "text", "pattern" => "\d*", "minlength" => 14, "maxlength" => 14, "title" => "Accept number format only, with length 14", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
         echo $this->Form->control("first_name", ["type" => "text", "placeholder" => "Enter your first name"]);
         echo $this->Form->control("last_name", ["type" => "text", "placeholder" => "Enter your last name"]);
         echo $this->Form->control("email_address", ["type" => "email", "placeholder" => "Enter your email address"]);

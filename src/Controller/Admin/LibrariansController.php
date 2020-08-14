@@ -307,7 +307,7 @@ class LibrariansController extends AppController
             ->where([
                 'Users.role' => 'librarian',
                 'OR' => [
-                    'Librarians.user_id LIKE ' => '%' . $q . '%',
+                    'Users.user_id LIKE ' => '%' . $q . '%',
                 ]
             ]);
         }else{
