@@ -62,7 +62,7 @@
         echo $this->Form->end(); 
         ?>
         <div id="changePassword-container">
-        <button id="changePasswordBtn" data-toggle="modal" data-target="#changePasswordModalCenter"><i class="fa fa-lock"></i> Change Password</button>
+            <button id="changePasswordBtn" data-toggle="modal" data-target="#changePasswordModalCenter"><i class="fa fa-lock"></i> Change Password</button>
         </div>
 </div>
 

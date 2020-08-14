@@ -1,6 +1,8 @@
 <?= $this->Html->css('page-config.css'); ?>
 <?= $this->Html->css('button-custom.css');?>
 
+<?= $this->element('change-password-modal')?>
+
 <?php echo $this->element('header');
     $genders = ["Select Gender", "Male", "Female"];
 ?>
@@ -56,10 +58,14 @@
         echo $this->Form->button(__("UPDATE PROFILE"), ['id' => "update-profile-btn"]);
         ?>
         </div>
-        
         <?php
         echo $this->Form->end(); 
         ?>
+
+        <div id="changePassword-container">
+            <button id="changePasswordBtn" data-toggle="modal" data-target="#changePasswordModalCenter"><i class="fa fa-lock"></i> Change Password</button>
+        </div>
+
 </div>
 
 <?php $this->append('css')?>
@@ -88,6 +94,31 @@
 
     .datepicker {
         width: 500px;
+    }
+
+    #changePasswordBtn, .fa-lock{
+        color: #0000EE;
+    }
+
+    #changePassword-container{
+        margin: 1.5em auto;
+        text-align: right;
+    }
+
+    #changePasswordBtn{
+        width: 10em;
+        text-align: right;
+        background-color: transparent;
+        font-size: 1em;
+        padding: 0;
+    }
+
+    #changePasswordBtn:hover{
+        text-decoration: underline;
+        font-weight: normal;
+        -ms-transform:scale(1.0,1.0);
+        transform:scale(1.0,1.0);
+        transition: 0;
     }
 </style>
 <?php $this->end('css')?>

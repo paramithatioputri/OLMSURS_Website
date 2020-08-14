@@ -100,5 +100,18 @@
         });
     });
 
+    $(function(){
+        $("form").submit(function(e){
+            if($("#password").val().length < 6){
+              alert("The password entered must be at least 6 characters long");
+                e.preventDefault(e);
+            }
+            else if($("#password").val() !== $("#confirmpassword").val()){
+              alert("The password entered does not match!");
+                e.preventDefault(e);
+            }
+        });
+    });
+
 </script>
 <?php $this->end('script') ?>

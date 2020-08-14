@@ -9,13 +9,17 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <?= $this->Form->create('changePassword', ['controller' => 'librarian', 'action' => 'change_password']) ?>
+      <?php if($auth_user['role'] == 'librarian'){ ?>
+      <?= $this->Form->create('changePassword', ['controller' => 'librarians', 'action' => 'change_password'], ['id' => 'changePasswordForm']) ?>
+      <?php }else{ ?>
+      <?= $this->Form->create('changePassword', ['controller' => 'users', 'action' => 'change_password'], ['id' => 'changePasswordForm']) ?>
+      <?php } ?>
         <div class="modal-body">
-        <?= $this->Form->control("Old Password", ['type' => 'password', 'required', 'placeholder' => 'Enter the old password']) ?>
-        <?php echo $this->Form->control("password", ["type" => "password", "placeholder" => "Enter the new password", "id" => "password", "oninput" => "checkPasswordMismatch(),checkPasswordLen()", 'required', 'label' => 'New Password']);?>
+        <?= $this->Form->control("Old Password", ['type' => 'password', 'required', 'placeholder' => 'Enter the old password', 'id' => 'old-password']) ?>
+        <?php echo $this->Form->control("password", ["type" => "password", "placeholder" => "Enter the new password", "id" => "new-password", "oninput" => "checkPasswordMismatch(),checkPasswordLen()", 'required', 'label' => 'New Password']);?>
         <p class="checkPassword" id="checkPasswordLen"></p>
         <?php
-        echo $this->Form->control("confirm_password", ["type" => "password", "placeholder" => "Re-enter the new password", "id" => "confirmpassword", "oninput" => "checkPasswordMismatch()", 'required', 'label' => 'Confirm New Password']);
+        echo $this->Form->control("confirm_password", ["type" => "password", "placeholder" => "Re-enter the new password", "id" => "confirm-new-password", "oninput" => "checkPasswordMismatch()", 'required', 'label' => 'Confirm New Password']);
         ?>
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         </div>
@@ -54,10 +58,28 @@
 
 <?php $this->append('script') ?>
 <script>
-    function checkPasswordMismatch(){
-        var password = document.getElementById("password").value;
+    $(document).ready(function(){
 
-        var confirmPassword = document.getElementById("confirmpassword").value;
+        $("form").submit(function(e){
+            if($("#old-password").val() == $("#new-password").val()){
+                alert("The old and new password should not be homogeneous");
+                e.preventDefault(e);
+            }
+            else if($("#new-password").val().length < 6){
+                alert("The password entered must be at least 6 characters long");
+                e.preventDefault(e);
+            }
+            else if($("#new-password").val() !== $("#confirm-new-password").val()){
+                alert("The password entered does not match!");
+                e.preventDefault(e);
+            }
+        });
+    });
+
+    function checkPasswordMismatch(){
+        var password = document.getElementById("new-password").value;
+
+        var confirmPassword = document.getElementById("confirm-new-password").value;
         if(password == "" || confirmPassword == ""){
             document.getElementById("checkPasswordMismatch").innerHTML = "";
         }
@@ -72,9 +94,14 @@
     }
 
     function checkPasswordLen(){
-        var password = document.getElementById("password").value;
-        var passwordLen = password.length;
-        if(passwordLen < 6){
+        var oldPassword = document.getElementById('old-password').value;
+        var newPassword = document.getElementById("new-password").value;
+        var passwordLen = newPassword.length;
+        if(oldPassword == newPassword){
+            document.getElementById("checkPasswordLen").innerHTML = "<i class='fa fa-times' aria-hidden='true'></i>The old and new password should not be homogeneous";
+            document.getElementById("checkPasswordLen").style.color = "red";
+        }
+        else if(passwordLen < 6){
             document.getElementById("checkPasswordLen").innerHTML = "<i class='fa fa-times' aria-hidden='true'></i>The password must be at least 6 characters long";
             document.getElementById("checkPasswordLen").style.color = "red";
         }
@@ -82,7 +109,6 @@
             document.getElementById("checkPasswordLen").innerHTML = "<i class='fa fa-check' aria-hidden='true'></i>The password can be used!";
             document.getElementById("checkPasswordLen").style.color = "#4CAF50";
         }
-
     }
 </script>
 <?php $this->end('script') ?>

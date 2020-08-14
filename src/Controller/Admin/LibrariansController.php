@@ -412,6 +412,35 @@ class LibrariansController extends AppController
     }
 
     public function changePassword(){
-        dd("Hei");
+        $data = $this->request->getData();
+
+        $user = $this->Auth->user();
+        if($this->request->is('post')){
+            if($user){
+                $this->loadModel('Users');
+
+                $user = $this->Users->find()
+                ->where([
+                    'Users.user_id' => $user['user_id']
+                ])
+                ->first();
+
+                $hasher = new DefaultPasswordHasher();
+                if($hasher->check($data["Old_Password"], $user['password'])){
+                    if($data["Old_Password"] == $data["password"]){
+                        $this->Flash->error(__("The old and new password should not be homogeneous"));
+                        return $this->redirect($this->referer());
+                    }
+                    $user = $this->Users->patchEntity($user, ['password' => $hasher->hash($data['password'])]);
+                    if($this->Users->save($user)){
+                        $this->Flash->success(__("The password has been changed successfully"));
+                        return $this->redirect($this->referer());
+                    }
+                }
+                $this->Flash->error(__("The old password entered is incorrect!"));
+                return $this->redirect($this->referer());
+            }
+           
+        }
     }
 }

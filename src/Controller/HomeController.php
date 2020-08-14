@@ -330,13 +330,8 @@ class HomeController extends AppController
         if($this->request->is('post')){
 
             $user = $this->Auth->identify();
+            // dd($user);
             if($user){
-                $this->loadModel('Users');
-                $user = $this->Users->find()
-                ->where([
-                    'Users.user_id' => $user['user_id']
-                ])
-                ->first();
                 $this->loadModel('Users');
                 $user = $this->Users->find()
                 ->where([
