@@ -27,7 +27,7 @@
         <label><i class="fa fa-check" style="color: green;" aria-hidden="true"></i> <?= h($librarian->account_status) ?></label>
     </div>
     <?php
-        echo $this->Form->create("UpdatePersonalAccount", ['onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the personal info will be updated.\");"]);
+        echo $this->Form->create("UpdatePersonalAccount", ["enctype" => 'multipart/form-data', 'onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the personal info will be updated.\");"]);
         echo $this->Form->control("user_id", ["required","disabled", "value" => $librarian->user_id, "type" => "text", "class" =>"form-update", "placeholder" => "Enter your borrower ID", "label" => "Librarian ID"]);
         echo $this->Form->control("first_name", ["required", "type" => "text", "value" => $librarian->first_name, "class" =>"form-update", "placeholder" => "Enter your first name"]);
         echo $this->Form->control("last_name", ["required", "type" => "text", "value" => $librarian->last_name, "class" =>"form-update", "placeholder" => "Enter your last name"]);
@@ -53,6 +53,7 @@
                 <?php } ?>
             </select>
         </div>
+        <?php echo $this->Form->control("profile_image", ["type" => "file", "accept" => "image/png, image/jpg, image/jpeg"]); ?>
         <div class="text-center">
         <?php
         echo $this->Form->button(__("UPDATE PROFILE"), ['id' => "update-profile-btn"]);

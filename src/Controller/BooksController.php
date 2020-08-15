@@ -345,13 +345,13 @@ class BooksController extends AppController
             $bookUrlExplode = explode('/', $book->book_cover_image);
             $bookImgLocalPath = WWW_ROOT . 'img' . DS . 'book-cover-img' . DS . $bookUrlExplode[6];
 
-            if(file_exists($bookImgLocalPath)){
-                unlink($bookImgLocalPath);
-            };
-
             $book = $this->Books->patchEntity($book, $this->request->getData());
 
             if(!empty($this->request->data['book_cover_image']['name'])){
+                if(file_exists($bookImgLocalPath)){
+                    unlink($bookImgLocalPath);
+                };
+
                 $temp = explode(".", $_FILES['book_cover_image']['name']);
                 $filename = 'bookcover_' . $book->book_number . '.' . $temp[1];
                 $url = Router::url('/', true). 'img/book-cover-img/' . $filename;
@@ -373,6 +373,7 @@ class BooksController extends AppController
             else{
                 $book->user_id = $this->Auth->user('user_id');
                 $book->last_modified = $currDate;
+                $book->book_cover_image = $bookImagePath;
                 if ($this->Books->save($book)) {
                     $this->Flash->success(__('The book has been updated successfully.'));
     

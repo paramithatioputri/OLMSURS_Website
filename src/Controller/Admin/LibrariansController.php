@@ -340,17 +340,47 @@ class LibrariansController extends AppController
 
         $this->set(compact('borrower'));
 
+        $profileImagePath = $borrower->profile_image;
+
         if($this->request->is(['patch', 'post', 'put'])){
+            //Deleting the image from the webroot
+            $profileUrlExplode = explode('/', $borrower->profile_image);
+            $profileImgLocalPath = WWW_ROOT . 'img' . DS . 'profile-img' . DS . $profileUrlExplode[6];
+            
             $data = $this->request->getData();
             $borrower = $this->Users->patchEntity($borrower, $data);
-            $borrower->last_modified = $currDateTime;
+            if(!empty($data['profile_image']['name'])){
+                if(file_exists($profileImgLocalPath)){
+                    unlink($profileImgLocalPath);
+                }
+                $temp = explode(".", $_FILES['profile_image']['name']);
+                $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
+                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $uploadPath = 'img/profile-img/';
 
-            if($this->Users->save($borrower)){
-                $this->Flash->success(__("The profile info is updated successfully!"));
+                $uploadfile = $uploadPath . $filename;
+                
+                if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
+                    $borrower->profile_image = $url;
+                    $borrower->last_modified = $currDateTime;
+                    if($this->Users->save($borrower)){
+                        $this->Flash->success(__("The profile info is updated successfully!"));
+                        return $this->redirect($this->referer());
+                    }
+                    $this->Flash->error(__("Fail to update profile info"));
+                    return $this->redirect($this->referer());
+                };
+            }
+            else{
+                $borrower->profile_image = $profileImagePath;
+                $borrower->last_modified = $currDateTime;
+                if($this->Users->save($borrower)){
+                    $this->Flash->success(__("The profile info is updated successfully!"));
+                    return $this->redirect($this->referer());
+                }
+                $this->Flash->error(__("Fail to update profile info"));
                 return $this->redirect($this->referer());
             }
-            $this->Flash->error(__("Fail to update profile info"));
-            return $this->redirect($this->referer());
         }
 
     }
@@ -368,19 +398,51 @@ class LibrariansController extends AppController
         ->first();
 
         $this->set(compact('librarian'));
+
+        $profileImagePath = $librarian->profile_image;
         
         if($this->request->is(['patch', 'post', 'put'])){
+            //Deleting the image from the webroot
+            $profileUrlExplode = explode('/', $librarian->profile_image);
+            $profileImgLocalPath = WWW_ROOT . 'img' . DS . 'profile-img' . DS . $profileUrlExplode[6];
+
             $data = $this->request->getData();
             $librarian = $this->Users->patchEntity($librarian, $data);
-            $librarian->last_modified = $currDateTime;
+            
+            if(!empty($data['profile_image']['name'])){
+                if(file_exists($profileImgLocalPath)){
+                    unlink($profileImgLocalPath);
+                }
+                $temp = explode(".", $_FILES['profile_image']['name']);
+                $filename = 'profile_' . $librarian->user_id . '.' . $temp[1];
+                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $uploadPath = 'img/profile-img/';
 
-            if($this->Users->save($librarian)){
-                $this->Flash->success(__("The profile info is updated successfully!"));
+                $uploadfile = $uploadPath . $filename;
+                
+                if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
+                    $librarian->profile_image = $url;
+                    $librarian->last_modified = $currDateTime;
+                    if($this->Users->save($librarian)){
+                        $this->Auth->setUser($librarian);
+                        $this->Flash->success(__("The profile info is updated successfully!"));
+                        return $this->redirect($this->referer());
+                    }
+                    $this->Flash->error(__("Fail to update profile info"));
+                    return $this->redirect($this->referer());
+                };
+            }
+            else{
+                $librarian->profile_image = $profileImagePath;
+                $librarian->last_modified = $currDateTime;
+                if($this->Users->save($librarian)){
+                    $this->Auth->setUser($librarian);
+                    $this->Flash->success(__("The profile info is updated successfully!"));
+                    return $this->redirect($this->referer());
+                }
+                $this->Flash->error(__("Fail to update profile info"));
                 return $this->redirect($this->referer());
             }
-            $this->Flash->error(__("Fail to update profile info"));
-            return $this->redirect($this->referer());
-
         }
     }
 
@@ -400,18 +462,50 @@ class LibrariansController extends AppController
 
         $this->set(compact('librarian'));
 
+        $profileImagePath = $librarian->profile_image;
+
         if($this->request->is(['patch', 'post', 'put'])){
+            //Deleting the image from the webroot
+            $profileUrlExplode = explode('/', $librarian->profile_image);
+            $profileImgLocalPath = WWW_ROOT . 'img' . DS . 'profile-img' . DS . $profileUrlExplode[6];
+            
             $data = $this->request->getData();
             $librarian = $this->Users->patchEntity($librarian, $data);
-            $librarian->last_modified = $currDateTime;
-            
-            if($this->Users->save($librarian)){
-                $this->Auth->setUser($librarian);
-                $this->Flash->success(__("The profile info is updated successfully!"));
+
+            if(!empty($data['profile_image']['name'])){
+                if(file_exists($profileImgLocalPath)){
+                    unlink($profileImgLocalPath);
+                }
+                $temp = explode(".", $_FILES['profile_image']['name']);
+                $filename = 'profile_' . $user->user_id . '.' . $temp[1];
+                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $uploadPath = 'img/profile-img/';
+
+                $uploadfile = $uploadPath . $filename;
+                
+                if(move_uploaded_file($this->request->data['profile_image']['tmp_name'], $uploadfile)){
+                    $librarian->profile_image = $url;
+                    $librarian->last_modified = $currDateTime;
+                    if($this->Users->save($librarian)){
+                        $this->Auth->setUser($librarian);
+                        $this->Flash->success(__("The profile info is updated successfully!"));
+                        return $this->redirect($this->referer());
+                    }
+                    $this->Flash->error(__("Fail to update profile info"));
+                    return $this->redirect($this->referer());
+                };
+            }
+            else{
+                $librarian->profile_image = $profileImagePath;
+                $librarian->last_modified = $currDateTime;
+                if($this->Users->save($librarian)){
+                    $this->Auth->setUser($librarian);
+                    $this->Flash->success(__("The profile info is updated successfully!"));
+                    return $this->redirect($this->referer());
+                }
+                $this->Flash->error(__("Fail to update profile info"));
                 return $this->redirect($this->referer());
             }
-            $this->Flash->error(__("Fail to update profile info"));
-            return $this->redirect($this->referer());
         }
     }
 

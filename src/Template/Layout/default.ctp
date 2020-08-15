@@ -78,6 +78,7 @@ $cakeDescription = 'Online Library Management System with User Rating System';
     <footer>
     <hr/>
         <div style="margin:2em auto;" class="text-center">
+            <p><strong>All Copyrights Reserved &copy;2020</strong></p>
             <p>Proudly developed by Paramitha Aryananda Tioputri (TP047112) / UC3F1911SE</p>
             <p>Asia Pacific University of Technology and Innovation</p>
         </div>
