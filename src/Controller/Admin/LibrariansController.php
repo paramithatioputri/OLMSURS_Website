@@ -388,9 +388,12 @@ class LibrariansController extends AppController
         $currDateTime = date("Y-m-d");
 
         $this->loadModel('Users');
+
+        $librarian = $this->Auth->user();
+
         $librarian = $this->Users->find()
         ->where([
-            'user_id' => $this->Auth->user('user_id'),
+            'user_id' => $librarian['user_id'],
             'role' => 'librarian',
         ])
         ->first();
@@ -403,6 +406,7 @@ class LibrariansController extends AppController
             $librarian->last_modified = $currDateTime;
             
             if($this->Users->save($librarian)){
+                $this->Auth->setUser($librarian);
                 $this->Flash->success(__("The profile info is updated successfully!"));
                 return $this->redirect($this->referer());
             }

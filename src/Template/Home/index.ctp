@@ -63,12 +63,14 @@
                                 ?>
                                 <div class="col-md-3 clearfix d-none d-md-block">
                                     <a href="<?= h('books/view/' . $bookRecom->book_number)?>">
-                                        <div class="card" style="width:200px">
-                                        <?php if(empty($bookRecom->book_cover_image)){ ?>
-                                            <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '150', 'class' => 'card-img-top', 'alt' => 'no-cover-available']) ?>
-                                        <?php } else{?>
-                                            <?= $this->Html->image(h($bookRecom->book_cover_image), ['width' => '150', 'class' => 'card-img-top', 'alt' => 'book-cover-image']) ?>
-                                        <?php }?>
+                                        <div class="card" style="width:240px">
+                                            <div id="book-cover-recom-container">
+                                            <?php if(empty($bookRecom->book_cover_image)){ ?>
+                                                <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '150', 'class' => 'card-img-top', 'alt' => 'no-cover-available']) ?>
+                                            <?php } else{?>
+                                                <?= $this->Html->image(h($bookRecom->book_cover_image), ['width' => '150', 'class' => 'card-img-top', 'alt' => 'book-cover-image']) ?>
+                                            <?php }?>
+                                            </div>
                                             <div class="card-body">
                                                 <div name="average_rating" style="text-align:center">
                                                     <input value="<?= h($bookRecom->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="recom<?= h($bookRecom->book_number) ?>">
@@ -116,12 +118,14 @@
     <?php
      foreach($books as $book){ ?>
             <a href="<?= h('books/view/' . $book->book_number)?>">
-                <div class="card" style="width:200px">
-                <?php if(empty($book->book_cover_image)){ ?>
-                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '150', 'class' => 'card-img-top', 'alt' => 'no-cover-available']) ?>
-                <?php } else{?>
-                    <?= $this->Html->image(h($book->book_cover_image), ['width' => '150', 'class' => 'card-img-top', 'alt' => 'book-cover-image']) ?>
-                <?php }?>
+                <div class="card" style="width: 240px;">
+                    <div id="book-cover-container">
+                    <?php if(empty($book->book_cover_image)){ ?>
+                        <?= $this->Html->image('../img/no-cover-available.jpg', ['class' => 'card-img-top', 'alt' => 'no-cover-available']) ?>
+                    <?php } else{?>
+                        <?= $this->Html->image(h($book->book_cover_image), ['class' => 'card-img-top', 'alt' => 'book-cover-image']) ?>
+                    <?php }?>
+                    </div>
                     <div class="card-body">
                         <div name="average_rating" style="text-align:center">
                             <input class="rating-class" value="<?= h($book->average_rating) ?>" min="0" max="5" value="0" step="0.1" readonly="readonly" id="<?= h($book->book_number) ?>">
@@ -251,6 +255,23 @@
 
     #all-book-container{
         text-align: left;
+    }
+
+    #book-cover-container, #book-cover-recom-container{
+        width: 240px;
+        height:400px;
+        background-color: #000000;
+        vertical-align: middle;
+        display: table-cell;
+        text-align: center;
+        
+    }
+
+    .card-image-top{
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: 0 auto;
     }
 
 </style>
