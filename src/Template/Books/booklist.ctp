@@ -22,7 +22,6 @@
                         echo $this->Form->control('categories', ['options' => $categories, 'name' => 'query2', 'id' =>'book-category-dropdown', 'label' => '']);
                     ?>
                 </div>
-                
                 <button id="search-btn" type="submit" ><i class="fa fa-search" aria-hidden="true"></i> Search</button>
             </form>
         </div>

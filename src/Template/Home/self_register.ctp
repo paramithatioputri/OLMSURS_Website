@@ -3,7 +3,7 @@
 
 <?= $this->element('header'); ?>
 
-<?= $this->Form->create($user, ["enctype" => 'multipart/form-data', "id" => "form"]);?>
+<?= $this->Form->create($user, ["enctype" => 'multipart/form-data', "id" => "form", 'onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the account will be created.\");"]);?>
 <fieldset>
     <legend><?= __('LIBRARY MEMBERSHIP REGISTRATION FORM') ?></legend>
     <?php
@@ -18,7 +18,7 @@
         ?>
         <p class="checkPassword" id="checkPasswordMismatch"></p>
         <?php
-        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Accept number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]);
+        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d*", "minlength" => 10, "maxlength" => 13, "title" => "Accept number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]);
         ?>
         <div class="input-group date">
             <div class="input-group-addon">

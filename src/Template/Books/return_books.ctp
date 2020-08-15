@@ -56,7 +56,7 @@ $currDate = date("Y-m-d");?>
                 ?></label></p>
                 </td>
                 <td class="actions">
-                    <?=  $this->Form->create('return_book', ['id' => 'submit-form'])?>
+                    <?=  $this->Form->create('return_book', ['id' => 'submit-form', 'onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the book copy will be returned.\");"])?>
                         <button name="borrower-transaction" class="return-book-btn" value="<?= $borrowerTransact->user_id?> <?= $borrowerTransact->book_call_number ?> <?= $overdueCharge ?>">Return Book</button>
                     <?= $this->Form->end() ?>
                 </td>

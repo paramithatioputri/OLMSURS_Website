@@ -3,12 +3,12 @@
 
 <?= $this->element('header'); ?>
 
-<?= $this->Form->create($book, ['enctype' => 'multipart/form-data']) ?>
+<?= $this->Form->create($book, ['enctype' => 'multipart/form-data', 'onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the book record will be published.\");"]) ?>
 <fieldset>
     <legend><?= __('Add Book') ?></legend>
     <?php
-        echo $this->Form->control('book_number', ['type' => 'text', 'autofocus', 'placeholder' => 'Enter Book Number']);
-        echo $this->Form->control('isbn', ['type' => 'text', 'placeholder' => 'Enter ISBN', 'label' => 'ISBN']);
+        echo $this->Form->control('book_number', ['type' => 'text', 'pattern' => '\d*', 'minlength' => 14, 'maxlength' => 14, 'title' => 'Accept number format only, with length 14', 'autofocus', 'placeholder' => 'Enter Book Number']);
+        echo $this->Form->control('isbn', ['type' => 'text', 'pattern' => '\d*', 'minlength' => 10, 'maxlength' => 13, 'title' => 'Accept number format only, with length 10 - 13', 'placeholder' => 'Enter ISBN', 'label' => 'ISBN']);
         echo $this->Form->control('title', ['type' => 'text', 'placeholder' => 'Enter Title']);
         echo $this->Form->control('author', ['type' => 'text', 'placeholder' => 'Enter Author']);
         echo $this->Form->control('publisher', ['type' => 'text', 'placeholder' => 'Enter Publisher']);

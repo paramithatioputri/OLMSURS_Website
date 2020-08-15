@@ -10,7 +10,7 @@
 <h3 class="heading">Register New Account</h3>
 <hr/>
 
-<?= $this->Form->create($user, ["enctype" => 'multipart/form-data']);?>
+<?= $this->Form->create($user, ["enctype" => 'multipart/form-data','onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the account will be created.\");"]);?>
 <fieldset>
     <?php
         echo $this->Form->control("user_id", ["autofocus", "type" => "text", "pattern" => "\d*", "minlength" => 14, "maxlength" => 14, "title" => "Accept number format only, with length 14", "placeholder" => "Enter the user ID", "label" => "User ID"]);
@@ -29,7 +29,7 @@
             "1" => "Librarian",
             "2" => "Borrower"
         ]]);
-        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
+        echo $this->Form->control("mobile_no", ["type" => "text", "pattern" => "\d*", "minlength" => 10, "maxlength" => 13, "title" => "Number format only with length 10 - 13", "placeholder" => "Enter the mobile number"]);
         ?>
         <div class="input-group date">
             <div class="input-group-addon">

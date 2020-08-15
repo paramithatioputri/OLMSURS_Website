@@ -27,12 +27,12 @@
         <label><i class="fa fa-check" style="color: green;" aria-hidden="true"></i> <?= h($borrower->account_status) ?></label>
     </div>
     <?php
-        echo $this->Form->create("UpdatePersonalAccount");
+        echo $this->Form->create("UpdatePersonalAccount", ['onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the personal info will be updated.\");"]);
         echo $this->Form->control("user_id", ["disabled", "value" => $borrower->user_id, "type" => "text", "class" =>"form-update", "placeholder" => "Enter your borrower ID", "label" => "Borrower ID"]);
         echo $this->Form->control("first_name", ["type" => "text", "value" => $borrower->first_name, "class" =>"form-update", "placeholder" => "Enter your first name", "required"]);
         echo $this->Form->control("last_name", ["type" => "text", "value" => $borrower->last_name, "class" =>"form-update", "placeholder" => "Enter your last name", "required"]);
         echo $this->Form->control("email_address", ["type" => "email", "value" => $borrower->email_address, "class" =>"form-update", "placeholder" => "Enter your email address", "required"]); 
-        echo $this->Form->control("mobile_no", ["type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number", "required"]); ?>
+        echo $this->Form->control("mobile_no", ["type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d*", "minlength" => 10, "maxlength" => 13, "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number", "required"]); ?>
         <div class="input-group date form-update">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>

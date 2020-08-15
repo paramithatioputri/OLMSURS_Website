@@ -28,7 +28,7 @@
         echo $this->Form->control("first_name", ["required", "type" => "text", "value" => $borrower->first_name, "class" =>"form-update", "placeholder" => "Enter your first name"]);
         echo $this->Form->control("last_name", ["required", "type" => "text", "value" => $borrower->last_name, "class" =>"form-update", "placeholder" => "Enter your last name"]);
         echo $this->Form->control("email_address", ["required", "type" => "email", "value" => $borrower->email_address, "class" =>"form-update", "placeholder" => "Enter your email address"]); 
-        echo $this->Form->control("mobile_no", ["required", "type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d{10,13}", "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]); ?>
+        echo $this->Form->control("mobile_no", ["required", "type" => "text", "value" => $borrower->mobile_no, "pattern" => "\d*", "minlength" => 10, "maxlength" => 13, "title" => "Number format only with length 10 - 13", "placeholder" => "Enter your mobile number"]); ?>
         <div class="input-group date form-update">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>

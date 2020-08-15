@@ -6,7 +6,7 @@
 
 
 <div class="books form content split left">
-    <?= $this->Form->create($book) ?>
+    <?= $this->Form->create($book, ['onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the book copy will be issued.\");"]) ?>
     <fieldset>
         <legend><?= __('Issue Book') ?></legend>
         <?php

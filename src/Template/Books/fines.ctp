@@ -60,7 +60,7 @@ $billReason = ['Late return of book'];
         <p><b>Total charges payable now:</b> <label id="total-payable"></label></p>
     </div>
     <div id="pay-charge">
-        <?= $this->Form->create('paynowform', ['id' => 'paynowform']) ?>
+        <?= $this->Form->create('paynowform', ['id' => 'paynowform', 'onsubmit' => "return confirm(\"Are you sure to perform this action? Once you confirm, the fines will be paid.\");"]) ?>
             <button name="charge_amount" id="pay-btn" type="submit">Pay Now</button>
         <?= $this->Form->end() ?>
     </div>
