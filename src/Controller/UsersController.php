@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Http\Session;
+use Cake\Routing\Router;
 
 /**
  * Users Controller
@@ -57,7 +58,7 @@ class UsersController extends AppController
             $profileImgLocalPath = WWW_ROOT . 'img' . DS . 'profile-img' . DS . $profileUrlExplode[6];
 
             $data = $this->request->getData();
-
+            
             $borrower = $this->Users->patchEntity($borrower, $data);
 
             if(!empty($data['profile_image']['name'])){
@@ -66,7 +67,7 @@ class UsersController extends AppController
                 }
                 $temp = explode(".", $_FILES['profile_image']['name']);
                 $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
-                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $url = Router::url('/', true) . 'img/profile-img/' . $filename;
                 $uploadPath = 'img/profile-img/';
 
                 $uploadfile = $uploadPath . $filename;

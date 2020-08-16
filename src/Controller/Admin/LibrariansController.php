@@ -166,7 +166,7 @@ class LibrariansController extends AppController
                 if(!empty($this->request->data["profile_image"]["name"])){
                     $temp = explode(".", $_FILES["profile_image"]["name"]);
                     $filename = 'profile_' . $user->user_id . '.' . $temp[1];
-                    $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                    $url = Router::url('/', true) . 'img/profile-img/' . $filename;
                     $uploadPath = 'img/profile-img/';
     
                     $uploadfile = $uploadPath . $filename;
@@ -355,7 +355,7 @@ class LibrariansController extends AppController
                 }
                 $temp = explode(".", $_FILES['profile_image']['name']);
                 $filename = 'profile_' . $borrower->user_id . '.' . $temp[1];
-                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $url = Router::url('/', true) . 'img/profile-img/' . $filename;
                 $uploadPath = 'img/profile-img/';
 
                 $uploadfile = $uploadPath . $filename;
@@ -415,7 +415,7 @@ class LibrariansController extends AppController
                 }
                 $temp = explode(".", $_FILES['profile_image']['name']);
                 $filename = 'profile_' . $librarian->user_id . '.' . $temp[1];
-                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $url = Router::url('/', true) . 'img/profile-img/' . $filename;
                 $uploadPath = 'img/profile-img/';
 
                 $uploadfile = $uploadPath . $filename;
@@ -477,8 +477,8 @@ class LibrariansController extends AppController
                     unlink($profileImgLocalPath);
                 }
                 $temp = explode(".", $_FILES['profile_image']['name']);
-                $filename = 'profile_' . $user->user_id . '.' . $temp[1];
-                $url = Router::url('/', true) . '/img/profile-img/' . $filename;
+                $filename = 'profile_' . $librarian->user_id . '.' . $temp[1];
+                $url = Router::url('/', true) . 'img/profile-img/' . $filename;
                 $uploadPath = 'img/profile-img/';
 
                 $uploadfile = $uploadPath . $filename;
