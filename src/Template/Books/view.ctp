@@ -104,7 +104,7 @@
                 <div class="col-">
                 <?php if(empty($borrowerRating->user->profile_image)){ 
                     if($borrowerRating->user->gender == "Male"){?>
-                        <?= $this->Html->image('../img/no-profile-male.jpg', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
+                        <?= $this->Html->image('../img/no-profile-male.png', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
                     <?php } else if($borrowerRating->user->gender == "Female"){ ?>
                         <?= $this->Html->image('../img/no-profile-female.jpg', ['alt' => 'no-profile-female', 'class' => 'profile-image']); ?>
                     <?php
@@ -194,9 +194,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-">
-                    <?php if(empty($borrowerRating->user->profile_image)){ 
+                    <?php if(empty($auth_user['profile_image'])){ 
                         if($auth_user['gender'] == "Male"){?>
-                            <?= $this->Html->image('../img/no-profile-male.jpg', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
+                            <?= $this->Html->image('../img/no-profile-male.png', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
                         <?php } else if($auth_user['gender'] == "Female"){ ?>
                             <?= $this->Html->image('../img/no-profile-female.jpg', ['alt' => 'no-profile-female', 'class' => 'profile-image']); ?>
                         <?php
@@ -250,7 +250,7 @@
     }
 
     #synopsis{
-        margin-bottom: 8em;
+        margin-bottom: 3em;
     }
 
     .borrower-name {
