@@ -38,7 +38,7 @@
         <div class="col-md-5">
             <div>
                 <label><b>Status: </b></label>
-                <label><?= isset($totalBookCopies) ? 'Available' : 'On Loan' ?></label>
+                <label><?= isset($totalBookCopies) && $totalBookCopies > 0 ? 'Available' : 'Not Available' ?></label>
             </div>
             <div>
                 <label><b>Book Number: </b></label>

@@ -623,7 +623,6 @@ class BooksController extends AppController
         ->contain(['BookCopies.Books'])
         ->where([
             'BorrowerBookStatus.user_id' => $this->Auth->user('user_id'),
-            // 'BorrowerBookStatus.status' => 'Checked Out',
         ])
         ->toArray();
 
@@ -657,9 +656,7 @@ class BooksController extends AppController
                 }
 
                 if($bookRenew->times_renewed >= 2){
-                    // $this->Flash->error(__('Times renewed of these books have reached the limit'));
                     continue;
-                    // return $this->redirect($this->referer());
                 }
 
                 $bookRenew->times_renewed = $bookRenew->times_renewed + 1 ;

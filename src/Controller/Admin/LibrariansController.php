@@ -438,6 +438,9 @@ class LibrariansController extends AppController
                 $librarian->profile_image = $profileImagePath;
                 $librarian->last_modified = $currDateTime;
                 if($this->Users->save($librarian)){
+                    if($librarian->user_id === $this->Auth->user('user_id')){
+                        $this->Auth->setUser($librarian);
+                    }
                     $this->Flash->success(__("The profile info is updated successfully!"));
                     return $this->redirect($this->referer());
                 }
