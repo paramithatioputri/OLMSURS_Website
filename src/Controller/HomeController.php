@@ -274,17 +274,8 @@ class HomeController extends AppController
                         $user->date_created = $currDateTime;
         
                         if($this->Users->save($user)){
-                            $to = $user->email_address;
-                            $subject = 'Hi buddy';
-                            $message = 'Just test out my Email Component using PHPMailer.';
-                            try{
-                                $mail = $this->Email->send_mail($to, $subject, $message);
-                                $this->Flash->success(__('Your account has been registered successfully'));
-                                return $this->redirect(['controller' => 'home', 'action' => 'login']);
-                            }
-                            catch(Exception $e){
-                                echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
-                            }
+                            $this->Flash->success(__('Your account has been registered successfully'));
+                            return $this->redirect(['controller' => 'home', 'action' => 'login']);
                         }
                         else{
                             $this->Flash->error(__("Fail to register"));

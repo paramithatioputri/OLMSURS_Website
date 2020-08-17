@@ -765,16 +765,12 @@ class BooksController extends AppController
 
         if($this->request->is('post')){
             $data = $this->request->getData();
-
             $finesToBePaid = $data['charge_amount'];
-
             $finesToBePaidArr = explode(",", $finesToBePaid);
 
-
             for($i = 0; $i < count($finesToBePaidArr); $i++){
-
                 $fineAndIdArr = explode(" ",$finesToBePaidArr[$i]);
-                
+            
                 $borrowerPay = $this->BorrowerBookStatus->find()
                 ->where([
                     'BorrowerBookStatus.id' => $fineAndIdArr[1],
@@ -782,8 +778,6 @@ class BooksController extends AppController
                     'BorrowerBookStatus.charge_amount' => $fineAndIdArr[0],
                 ])
                 ->first();
-                
-
                 $borrowerPay->charge_amount = (int)($borrowerPay->charge_amount - $fineAndIdArr[0]);
 
                 if($this->BorrowerBookStatus->save($borrowerPay)){
@@ -792,7 +786,6 @@ class BooksController extends AppController
             $this->Flash->success(__('The fines have been paid'));
             return $this->redirect($this->referer());
         }
-
     }
 
     public function viewBookBorrowingHistory(){
