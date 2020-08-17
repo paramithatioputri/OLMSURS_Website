@@ -79,7 +79,7 @@ class BooksController extends AppController
             $q = str_replace(' ', '%', $query['query1']);
 
             $books = $this->Books->find()
-            ->contain(['Subjects', 'Languages', 'Users'])
+            ->contain(['Subjects', 'Users'])
             ->where([
                 'OR' => [
                     'Books.book_number LIKE' => '%' . $q . '%',
@@ -206,7 +206,6 @@ class BooksController extends AppController
 
         if($this->request->is('post')){
             $data = $this->request->getData();
-
             if(empty($rateThisBook)){
                 $rateThisBook = $this->BorrowerBookRating->newEntity();
                 $rateThisBook = $this->BorrowerBookRating->patchEntity($rateThisBook, $data);
@@ -219,7 +218,13 @@ class BooksController extends AppController
             else if(!empty($rateThisBook) && ($rateThisBook->rating_given == 0 || empty($rateThisBook->rating_given))){
                 $rateThisBook = $this->BorrowerBookRating->patchEntity($rateThisBook, $data);
                 if(!$this->BorrowerBookRating->save($rateThisBook)){
-                // calculate the new average rating
+                    $this->Flash->error(__('Fail to rate this book!'));
+                    return $this->redirect($this->referer());
+                }
+            }
+            else{
+                $rateThisBook = $this->BorrowerBookRating->patchEntity($rateThisBook, $data);
+                if(!$this->BorrowerBookRating->save($rateThisBook)){
                     $this->Flash->error(__('Fail to rate this book!'));
                     return $this->redirect($this->referer());
                 }

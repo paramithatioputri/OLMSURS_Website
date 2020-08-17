@@ -114,11 +114,11 @@
                 </div>
                 <?php if($borrowerRating->user_id === $auth_user['user_id'] && $auth_user['role'] == "borrower"){ ?>
                 <div class="col" id="update-review">
-                    <?= $this->Form->create('rateBook');?>
+                    <?= $this->Form->create('updateBookRating');?>
                     <div>
                         <div>
                             <p class="borrower-name"><?= h($auth_user['first_name']) ?> <?= h($auth_user['last_name']) ?></p>
-                            <input required value="<?= h($borrowerRating->rating_given) ?>" name="rating_given" min="0" max="5" value="0" step="0.1" id="rating-from-borrower">
+                            <input required value="<?= h($borrowerRating->rating_given) ?>" name="rating_given" min="0" max="5" step="0.1" id="rating-from-borrower">
                             <div class="rateit" data-rateit-backingfld="#rating-from-borrower"></div>
                             <label id="rating-required"></label>
                         </div>

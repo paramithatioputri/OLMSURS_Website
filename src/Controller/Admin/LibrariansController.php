@@ -424,7 +424,9 @@ class LibrariansController extends AppController
                     $librarian->profile_image = $url;
                     $librarian->last_modified = $currDateTime;
                     if($this->Users->save($librarian)){
-                        $this->Auth->setUser($librarian);
+                        if($librarian->user_id === $this->Auth->user('user_id')){
+                            $this->Auth->setUser($librarian);
+                        }
                         $this->Flash->success(__("The profile info is updated successfully!"));
                         return $this->redirect($this->referer());
                     }
@@ -436,7 +438,6 @@ class LibrariansController extends AppController
                 $librarian->profile_image = $profileImagePath;
                 $librarian->last_modified = $currDateTime;
                 if($this->Users->save($librarian)){
-                    $this->Auth->setUser($librarian);
                     $this->Flash->success(__("The profile info is updated successfully!"));
                     return $this->redirect($this->referer());
                 }
@@ -451,11 +452,11 @@ class LibrariansController extends AppController
 
         $this->loadModel('Users');
 
-        $librarian = $this->Auth->user();
+        $librarianAuth = $this->Auth->user();
 
         $librarian = $this->Users->find()
         ->where([
-            'user_id' => $librarian['user_id'],
+            'user_id' => $librarianAuth['user_id'],
             'role' => 'librarian',
         ])
         ->first();
@@ -471,6 +472,7 @@ class LibrariansController extends AppController
             
             $data = $this->request->getData();
             $librarian = $this->Users->patchEntity($librarian, $data);
+
 
             if(!empty($data['profile_image']['name'])){
                 if(file_exists($profileImgLocalPath)){

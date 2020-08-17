@@ -101,7 +101,7 @@ class BooksTable extends Table
 
         $validator
             ->scalar('language_id')
-            ->allowEmptyString('language_id');
+            ->notEmptyString('language_id');
 
         // $validator
         //     ->numeric('average_rating')
