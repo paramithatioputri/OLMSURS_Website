@@ -5,7 +5,6 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Routing\Router;
-use Cake\Mailer\Email;
 
 /**
  * Home Controller
@@ -15,7 +14,6 @@ use Cake\Mailer\Email;
  */
 class HomeController extends AppController
 {
-    public $components = array("Email");
 
     public function beforeFilter(){
 

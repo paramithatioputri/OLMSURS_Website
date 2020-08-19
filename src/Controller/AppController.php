@@ -97,6 +97,8 @@ class AppController extends Controller
             ['login', 'display']
         );
 
+        $this->Auth->logoutRedirect = array('component'=>'Auth','action'=>'login');
+
     }
 
     public function beforeRender(Event $event)

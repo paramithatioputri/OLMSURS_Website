@@ -32,6 +32,7 @@
             echo $this->Html->link('Checked-out Books', ['controller' => '/books', 'action' => 'checkout'], ['class' => 'button nav-button']);
             echo $this->Html->link('View Book Borrowing History', ['controller' => '/books', 'action' => 'view-book-borrowing-history'], ['class' => 'button nav-button']);
             echo $this->Html->link('Rate Books', ['controller' => '/books', 'action' => 'rate_books'], ['class' => 'button nav-button']);
+            echo $this->Html->link('Shared Books', ['controller' => '/books', 'action' => 'list_of_shared_books'], ['class' => 'button nav-button']);
         ?>
         <?php }else{ ?>
         <?php 

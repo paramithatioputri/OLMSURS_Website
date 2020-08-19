@@ -79,6 +79,9 @@
             <?php } ?>
             <label><b>Number of Copies: </b></label>
             <label><?= !empty($totalBookCopies) ? $totalBookCopies : '0' ?></label>
+            <?php if($auth_user['role'] === 'borrower'){ ?>
+            <?= $this->Html->link('Share this book', ['controller' => 'books', 'action' => 'share_book_to/' . $book->book_number], ['class' => 'btn btn-outline-warning share-this-book-btn']) ?>
+            <?php } ?>
         </div>
     </div>
     <div id="synopsis">
@@ -349,6 +352,10 @@
 
     textarea{
         width: 100%;
+    }
+
+    .share-this-book-btn{
+        margin: 1em auto;
     }
 
 </style>

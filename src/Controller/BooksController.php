@@ -40,7 +40,10 @@ class BooksController extends AppController
         if($this->request->action === 'checkout'
         || $this->request->action === 'viewBookBorrowingHistory'
         || $this->request->action === 'rateBooks'
-        || $this->request->action === 'deleteBorrowerRating')
+        || $this->request->action === 'deleteBorrowerRating'
+        || $this->request->action === 'shareBookTo'
+        || $this->request->action === 'shareThisBook'
+        || $this->request->action === 'listOfSharedBooks')
         {
             return true;
         }
@@ -408,6 +411,7 @@ class BooksController extends AppController
         $this->loadModel('BookCopies');
         $this->loadModel('BorrowerBookStatus');
         $this->loadModel('BorrowerBookRating');
+        $this->loadModel('BookSharings');
 
         $book = $this->Books->get($id);
 
@@ -435,6 +439,11 @@ class BooksController extends AppController
         ->contain('BookCopies')
         ->toArray();
 
+        $bookSharings = $this->BookSharings->find()
+        ->contain(['Books'])
+        ->where(['BookSharings.book_number'])
+        ->toArray();
+
 
         $bookUrlExplode = explode('/', $book->book_cover_image);
         $bookImgLocalPath = WWW_ROOT . 'img' . DS . 'book-cover-img' . DS . $bookUrlExplode[6];
@@ -456,6 +465,10 @@ class BooksController extends AppController
             }
             foreach($borrowerBookRatings as $borrowerBookRating){
                 $this->BorrowerBookRating->delete($borrowerBookRating);
+            }
+
+            foreach($bookSharings as $bookSharing){
+                $this->BookSharings->delete($bookSharing);
             }
             $this->Flash->success(__('The book has been deleted.'));
         } else {
@@ -909,5 +922,83 @@ class BooksController extends AppController
                 }
             }
         }
+    }
+
+    public function shareBookTo($id = null){
+
+        $query = $this->request->query();
+
+        $this->loadModel('Users');
+
+        if(!empty($query['search_borrower'])){
+            $this->set('search_borrower', $query['search_borrower']);
+            
+            $q = str_replace(' ', '%', $query['search_borrower']);
+
+            $borrowerLists = $this->Users->find()
+            ->where([
+                'Users.role' => 'borrower',
+                'OR' => [
+                    'Users.first_name LIKE ' => '%' . $q . '%',
+                    'Users.last_name LIKE ' => '%' . $q . '%',
+                ]
+            ]);
+        }else{
+            $borrowerLists = $this->Users->find()
+            ->where(['Users.role' => 'borrower']);
+        }
+
+        $book = $this->Books->find()
+        ->contain(['Subjects', 'Languages'])
+        ->where([
+            'book_number' => $id,
+        ])
+        ->first();
+
+
+        $this->set(compact('borrowerLists', 'book'));
+    }
+
+    public function shareThisBook($bookNumber = null){
+        $currDate = date("Y-m-d");
+
+        $this->loadModel('BookSharings');
+
+        $bookSharing = $this->BookSharings->newEntity();
+        
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+
+            $bookSharing = $this->BookSharings->patchEntity($bookSharing, $data);
+            $bookSharing->date_shared = $currDate;
+            $bookSharing->sender_id = $this->Auth->user('user_id');
+            $bookSharing->book_number = $bookNumber;
+
+            try{
+                if($this->BookSharings->save($bookSharing)){
+                    $this->Flash->success(__("The book is shared successfully"));
+                    return $this->redirect(['controller' => 'books', 'action' => 'share_book_to/' . $bookNumber]);
+                }
+            } catch(\Exception $e){
+                echo 'Error:'.$e->getMessage();
+            }
+        }
+    }
+
+    public function listOfSharedBooks(){
+        $this->loadModel('BookSharings');
+
+        $listofBooksShared = $this->BookSharings->find()
+        ->contain(['Books', 'Users'])
+        ->where([
+            'BookSharings.receiver_id' => $this->Auth->user('user_id'),
+        ])
+        ->toArray();
+
+        $this->loadModel('Users');
+        $senders = $this->Users->find()
+        ->toArray();
+
+        $this->set(compact('listofBooksShared', 'senders'));
     }
 }

@@ -31,7 +31,7 @@ class LibrariansController extends AppController
     }
 
     public function isAuthorized($user = null){
-        // dd($this->request->action);
+
         if($this->request->action === 'personalAccount'
         || $this->request->action === 'registerAccounts'
         || $this->request->action === 'viewBorrowerAccount'
