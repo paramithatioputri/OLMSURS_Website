@@ -13,7 +13,7 @@
             echo $this->Form->control('book_call_number', ['type' => 'text', 'readonly', 'value' => $bookCopy->book_call_number]);
             echo $this->Form->control('book_number', ['type' => 'text', 'readonly', 'value' => $bookCopy->book_number]);
             echo $this->Form->control('title', ['type' => 'text', 'readonly', 'value' => $bookCopy->book->title]);
-            echo $this->Form->control('user_id', ['type' => 'text', 'label' => 'User ID', 'readonly', 'id' => 'borrower_id']);
+            echo $this->Form->control('user_id', ['type' => 'text', 'label' => 'Borrower ID', 'readonly', 'id' => 'borrower_id']);
             echo $this->Form->control('num_of_books_taken', ['id' => 'books_taken', 'type' => 'number', 'readonly']);
             echo $this->Form->control('maximum_allowed', ['type' => 'number', 'readonly', 'value' => 5]);
         ?>

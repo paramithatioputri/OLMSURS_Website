@@ -38,7 +38,7 @@
         <div class="col-md-5">
             <div>
                 <label><b>Status: </b></label>
-                <label><?= isset($totalBookCopies) ? 'Available' : 'On Loan' ?></label>
+                <label><?= isset($totalBookCopies) && $totalBookCopies > 0 ? 'Available' : 'Not Available' ?></label>
             </div>
             <div>
                 <label><b>Book Number: </b></label>
@@ -79,6 +79,9 @@
             <?php } ?>
             <label><b>Number of Copies: </b></label>
             <label><?= !empty($totalBookCopies) ? $totalBookCopies : '0' ?></label>
+            <?php if($auth_user['role'] === 'borrower'){ ?>
+            <?= $this->Html->link('Share this book', ['controller' => 'books', 'action' => 'share_book_to/' . $book->book_number], ['class' => 'btn btn-outline-warning share-this-book-btn']) ?>
+            <?php } ?>
         </div>
     </div>
     <div id="synopsis">
@@ -114,11 +117,11 @@
                 </div>
                 <?php if($borrowerRating->user_id === $auth_user['user_id'] && $auth_user['role'] == "borrower"){ ?>
                 <div class="col" id="update-review">
-                    <?= $this->Form->create('rateBook');?>
+                    <?= $this->Form->create('updateBookRating');?>
                     <div>
                         <div>
                             <p class="borrower-name"><?= h($auth_user['first_name']) ?> <?= h($auth_user['last_name']) ?></p>
-                            <input required value="<?= h($borrowerRating->rating_given) ?>" name="rating_given" min="0" max="5" value="0" step="0.1" id="rating-from-borrower">
+                            <input required value="<?= h($borrowerRating->rating_given) ?>" name="rating_given" min="0" max="5" step="0.1" id="rating-from-borrower">
                             <div class="rateit" data-rateit-backingfld="#rating-from-borrower"></div>
                             <label id="rating-required"></label>
                         </div>
@@ -349,6 +352,10 @@
 
     textarea{
         width: 100%;
+    }
+
+    .share-this-book-btn{
+        margin: 1em auto;
     }
 
 </style>
