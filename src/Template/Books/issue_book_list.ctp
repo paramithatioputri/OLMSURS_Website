@@ -26,7 +26,8 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($bookCopies as $bookCopy): ?>
+        <?php if(isset($bookCopies)){
+            foreach ($bookCopies as $bookCopy): ?>
         <tr>
             <td>
                 <p><?= $this->Html->link($bookCopy->book_call_number, ['controller' => 'Books', 'action' => 'issue_books', $bookCopy->book_call_number], ['class' => 'book-copy-link']) ?></p>
@@ -44,7 +45,8 @@
                 <p><?= h($bookCopy->availability_status) ?></p>
             </td>
         </tr>
-        <?php endforeach; ?>
+        <?php endforeach; 
+        }?>
     </tbody>
 </table>
 <?php $this->append('css') ?>
