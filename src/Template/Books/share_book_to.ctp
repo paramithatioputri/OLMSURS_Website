@@ -33,7 +33,7 @@ echo $this->element('share-book-msg-modal', [
         </div>
         <div class="col">
             <label><?= $borrowerList->first_name ?> <?= $borrowerList->last_name ?></label>
-            <button class="btn btn-outline-warning share-btn" data-toggle="modal" data-target="#shareBookMsgModalCenter<?= $borrowerLists->user_id ?>">Share</button>
+            <button class="btn btn-outline-warning share-btn" data-toggle="modal" data-target="#shareBookMsgModalCenter<?= $borrowerList->user_id ?>">Share</button>
             <hr/>
         </div>
     </div>

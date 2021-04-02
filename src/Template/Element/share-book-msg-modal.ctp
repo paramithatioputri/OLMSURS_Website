@@ -1,6 +1,6 @@
 <!-- Modal -->
 <?php foreach($borrowerLists as $borrowerList){ ?>
-    <div class="modal fade" id="shareBookMsgModalCenter<?= $borrowerLists->user_id ?>" >
+    <div class="modal fade" id="shareBookMsgModalCenter<?= $borrowerList->user_id ?>" >
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
