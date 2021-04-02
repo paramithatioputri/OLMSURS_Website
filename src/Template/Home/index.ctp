@@ -152,6 +152,8 @@
         padding: 0;
         background-image: url("img/navigation/library-bg-image.jpeg");
         background-size:cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
 
     #search-container{
