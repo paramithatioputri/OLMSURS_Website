@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Http\Session;
 use Cake\Routing\Router;
+use Cake\Event\Event;
 
 /**
  * Users Controller
@@ -16,7 +17,7 @@ use Cake\Routing\Router;
 class UsersController extends AppController
 {
 
-    public function beforeFilter(){
+    public function beforeFilter(Event $event){
 
         $this->Auth->allow();
     }

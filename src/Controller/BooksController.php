@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use Cake\Event\Event;
 /**
  * Books Controller
  *
@@ -20,7 +21,7 @@ class BooksController extends AppController
      */
 
 
-    public function beforeFilter(){
+    public function beforeFilter(Event $event){
 
         $this->Auth->allow([
             'booklist', 'view'

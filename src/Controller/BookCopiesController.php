@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * BookCopies Controller
@@ -12,7 +13,7 @@ use App\Controller\AppController;
  */
 class BookCopiesController extends AppController
 {
-    public function beforeFilter(){
+    public function beforeFilter(Event $event){
 
         $this->Auth->allow();
     }

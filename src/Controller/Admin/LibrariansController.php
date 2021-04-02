@@ -18,7 +18,7 @@ class LibrariansController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(){
+    public function beforeFilter(Event $event){
         // $this->Auth->allow(['logout']);
     }
 
