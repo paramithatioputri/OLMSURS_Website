@@ -15,8 +15,8 @@ $currDate = date("Y-m-d");?>
     </form>
 </div>
 <div>
-    <p>Borrower ID: <?= h($borrower->user_id ? $borrower->user_id : '-') ?></p>
-    <p>Borrower Name: <?= h($borrower->first_name ? $borrower->first_name : '') ?><?= h($borrower->last_name? (' ' + $borrower->last_name) : '') ?></p>
+    <p>Borrower ID: <?= h(isset($borrower->user_id) ? $borrower->user_id : '-') ?></p>
+    <p>Borrower Name: <?= h(isset($borrower->first_name) ? $borrower->first_name : '') ?><?= h(isset($borrower->last_name) ? (' ' + $borrower->last_name) : '') ?></p>
     <p>Total Fines: <a id="total-fines-id" href="fines/<?= isset($borrower->user_id) ? $borrower->user_id : '' ?>"><b>RM</b><label id="total-fines"><b><?= isset($borrower->total_fines) ? $borrower->total_fines : '0' ?></b></label></a></p>
     <p>Books Taken: <?= isset($borrower->num_of_books_taken) ? $borrower->num_of_books_taken : '0' ?></p>
 </div>
