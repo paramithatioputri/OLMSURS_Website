@@ -42,9 +42,9 @@ class Application extends BaseApplication
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
-        if (Configure::read('debug')) {
-            $this->addPlugin(\DebugKit\Plugin::class);
-        }
+        // if (Configure::read('debug')) {
+        //     $this->addPlugin(\DebugKit\Plugin::class);
+        // }
 
         // Load more plugins here
     }
