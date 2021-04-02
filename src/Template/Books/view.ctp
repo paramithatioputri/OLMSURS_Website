@@ -8,9 +8,9 @@
         <div class="col-md-4">
             <div class="image">
                 <?php if(empty($book->book_cover_image)){ ?>
-                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '300', 'alt' => 'no-book-cover-image']); ?>
+                    <?= $this->Html->image('../img/no-cover-available.jpg', ['width' => '300', 'alt' => 'no-book-cover-image', 'class' => 'img']); ?>
                 <?php }else{ ?>
-                    <?= $this->Html->image(h($book->book_cover_image), ['width' => '300', 'alt' => 'book-cover-image']); ?>
+                    <?= $this->Html->image(h($book->book_cover_image), ['width' => '300', 'alt' => 'book-cover-image', 'class' => 'img']); ?>
                 <?php } ?>
             </div>
             <div class="average-rating-class">
@@ -236,6 +236,10 @@
 
     .image{
         margin-bottom: 10px;
+    }
+
+    .img{
+        margin: 0;
         border: 5px solid #000000;
     }
 
