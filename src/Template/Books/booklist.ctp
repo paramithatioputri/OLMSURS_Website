@@ -83,14 +83,14 @@
                         <?= h($book->user->first_name) ?> <?= h($book->user->last_name) ?>
                     </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                         <?= $this->Html->link(__('Add New Copy'), ['controller' => 'book_copies', 'action' => 'view_book_copies', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                         <?= $this->Html->link(__('Update'), ['action' => 'update_books', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $book->book_number], ['confirm' => __('Are you sure you want to delete # {0}?', $book->book_number), 'class' => 'button btn btn-outline-warning']) ?>
                     </td>
                     <?php } else{ ?>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view' . $book_number, $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'books', 'action' => 'view', $book->book_number], ['class' => 'button btn btn-outline-warning']) ?>
                     </td>
                     <?php } ?>
                 </tr>
