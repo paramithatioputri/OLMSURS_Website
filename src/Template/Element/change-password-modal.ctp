@@ -9,7 +9,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <?php if($auth_user['role'] == 'librarian'){ ?>
+      <?php if(isset($auth_user['role']) && $auth_user['role'] == 'librarian'){ ?>
       <?= $this->Form->create('changePassword', ['controller' => 'librarians', 'action' => 'change_password', 'id' => 'changePasswordForm']) ?>
       <?php }else{ ?>
       <?= $this->Form->create('changePassword', ['controller' => 'users', 'action' => 'change_password', 'id' => 'changePasswordForm']) ?>

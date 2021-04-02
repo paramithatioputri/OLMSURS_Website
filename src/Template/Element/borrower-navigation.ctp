@@ -5,9 +5,9 @@
         <?php 
         if(!empty($auth_user)){
         if(empty($auth_user['profile_image'])){ 
-                if($auth_user['gender'] == "Male"){?>
+                if(isset($auth_user['gender']) && $auth_user['gender'] == "Male"){?>
                     <?= $this->Html->link($this->Html->image("http://localhost:2/olmsurs_website/webroot/img/no-profile-male.png", ['alt' => 'male-profile-img', 'class' => 'profile-img']), "/users/personal-account/", ['escape' => false]); ?>
-                <?php } else if($auth_user['gender'] == "Female"){ ?>
+                <?php } else if(isset($auth_user['gender']) && $auth_user['gender'] == "Female"){ ?>
                     <?= $this->Html->link($this->Html->image("http://localhost:2/olmsurs_website/webroot/img/no-profile-female.jpg", ['alt' => 'female-profile-img', 'class' => 'profile-img']), "/users/personal-account/", ['escape' => false]); ?>
                 <?php
                 }}else{ ?>

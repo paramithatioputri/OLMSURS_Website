@@ -79,7 +79,7 @@
             <?php } ?>
             <label><b>Number of Copies: </b></label>
             <label><?= !empty($totalBookCopies) ? $totalBookCopies : '0' ?></label>
-            <?php if($auth_user['role'] === 'borrower'){ ?>
+            <?php if(isset($auth_user['role']) && $auth_user['role'] === 'borrower'){ ?>
             <?= $this->Html->link('Share this book', ['controller' => 'books', 'action' => 'share_book_to/' . $book->book_number], ['class' => 'btn btn-outline-warning share-this-book-btn']) ?>
             <?php } ?>
         </div>
@@ -192,15 +192,15 @@
     </div>
     <hr/>
     <?php } ?>
-    <?php if($auth_user['role'] === 'borrower' && (empty($rateThisBook) || empty($rateThisBook->rating_given) || $rateThisBook->rating_given == 0)){ ?>
+    <?php if(isset($auth_user['role']) && $auth_user['role'] === 'borrower' && (empty($rateThisBook) || empty($rateThisBook->rating_given) || $rateThisBook->rating_given == 0)){ ?>
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-">
                     <?php if(empty($auth_user['profile_image'])){ 
-                        if($auth_user['gender'] == "Male"){?>
+                        if(isset($auth_user['gender']) && $auth_user['gender'] == "Male"){?>
                             <?= $this->Html->image('../img/no-profile-male.png', ['alt' => 'no-profile-male', 'class' => 'profile-image']); ?>
-                        <?php } else if($auth_user['gender'] == "Female"){ ?>
+                        <?php } else if(isset($auth_user['gender']) && $auth_user['gender'] == "Female"){ ?>
                             <?= $this->Html->image('../img/no-profile-female.jpg', ['alt' => 'no-profile-female', 'class' => 'profile-image']); ?>
                         <?php
                         }}else{ ?>
